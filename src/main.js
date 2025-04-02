@@ -1,34 +1,45 @@
 import './style.css'
-
-function handleChangeRoute(route) {
-  if (route === '1') {
-    document.querySelector('#main').innerHTML = aula1.innerHTML
-  }
-}
-
 const header = document.querySelector('#header')
+const main = document.querySelector('#main')
+const footer = document.querySelector('#footer')
 
 header.innerHTML = `
-  <div>
-    <img src="https://i.postimg.cc/GpCxYmvc/title.png" alt="Logo">
+  <img src="https://i.postimg.cc/GpCxYmvc/title.png" alt="Logo">
+  <button id="aula-1">Aula 1</button>
+  <button id="aula-2">Aula 2</button> 
+`
 
-    <div class="container">
-      <div class="content">
-        <h2>Quem ganha, ganha em Wons!</h2>
-        <p> Que tal converter esse valor?</p>
-        <button id="converter" type="button">Bora converter!</button>
-      </div>
+main.innerHTML = `
+  <div class="container">
+    <div class="content">
+      <h2></h2>
+      <p></p>
+      <button></button>
     </div>
-  
-  <footer>Alura - Imersão DEV - 2025</footer>
   </div>
 `
 
-document.querySelector('#converter').onclick = () => handleConverter()
+footer.innerHTML = `
+  <footer>Alura - Imersão DEV - 2025</footer>
+`
 
-const won = 0.0040
+header.querySelector('#aula-1').onclick = () => {
+  main.querySelector('h2').innerText = 'Quem ganha, ganha em Wons!'
+  main.querySelector('p').innerText = 'Que tal converter esse valor'
+  main.querySelector('button').innerText = 'Bora converter!'
+  main.querySelector('button').onclick = () => handleConverter()
+}
+
+header.querySelector('#aula-2').onclick = () => {
+  main.querySelector('h2').innerText = 'Pra ganhar é preciso arriscar!'
+  main.querySelector('p').innerText = 'PEDRA, PAPEL ou TESOURA?'
+  main.querySelector('button').innerText = 'Bora jogar!'
+  main.querySelector('button').onclick = () => handlePlay()
+}
 
 function handleConverter() {
+  const won = 0.0040
+
   const promptValue = prompt('Digite um valor em Reais para converter em Wons')
 
   const wonValue = promptValue * won
@@ -36,4 +47,49 @@ function handleConverter() {
   const realValue = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(wonValue)
 
   alert('O valor em Reais é ' + realValue)
+}
+
+function handlePlay() {
+  const age = prompt("Quantos anos você tem?") 
+
+  if (age < 18) {
+    alert('Você NÃO pode jogar jokenpo')
+  } else {
+    const playerChoice = prompt('Digite 1-Pedra, 2-Papel ou 3-Tesoura?')
+    const computerChoice = Math.floor(Math.random() * 3) + 1
+
+    if (playerChoice == computerChoice) {
+      alert('Empate!!')
+    }
+
+    if (playerChoice == 1) {
+      if (computerChoice == 2) {
+        alert('Computador venceu, escolheu papel')
+      }
+
+      if (computerChoice == 3) {
+        alert('Você venceu, computador escolheu tesoura')
+      }
+    }
+
+    if (playerChoice == 2) {
+      if (computerChoice == 1) {
+        alert('Você venceu, computador escolheu pedra')
+      }
+
+      if (computerChoice == 3) {
+        alert('Computador venceu, escolheu tesoura')
+      }
+    }
+
+    if (playerChoice == 3) {
+      if (computerChoice == 1) {
+        alert('Computador venceu, computador escolheu pedra')
+      }
+
+      if (computerChoice == 2) {
+        alert('Você venceu, escolheu tesoura')
+      }
+    }
+  }
 }
