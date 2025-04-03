@@ -6,6 +6,12 @@
   font-family: Arial, sans-serif;
 }
 
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-block: 20px;
+}
+
 button {
   background-color: #FC4587;
   border: none;

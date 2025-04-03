@@ -5,8 +5,11 @@ const footer = document.querySelector('#footer')
 
 header.innerHTML = `
   <img src="https://i.postimg.cc/GpCxYmvc/title.png" alt="Logo">
-  <button id="aula-1">Aula 1</button>
-  <button id="aula-2">Aula 2</button> 
+  <div class="buttons">
+    <button id="aula-1">Aula 1</button>
+    <button id="aula-2">Aula 2</button>
+    <button id="aula-3">Aula 3</button>
+  </div>
 `
 
 main.innerHTML = `
@@ -27,17 +30,24 @@ header.querySelector('#aula-1').onclick = () => {
   main.querySelector('h2').innerText = 'Quem ganha, ganha em Wons!'
   main.querySelector('p').innerText = 'Que tal converter esse valor'
   main.querySelector('button').innerText = 'Bora converter!'
-  main.querySelector('button').onclick = () => handleConverter()
+  main.querySelector('button').onclick = () => handlePlayAula1()
 }
 
 header.querySelector('#aula-2').onclick = () => {
   main.querySelector('h2').innerText = 'Pra ganhar é preciso arriscar!'
   main.querySelector('p').innerText = 'PEDRA, PAPEL ou TESOURA?'
   main.querySelector('button').innerText = 'Bora jogar!'
-  main.querySelector('button').onclick = () => handlePlay()
+  main.querySelector('button').onclick = () => handlePlayAula2()
 }
 
-function handleConverter() {
+header.querySelector('#aula-3').onclick = () => {
+  main.querySelector('h2').innerText = 'Pra ganhar, é preciso coragem!'
+  main.querySelector('p').innerText = 'Até mesmo para pisar em um chão feito de vidro'
+  main.querySelector('button').innerText = 'Bora jogar!'
+  main.querySelector('button').onclick = () => handlePlayAula3()
+}
+
+function handlePlayAula1() {
   const won = 0.0040
 
   const promptValue = prompt('Digite um valor em Reais para converter em Wons')
@@ -49,7 +59,7 @@ function handleConverter() {
   alert('O valor em Reais é ' + realValue)
 }
 
-function handlePlay() {
+function handlePlayAula2() {
   const age = prompt("Quantos anos você tem?") 
 
   if (age < 18) {
@@ -91,5 +101,34 @@ function handlePlay() {
         alert('Você venceu, escolheu tesoura')
       }
     }
+  }
+}
+
+function handlePlayAula3() {
+  let round = 1
+  let win = false
+
+  while(round <= 3) {
+    const playerChoice = prompt(`Nível ${round}, escolha um vidro entre (1, 2, 3)?` )
+    const brokenFloor = Math.floor(Math.random() * 3) + 1
+   
+    if (['1', '2', '3'].includes(playerChoice)) {
+      if (playerChoice == brokenFloor) {
+        alert('Vidro quebrou! Acabou o jogo para você.')
+        return
+      } else {
+        alert(`Passou! Piso quebrado estava na ponte: ${brokenFloor}.`)
+  
+        win = true
+        
+        round = round + 1
+      }
+    } else {
+      alert('Escolha inválida')
+    }
+  }
+
+  if (win == true) {
+    alert('Parabéns você venceu!')    
   }
 }
