@@ -9,6 +9,7 @@ header.innerHTML = `
     <button id="aula-1">Aula 1</button>
     <button id="aula-2">Aula 2</button>
     <button id="aula-3">Aula 3</button>
+    <button id="aula-4">Aula 4</button>
   </div>
 `
 
@@ -45,6 +46,13 @@ header.querySelector('#aula-3').onclick = () => {
   main.querySelector('p').innerText = 'Até mesmo para pisar em um chão feito de vidro'
   main.querySelector('button').innerText = 'Bora jogar!'
   main.querySelector('button').onclick = () => handlePlayAula3()
+}
+
+header.querySelector('#aula-4').onclick = () => {
+  main.querySelector('h2').innerText = 'Força ou Queda'
+  main.querySelector('p').innerText = 'Escolha 3 jogadores para seu time:'
+  main.querySelector('button').innerText = 'Ver Resultado'
+  main.querySelector('button').onclick = () => handlePlayAula4()
 }
 
 function handlePlayAula1() {
@@ -105,30 +113,65 @@ function handlePlayAula2() {
 }
 
 function handlePlayAula3() {
-  let round = 1
-  let win = false
+  let won = true
 
-  while(round <= 3) {
+  for(let round = 1; round <= 3; round++) {
     const playerChoice = prompt(`Nível ${round}, escolha um vidro entre (1, 2, 3)?` )
     const brokenFloor = Math.floor(Math.random() * 3) + 1
    
     if (['1', '2', '3'].includes(playerChoice)) {
       if (playerChoice == brokenFloor) {
         alert('Vidro quebrou! Acabou o jogo para você.')
-        return
+        won = false
+        break
       } else {
         alert(`Passou! Piso quebrado estava na ponte: ${brokenFloor}.`)
-  
-        win = true
-        
-        round = round + 1
       }
     } else {
+      round--
       alert('Escolha inválida')
     }
   }
 
-  if (win == true) {
+  if (won == true) {
     alert('Parabéns você venceu!')    
+  }
+}
+
+function handlePlayAula4() {
+  const characters = []
+  const villains = []
+
+  let charactersForce = 0
+  let villainsForce = 0
+  
+  for(let i = 0; i < 3; i++) {
+    characters[i] = prompt(`Digite o nome do seu ${i + 1}º personagem`)
+    charactersForce += Math.floor(Math.random() * 10) + 1
+  }
+
+  for(let i = 0; i < 3; i++) {
+    const randomIndex = Math.floor(Math.random() * 6)
+    const possibleVillains = [
+      'Nazaré Tedesco',
+      'Odete Roitman',
+      'Flora',
+      'Carminha',
+      'Laura Prudente da Costa ',
+      'Bia Falcão',
+    ]
+
+    villains[i] = possibleVillains[randomIndex] 
+    villainsForce += Math.floor(Math.random() * 10) + 1
+  }
+
+  if (charactersForce > villainsForce) {
+    alert('Seu time é muito forte! Você ganhou a disputa de cabo de guerra! Sua força foi de: ' + charactersForce)
+  } else {
+    if (charactersForce < villainsForce) {
+      alert('Seu time é fraquinho. O computador ganhou o cabo de guerra com força de: ' + villainsForce)
+    } else {
+      alert('Os dois times tem a mesma força! Vocês empataram com a força de: ' + charactersForce)
+    }
   }
 }
