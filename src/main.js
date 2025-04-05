@@ -10,16 +10,7 @@ header.innerHTML = `
     <button id="aula-2">Aula 2</button>
     <button id="aula-3">Aula 3</button>
     <button id="aula-4">Aula 4</button>
-  </div>
-`
-
-main.innerHTML = `
-  <div class="container">
-    <div class="content">
-      <h2></h2>
-      <p></p>
-      <button></button>
-    </div>
+    <button id="aula-5">Aula 5</button>
   </div>
 `
 
@@ -28,31 +19,88 @@ footer.innerHTML = `
 `
 
 header.querySelector('#aula-1').onclick = () => {
-  main.querySelector('h2').innerText = 'Quem ganha, ganha em Wons!'
-  main.querySelector('p').innerText = 'Que tal converter esse valor'
-  main.querySelector('button').innerText = 'Bora converter!'
+  main.innerHTML = `
+    <div class="container">
+      <div class="content">
+        <h2>Quem ganha, ganha em Wons!</h2>
+        <p>Que tal converter esse valor</p>
+        <button>Bora converter!</button>
+      </div>
+    </div>
+  `
+
   main.querySelector('button').onclick = () => handlePlayAula1()
 }
 
 header.querySelector('#aula-2').onclick = () => {
-  main.querySelector('h2').innerText = 'Pra ganhar é preciso arriscar!'
-  main.querySelector('p').innerText = 'PEDRA, PAPEL ou TESOURA?'
-  main.querySelector('button').innerText = 'Bora jogar!'
+  main.innerHTML = `
+    <div class="container">
+      <div class="content">
+        <h2>Pra ganhar é preciso arriscar!!</h2>
+        <p>PEDRA, PAPEL ou TESOURA?</p>
+        <button>Bora jogar!</button>
+      </div>
+    </div>
+  `
   main.querySelector('button').onclick = () => handlePlayAula2()
 }
 
 header.querySelector('#aula-3').onclick = () => {
-  main.querySelector('h2').innerText = 'Pra ganhar, é preciso coragem!'
-  main.querySelector('p').innerText = 'Até mesmo para pisar em um chão feito de vidro'
-  main.querySelector('button').innerText = 'Bora jogar!'
+  main.innerHTML = `
+    <div class="container">
+      <div class="content">
+        <h2>Pra ganhar, é preciso coragem!</h2>
+        <p>Até mesmo para pisar em um chão feito de vidro</p>
+        <button>Bora jogar!</button>
+      </div>
+    </div>
+  `
+
   main.querySelector('button').onclick = () => handlePlayAula3()
 }
 
 header.querySelector('#aula-4').onclick = () => {
-  main.querySelector('h2').innerText = 'Força ou Queda'
-  main.querySelector('p').innerText = 'Escolha 3 jogadores para seu time:'
-  main.querySelector('button').innerText = 'Ver Resultado'
+  main.innerHTML = `
+    <div class="container">
+      <div class="content">
+        <h2>Força ou Queda</h2>
+        <p>Escolha 3 jogadores para seu time:</p>
+        <button>Ver Resultado</button>
+      </div>
+    </div>
+  `
+
   main.querySelector('button').onclick = () => handlePlayAula4()
+}
+
+header.querySelector('#aula-5').onclick = () => {
+  main.innerHTML = `
+    <div class="container">
+      <div class="content">
+        <button id="start">Começar</button>
+        <div class="titulo">
+          <h2>Perguntas Finais</h2>
+        </div>
+        
+        <body>
+          <div class="conteudo-jogo">
+            <section class="questionario">
+              <div class="conteudo">
+                <span class="progresso"></span>
+                <span class="pergunta"></span>
+                <div class="respostas"></div>
+              </div>
+
+              <div class="fim">
+                <span></span>
+              </div>
+            </section>
+          </div>
+        </body>
+      </div>
+    </div>
+  `
+  main.querySelector('#start').onclick = () => handlePlayAula5()
 }
 
 function handlePlayAula1() {
@@ -174,4 +222,76 @@ function handlePlayAula4() {
       alert('Os dois times tem a mesma força! Vocês empataram com a força de: ' + charactersForce)
     }
   }
+}
+
+function handlePlayAula5() {
+  const questions = [
+    { 
+      "question": "Qual o principal Pokémon do Ash?",
+      "answers": [
+        { "option": "Pikachu", "correct": true },
+        { "option": "Bulbassauro", "correct": false },
+        { "option": "Squirtle", "correct": false },
+      ]
+    },
+    { 
+      "question": "Qual é o nome da equipe de vilões mais famosa da série Pokémon?",
+      "answers": [
+        { "option": "Equipe Rocket", "correct": true },
+        { "option": "Equipe Aqua", "correct": false },
+        { "option": "Equipe Magma", "correct": false },
+      ]
+    }
+  ]
+
+  const questionElement = document.querySelector('.pergunta')
+  const answerElement = document.querySelector('.respostas')
+  const progressElement = document.querySelector('.progresso')
+  const finalText = document.querySelector('.fim span')
+  const content = document.querySelector('.conteudo')
+  const finalContent = document.querySelector('.fim')
+
+  let currentIndex = 0
+  let hits = 0
+
+  function loadQuestion() {
+    progressElement.innerHTML = `${currentIndex + 1}/${questions.length}`
+    const currentQuestion = questions[currentIndex]
+    questionElement.innerHTML = currentQuestion.question
+
+    answerElement.innerHTML = ''
+
+
+    for (let i = 0; i < currentQuestion.answers.length; i++) {
+      const answer = currentQuestion.answers[i]
+      const button = document.createElement('button')
+
+      button.classList.add('botao-resposta')
+      button.innerText = answer.option
+      button.onclick = function () {
+
+        if (answer.correct) {
+          hits++
+        }
+
+        currentIndex++
+
+        if (currentIndex < questions.length) {
+          loadQuestion()
+        } else {
+          endGame()
+        }
+      }
+
+      answerElement.appendChild(button)
+    }
+  }
+
+  function endGame() {
+    finalText.innerHTML = `Você acertou ${hits} de ${questions.length}`
+    content.style.display = 'none'
+    finalContent.style.display = 'flex'
+  }
+
+  loadQuestion()
 }
