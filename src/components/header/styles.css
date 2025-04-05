@@ -1,0 +1,5 @@
+header div {
+  display: flex;
+  justify-content: space-evenly;
+  margin-block: 20px;
+}
