@@ -2,7 +2,7 @@ import { createButton } from '../button';
 import logoPng from '../../assets/logo.png';
 import './styles.css';
 
-export function createHeader() {
+export function createHeader(showGame) {
   const header__element = document.createElement('header')
 
   const img__element = document.createElement('img')
@@ -16,6 +16,12 @@ export function createHeader() {
   const button_3__element = createButton({ text: 'Jogo 3' })
   const button_4__element = createButton({ text: 'Jogo 4' })
   const button_5__element = createButton({ text: 'Jogo 5' })
+
+  button_1__element.onclick = () => showGame(1)
+  button_2__element.onclick = () => showGame(2)
+  button_3__element.onclick = () => showGame(3)
+  button_4__element.onclick = () => showGame(4)
+  button_5__element.onclick = () => showGame(5)
 
   buttons__element.append(
     button_1__element,
