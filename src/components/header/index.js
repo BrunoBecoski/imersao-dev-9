@@ -4,6 +4,7 @@ import './styles.css';
 
 export function createHeader(showGame) {
   const header__element = document.createElement('header')
+  header__element.className = 'header'
 
   const img__element = document.createElement('img')
   img__element.src = logoPng
