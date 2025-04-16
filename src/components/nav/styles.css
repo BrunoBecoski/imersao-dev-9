@@ -1,0 +1,30 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 30vw;
+  height: 100vh;
+
+  margin-inline: 3rem;
+  padding: 1rem;
+  border-inline: 2px solid #ffa32f;
+
+  backdrop-filter: blur(5px) brightness(50%);
+}
+
+.nav h1 {
+  text-align: center;
+  color: #ffa32f;
+}
+
+.nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nav footer {
+  color: #ffa32f;
+  text-align: center;
+  padding: 10px;
+}

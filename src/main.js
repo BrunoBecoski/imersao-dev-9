@@ -1,5 +1,4 @@
-import { createHeader } from './components/header';
-import { createFooter } from './components/footer';
+import { createNav } from './components/nav';
 import { createGame1 } from './games/game-1';
 import { createGame2 } from './games/game-2';
 import { createGame3 } from './games/game-3';
@@ -9,12 +8,11 @@ import './style.css';
 
 const root_element = document.querySelector('#root')
 
-const header__element = createHeader(showGame)
-const footer__element = createFooter()
+const nav__element = createNav(showGame)
 
 const main__element = document.createElement('main')
 
-root_element.append(header__element, main__element, footer__element)
+root_element.append(nav__element, main__element)
 
 function showGame(game) {
   main__element.innerHTML = ''
@@ -42,9 +40,10 @@ function showGame(game) {
       break;
 
     default:
+      game__element = ''
       break;
     }
 
   main__element.appendChild(game__element)
-  root_element.append(header__element, main__element, footer__element)
+  root_element.append(nav__element, main__element)
 }
