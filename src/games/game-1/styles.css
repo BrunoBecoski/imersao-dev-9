@@ -1,0 +1,69 @@
+.game_1 {
+  padding: 1rem;
+}
+
+.game_1 .resources {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
+.game_1 .resources div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game_1 .resources div span {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.game_1 .market {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.game_1 .market img {
+  width: 50%;
+}
+
+.game_1 .exchange {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.game_1 .sell, 
+.game_1 .buy {
+  display: flex;
+  gap: 1rem;
+}
+
+.game_1 .exchange button {
+  background: radial-gradient(circle,rgba(130, 5, 19, 1) 0%, rgba(94, 0, 9, 1) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 6rem;
+  height: 6rem;
+
+  border: 2px solid #ffa32f;
+
+  padding: 10px 20px;
+  font-size: 1.2em;
+  color: #ffa32f;
+  cursor: pointer;
+  font-weight: bolder;
+  box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9);
+
+  transition: all .2s;
+}
+
+.game_1 .exchange button:hover {
+  filter: brightness(1.5);
+}

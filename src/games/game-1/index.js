@@ -1,71 +1,62 @@
-import { createButtonMarket } from './components/buttonMarket'
-
 import marketImg from '../../assets/market.png'
 import goldImg from '../../assets/gold.png'
 import woodImg from '../../assets/wood.png'
 import foodImg from '../../assets/food.png'
 import stoneImg from '../../assets/stone.png'
 
+import './styles.css'
+
+
 export function createGame1() {
   const section__element = document.createElement('section')
-  const img__element = document.createElement('img')
-  const img__element_gold = document.createElement('img')
-  const img__element_wood = document.createElement('img')
-  const img__element_food = document.createElement('img')
-  const img__element_stone = document.createElement('img')
+  const gold = 100
+  const wood = 100
+  const food = 100
+  const stone = 100
 
-  img__element.src = marketImg
-  img__element_gold.src = goldImg
-  img__element_wood.src = woodImg
-  img__element_food.src = foodImg
-  img__element_stone.src = stoneImg
-  
   section__element.innerHTML = `
-    <div class="container">
-      <div class="content">
-        <h2>Quem ganha, ganha em Wons!</h2>
-        <p>Que tal converter esse valor</p>
-        <button>Bora converter!</button>
+    <div class="game_1">
+      <div class="resources">
+        <div>
+          <img src=${goldImg} />
+          <span>${gold}</span>
+        </div>
+
+        <div>
+          <img src=${woodImg} />
+          <span>${wood}</span>
+        </div>
+
+        <div>
+          <img src=${foodImg} />
+          <span>${food}</span>
+        </div>
+
+        <div>
+          <img src=${stoneImg} />
+          <span>${stone}</span>
+        </div>
+      </div>
+
+      <div class="market">
+        <img src=${marketImg} />
+
+        <div class="exchange">
+          <div class="sell">
+            <button>100 <img src=${woodImg} /> Vender</button>
+            <button>100 <img src=${foodImg} /> Vender</button>
+            <button>100 <img src=${stoneImg} /> Vender</button>
+          </div>
+
+          <div class="buy">
+            <button>100 <img src=${woodImg} /> Comprar</button>
+            <button>100 <img src=${foodImg} /> Comprar</button>
+            <button>100 <img src=${stoneImg} /> Comprar </button>
+          </div>
+        </div>
       </div>
     </div>
   `
-  const button_gold__element = createButtonMarket({
-    price: '100',
-    img__element: img__element_gold,
-    handleClick: () => console.log('vender ouro'),
-    title: 'Vender'
-  })
-
-  const button_wood__element = createButtonMarket({
-    price: '100',
-    img__element: img__element_wood,
-    handleClick: () => console.log('vender madeira'),
-    title: 'Vender'
-  })
-
-  const button_food__element = createButtonMarket({
-    price: '100',
-    img__element: img__element_food,
-    handleClick: () => console.log('vender comida'),
-    title: 'Vender'
-  })
-
-  const button_stone__element = createButtonMarket({
-    price: '100',
-    img__element: img__element_stone,
-    handleClick: () => console.log('vender ouro'),
-    title: 'Vender'
-  })
-
-  section__element.append(
-    img__element,
-    button_gold__element,
-    button_wood__element,
-    button_food__element,
-    button_stone__element,
-  )
-
-  section__element.querySelector('button').onclick = () => handlePlay()
 
   return section__element
 }
