@@ -6,35 +6,35 @@ import stoneImg from '../../assets/stone.png'
 
 import './styles.css'
 
+let gold = 100
+let wood = 100
+let food = 100
+let stone = 100
 
 export function createGame1() {
   const section__element = document.createElement('section')
-  const gold = 100
-  const wood = 100
-  const food = 100
-  const stone = 100
 
   section__element.innerHTML = `
-    <div class="game_1">
+    <div id="game_1">
       <div class="resources">
         <div>
           <img src=${goldImg} />
-          <span>${gold}</span>
+          <span id="gold">${gold}</span>
         </div>
 
         <div>
           <img src=${woodImg} />
-          <span>${wood}</span>
+          <span id="wood">${wood}</span>
         </div>
 
         <div>
           <img src=${foodImg} />
-          <span>${food}</span>
+          <span id="food">${food}</span>
         </div>
 
         <div>
           <img src=${stoneImg} />
-          <span>${stone}</span>
+          <span id="stone">${stone}</span>
         </div>
       </div>
 
@@ -43,22 +43,87 @@ export function createGame1() {
 
         <div class="exchange">
           <div class="sell">
-            <button>100 <img src=${woodImg} /> Vender</button>
-            <button>100 <img src=${foodImg} /> Vender</button>
-            <button>100 <img src=${stoneImg} /> Vender</button>
+            <button id="wood" title="Madeira">100 <img src=${woodImg}  /> Vender</button>
+            <button id="food" title="Comida">100 <img src=${foodImg} /> Vender</button>
+            <button id="stone" title="Pedra">100 <img src=${stoneImg} /> Vender</button>
           </div>
 
           <div class="buy">
-            <button>100 <img src=${woodImg} /> Comprar</button>
-            <button>100 <img src=${foodImg} /> Comprar</button>
-            <button>100 <img src=${stoneImg} /> Comprar </button>
+            <button id="wood" title="Madeira">100 <img src=${woodImg} /> Comprar</button>
+            <button id="food" title="Comida">100 <img src=${foodImg} /> Comprar</button>
+            <button id="stone" title="Pedra">100 <img src=${stoneImg} /> Comprar </button>
           </div>
         </div>
       </div>
     </div>
   `
+  section__element.querySelector('.sell #wood').addEventListener('click', () => handleSell('wood'))
+  section__element.querySelector('.sell #food').addEventListener('click', () => handleSell('food'))
+  section__element.querySelector('.sell #stone').addEventListener('click', () => handleSell('stone'))
+
+  section__element.querySelector('.buy #wood').addEventListener('click', () => handleBuy('wood'))
+  section__element.querySelector('.buy #food').addEventListener('click', () => handleBuy('food'))
+  section__element.querySelector('.buy #stone').addEventListener('click', () => handleBuy('stone'))
 
   return section__element
+}
+
+function handleSell(resource) {
+  const section__element = document.getElementById('game_1')
+
+  switch (resource) {
+    case 'wood':
+      wood = wood - 100
+      gold = gold + 100
+      break;
+
+    case 'food':
+      food = food - 100
+      gold = gold + 100
+      break;
+
+    case 'stone':
+      stone = stone - 100
+      gold = gold + 100
+      break;
+  
+    default:
+      break;
+  }
+
+  section__element.querySelector('.resources #gold').innerText = gold
+  section__element.querySelector('.resources #wood').innerText = wood
+  section__element.querySelector('.resources #food').innerText = food
+  section__element.querySelector('.resources #stone').innerText = stone
+}
+
+function handleBuy(resource) {
+  const section__element = document.getElementById('game_1')
+
+  switch (resource) {
+    case 'wood':
+      wood = wood + 100
+      gold = gold - 100
+      break;
+
+    case 'food':
+      food = food + 100
+      gold = gold - 100
+      break;
+
+    case 'stone':
+      stone = stone + 100
+      gold = gold - 100
+      break;
+  
+    default:
+      break;
+  }
+
+  section__element.querySelector('.resources #gold').innerText = gold
+  section__element.querySelector('.resources #wood').innerText = wood
+  section__element.querySelector('.resources #food').innerText = food
+  section__element.querySelector('.resources #stone').innerText = stone
 }
 
 function handlePlay() {

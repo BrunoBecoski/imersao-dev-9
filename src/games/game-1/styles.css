@@ -1,49 +1,49 @@
-.game_1 {
+#game_1 {
   padding: 1rem;
 }
 
-.game_1 .resources {
+#game_1 .resources {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
 
 
-.game_1 .resources div {
+#game_1 .resources div {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.game_1 .resources div span {
+#game_1 .resources div span {
   color: #fff;
   font-size: 2rem;
   font-weight: bolder;
 }
 
-.game_1 .market {
+#game_1 .market {
   display: flex;
   align-items: end;
   justify-content: space-between;
 }
 
-.game_1 .market img {
+#game_1 .market img {
   width: 50%;
 }
 
-.game_1 .exchange {
+#game_1 .exchange {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.game_1 .sell, 
-.game_1 .buy {
+#game_1 .sell, 
+#game_1 .buy {
   display: flex;
   gap: 1rem;
 }
 
-.game_1 .exchange button {
+#game_1 .exchange button {
   background: radial-gradient(circle,rgba(130, 5, 19, 1) 0%, rgba(94, 0, 9, 1) 100%);
   display: flex;
   flex-direction: column;
@@ -64,6 +64,6 @@
   transition: all .2s;
 }
 
-.game_1 .exchange button:hover {
+#game_1 .exchange button:hover {
   filter: brightness(1.5);
 }
