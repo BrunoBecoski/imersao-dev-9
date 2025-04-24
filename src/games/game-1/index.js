@@ -6,10 +6,14 @@ import stoneImg from '../../assets/stone.png'
 
 import './styles.css'
 
-let gold = 100
+let gold = 1000
 let wood = 100
 let food = 100
 let stone = 100
+
+let wood_exchange = 100
+let food_exchange = 115
+let stone_exchange = 130
 
 export function createGame1() {
   const section__element = document.createElement('section')
@@ -43,15 +47,15 @@ export function createGame1() {
 
         <div class="exchange">
           <div class="sell">
-            <button id="wood" title="Madeira">100 <img src=${woodImg}  /> Vender</button>
-            <button id="food" title="Comida">100 <img src=${foodImg} /> Vender</button>
-            <button id="stone" title="Pedra">100 <img src=${stoneImg} /> Vender</button>
+            <button id="wood" title="Madeira"><span>${wood_exchange}</span> <img src=${woodImg}  /> Vender</button>
+            <button id="food" title="Comida"><span>${food_exchange}</span> <img src=${foodImg} /> Vender</button>
+            <button id="stone" title="Pedra"><span>${stone_exchange}</span> <img src=${stoneImg} /> Vender</button>
           </div>
 
           <div class="buy">
-            <button id="wood" title="Madeira">100 <img src=${woodImg} /> Comprar</button>
-            <button id="food" title="Comida">100 <img src=${foodImg} /> Comprar</button>
-            <button id="stone" title="Pedra">100 <img src=${stoneImg} /> Comprar </button>
+            <button id="wood" title="Madeira"><span>${wood_exchange}</span> <img src=${woodImg} /> Comprar</button>
+            <button id="food" title="Comida"><span>${food_exchange}</span> <img src=${foodImg} /> Comprar</button>
+            <button id="stone" title="Pedra"><span>${stone_exchange}</span> <img src=${stoneImg} /> Comprar </button>
           </div>
         </div>
       </div>
@@ -73,18 +77,23 @@ function handleSell(resource) {
 
   switch (resource) {
     case 'wood':
-      wood = wood - 100
+      wood = wood - wood_exchange
       gold = gold + 100
+      wood_exchange = wood_exchange - 2
+
       break;
 
     case 'food':
-      food = food - 100
+      food = food - food_exchange
       gold = gold + 100
+      food_exchange = food_exchange - 2
+
       break;
 
     case 'stone':
-      stone = stone - 100
+      stone = stone - stone_exchange
       gold = gold + 100
+      stone_exchange = stone_exchange - 2
       break;
   
     default:
@@ -95,6 +104,14 @@ function handleSell(resource) {
   section__element.querySelector('.resources #wood').innerText = wood
   section__element.querySelector('.resources #food').innerText = food
   section__element.querySelector('.resources #stone').innerText = stone
+
+  section__element.querySelector('.exchange .sell #wood span').innerText = wood_exchange
+  section__element.querySelector('.exchange .sell #food span').innerText = food_exchange
+  section__element.querySelector('.exchange .sell #stone span').innerText = stone_exchange
+
+  section__element.querySelector('.exchange .buy #wood span').innerText = wood_exchange
+  section__element.querySelector('.exchange .buy #food span').innerText = food_exchange
+  section__element.querySelector('.exchange .buy #stone span').innerText = stone_exchange
 }
 
 function handleBuy(resource) {
@@ -102,18 +119,21 @@ function handleBuy(resource) {
 
   switch (resource) {
     case 'wood':
-      wood = wood + 100
+      wood = wood + wood_exchange
       gold = gold - 100
+      wood_exchange = wood_exchange + 2
       break;
 
     case 'food':
-      food = food + 100
+      food = food + food_exchange
       gold = gold - 100
+      food_exchange = food_exchange + 2
       break;
 
     case 'stone':
-      stone = stone + 100
+      stone = stone + stone_exchange
       gold = gold - 100
+      stone_exchange = stone_exchange + 2
       break;
   
     default:
@@ -124,6 +144,14 @@ function handleBuy(resource) {
   section__element.querySelector('.resources #wood').innerText = wood
   section__element.querySelector('.resources #food').innerText = food
   section__element.querySelector('.resources #stone').innerText = stone
+
+  section__element.querySelector('.exchange .sell #wood span').innerText = wood_exchange
+  section__element.querySelector('.exchange .sell #food span').innerText = food_exchange
+  section__element.querySelector('.exchange .sell #stone span').innerText = stone_exchange
+
+  section__element.querySelector('.exchange .buy #wood span').innerText = wood_exchange
+  section__element.querySelector('.exchange .buy #food span').innerText = food_exchange
+  section__element.querySelector('.exchange .buy #stone span').innerText = stone_exchange
 }
 
 function handlePlay() {
