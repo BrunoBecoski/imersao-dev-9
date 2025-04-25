@@ -72,46 +72,76 @@ export function createGame1() {
   return section__element
 }
 
-function handleSell(resource) {
+function updateExchange(resource) {
   const section__element = document.getElementById('game_1')
 
+  switch (resource) {
+    case 'wood':
+      section__element.querySelector('.exchange .sell #wood span').innerText = wood_exchange
+      section__element.querySelector('.exchange .buy #wood span').innerText = wood_exchange
+      break;
+  
+    case 'food':
+      section__element.querySelector('.exchange .sell #food span').innerText = food_exchange
+      section__element.querySelector('.exchange .buy #food span').innerText = food_exchange
+      break;
+
+    case 'stone':
+      section__element.querySelector('.exchange .sell #stone span').innerText = stone_exchange
+      section__element.querySelector('.exchange .buy #stone span').innerText = stone_exchange
+      break;
+  }
+}
+
+function updateResource(resource) {
+  const section__element = document.getElementById('game_1')
+
+  section__element.querySelector('.resources #gold').innerText = gold
+
+  switch (resource) {
+    case 'wood':
+      section__element.querySelector('.resources #wood').innerText = wood
+      break;
+  
+    case 'food':
+      section__element.querySelector('.resources #food').innerText = food
+      break;
+
+    case 'stone':
+      section__element.querySelector('.resources #stone').innerText = stone
+      break;
+  } 
+}
+
+function handleSell(resource) {
   switch (resource) {
     case 'wood':
       wood = wood - wood_exchange
       gold = gold + 100
       wood_exchange = wood_exchange - 2
-
+      updateResource('wood')
+      updateExchange('wood')
       break;
 
     case 'food':
       food = food - food_exchange
       gold = gold + 100
       food_exchange = food_exchange - 2
-
+      updateResource('food')
+      updateExchange('food')
       break;
 
     case 'stone':
       stone = stone - stone_exchange
       gold = gold + 100
       stone_exchange = stone_exchange - 2
+      updateResource('food')
+      updateExchange('food')
       break;
   
     default:
       break;
   }
-
-  section__element.querySelector('.resources #gold').innerText = gold
-  section__element.querySelector('.resources #wood').innerText = wood
-  section__element.querySelector('.resources #food').innerText = food
-  section__element.querySelector('.resources #stone').innerText = stone
-
-  section__element.querySelector('.exchange .sell #wood span').innerText = wood_exchange
-  section__element.querySelector('.exchange .sell #food span').innerText = food_exchange
-  section__element.querySelector('.exchange .sell #stone span').innerText = stone_exchange
-
-  section__element.querySelector('.exchange .buy #wood span').innerText = wood_exchange
-  section__element.querySelector('.exchange .buy #food span').innerText = food_exchange
-  section__element.querySelector('.exchange .buy #stone span').innerText = stone_exchange
 }
 
 function handleBuy(resource) {
@@ -122,36 +152,29 @@ function handleBuy(resource) {
       wood = wood + wood_exchange
       gold = gold - 100
       wood_exchange = wood_exchange + 2
+      updateResource('wood')
+      updateExchange('wood')
       break;
 
     case 'food':
       food = food + food_exchange
       gold = gold - 100
       food_exchange = food_exchange + 2
+      updateResource('food')
+      updateExchange('food')
       break;
 
     case 'stone':
       stone = stone + stone_exchange
       gold = gold - 100
       stone_exchange = stone_exchange + 2
+      updateResource('food')
+      updateExchange('food')
       break;
   
     default:
       break;
   }
-
-  section__element.querySelector('.resources #gold').innerText = gold
-  section__element.querySelector('.resources #wood').innerText = wood
-  section__element.querySelector('.resources #food').innerText = food
-  section__element.querySelector('.resources #stone').innerText = stone
-
-  section__element.querySelector('.exchange .sell #wood span').innerText = wood_exchange
-  section__element.querySelector('.exchange .sell #food span').innerText = food_exchange
-  section__element.querySelector('.exchange .sell #stone span').innerText = stone_exchange
-
-  section__element.querySelector('.exchange .buy #wood span').innerText = wood_exchange
-  section__element.querySelector('.exchange .buy #food span').innerText = food_exchange
-  section__element.querySelector('.exchange .buy #stone span').innerText = stone_exchange
 }
 
 function handlePlay() {
