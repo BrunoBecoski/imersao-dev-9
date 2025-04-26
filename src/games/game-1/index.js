@@ -6,7 +6,6 @@ import stoneImg from '../../assets/stone.png'
 
 import './styles.css'
 
-let gold = 1000
 let wood = 100
 let food = 100
 let stone = 100
@@ -14,6 +13,38 @@ let stone = 100
 let wood_exchange = 100
 let food_exchange = 115
 let stone_exchange = 130
+
+function createGold() {
+  let value = 1000
+
+  function amount() {
+    return value
+  }
+
+  function increase() {
+    value = value + 100
+
+    render()
+  }
+
+  function decrease() {
+    value = value - 100
+
+    render()
+  }
+
+  function render() {
+    document.querySelector('#game_1 .resources #gold').innerText = value
+  }
+
+  return {
+    amount,
+    increase,
+    decrease,
+  }
+}
+
+const gold = createGold()
 
 export function createGame1() {
   const section__element = document.createElement('section')
@@ -23,7 +54,7 @@ export function createGame1() {
       <div class="resources">
         <div>
           <img src=${goldImg} />
-          <span id="gold">${gold}</span>
+          <span id="gold">${gold.amount()}</span>
         </div>
 
         <div>
@@ -96,8 +127,6 @@ function updateExchange(resource) {
 function updateResource(resource) {
   const section__element = document.getElementById('game_1')
 
-  section__element.querySelector('.resources #gold').innerText = gold
-
   switch (resource) {
     case 'wood':
       section__element.querySelector('.resources #wood').innerText = wood
@@ -117,7 +146,7 @@ function handleSell(resource) {
   switch (resource) {
     case 'wood':
       wood = wood - wood_exchange
-      gold = gold + 100
+      gold.increase()
       wood_exchange = wood_exchange - 2
       updateResource('wood')
       updateExchange('wood')
@@ -125,7 +154,7 @@ function handleSell(resource) {
 
     case 'food':
       food = food - food_exchange
-      gold = gold + 100
+      gold.increase()
       food_exchange = food_exchange - 2
       updateResource('food')
       updateExchange('food')
@@ -133,10 +162,10 @@ function handleSell(resource) {
 
     case 'stone':
       stone = stone - stone_exchange
-      gold = gold + 100
+      gold.increase()
       stone_exchange = stone_exchange - 2
-      updateResource('food')
-      updateExchange('food')
+      updateResource('stone')
+      updateExchange('stone')
       break;
   
     default:
@@ -145,12 +174,10 @@ function handleSell(resource) {
 }
 
 function handleBuy(resource) {
-  const section__element = document.getElementById('game_1')
-
   switch (resource) {
     case 'wood':
       wood = wood + wood_exchange
-      gold = gold - 100
+      gold.decrease()
       wood_exchange = wood_exchange + 2
       updateResource('wood')
       updateExchange('wood')
@@ -158,7 +185,7 @@ function handleBuy(resource) {
 
     case 'food':
       food = food + food_exchange
-      gold = gold - 100
+      gold.decrease()
       food_exchange = food_exchange + 2
       updateResource('food')
       updateExchange('food')
@@ -166,10 +193,10 @@ function handleBuy(resource) {
 
     case 'stone':
       stone = stone + stone_exchange
-      gold = gold - 100
+      gold.decrease()
       stone_exchange = stone_exchange + 2
-      updateResource('food')
-      updateExchange('food')
+      updateResource('stone')
+      updateExchange('stone')
       break;
   
     default:
