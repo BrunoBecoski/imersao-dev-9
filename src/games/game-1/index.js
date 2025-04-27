@@ -9,23 +9,41 @@ import './styles.css'
 function createGold() {
   let quantity = 1500
 
+  function reset() {
+    quantity = 1500
+  }
+
   function increase() {
     quantity = quantity + 100
-    render()
+    render('increase')
   }
 
   function decrease() {
     quantity = quantity - 100
-    render()
+    render('decrease')
   }
 
-  function render() {
-    document.getElementById('gold_resource').innerText = quantity
+  function render(type) {
+    const div__element = document.getElementById('animation-gold')
+
+    const span__element = document.createElement('span')
+    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
+    span__element.innerText = type === 'increase' ? '+ 100' : '- 100'
+    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+    div__element.appendChild(span__element)
+
+    document.getElementById('gold_quantity').innerText = quantity
+    
+    setTimeout(() => {
+      div__element.removeChild(span__element)
+    }, 1000);
   }
 
   return {
+    reset,
     quantity: () => quantity,
-    increase, 
+    increase,
     decrease,
   }
 }
@@ -34,12 +52,17 @@ function createWood() {
   let quantity = 500
   let price = 100
 
+  function reset() {
+    quantity = 500
+    price = 100
+  }
+
   function increase() {
     quantity = quantity + price
     if (price < 220) {
       price = price + 5
     }
-    render()
+    render('increase')
   }
 
   function decrease() {
@@ -48,16 +71,30 @@ function createWood() {
       price = price - 5
     }
 
-    render()
+    render('decrease')
   }
 
-  function render() {
-    document.getElementById('wood_resource').innerText = quantity
+  function render(type) {
+    const div__element = document.getElementById('animation-wood')
+
+    const span__element = document.createElement('span')
+    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
+    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
+    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+    div__element.appendChild(span__element)
+
+    document.getElementById('wood_quantity').innerText = quantity
     document.getElementById('buy_wood_price').innerText = price
     document.getElementById('sell_wood_price').innerText = price
+    
+    setTimeout(() => {
+      div__element.removeChild(span__element)
+    }, 1000);
   }
 
   return {
+    reset,
     quantity: () => quantity,
     price: () => price,
     increase,
@@ -69,12 +106,17 @@ function createFood() {
   let quantity = 500
   let price = 115
 
+  function reset() {
+    quantity = 500
+    price = 115
+  }
+
   function increase() {
     quantity = quantity + price
     if (price < 220) {
       price = price + 5
     }
-    render()
+    render('increase')
   }
 
   function decrease() {
@@ -82,16 +124,30 @@ function createFood() {
     if (price > 20) {
       price = price - 5
     }
-    render()
+    render('decrease')
   }
 
-  function render() {
-    document.getElementById('food_resource').innerText = quantity
+  function render(type) {
+    const div__element = document.getElementById('animation-food')
+
+    const span__element = document.createElement('span')
+    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
+    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
+    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+    div__element.appendChild(span__element)
+
+    document.getElementById('food_quantity').innerText = quantity
     document.getElementById('buy_food_price').innerText = price
     document.getElementById('sell_food_price').innerText = price
+    
+    setTimeout(() => {
+      div__element.removeChild(span__element)
+    }, 1000);
   }
 
   return {
+    reset,
     quantity: () => quantity,
     price: () => price,
     increase,
@@ -103,12 +159,17 @@ function createStone() {
   let quantity = 500
   let price = 130
 
+  function reset() {
+    quantity = 500
+    price = 130
+  }
+
   function increase() {
     quantity = quantity + price
     if (price < 220) {
       price = price + 5
     }
-    render()
+    render('increase')
   }
 
   function decrease() {
@@ -116,16 +177,30 @@ function createStone() {
     if (price > 20) {
       price = price - 5
     }
-    render()
+    render('decrease')
   }
 
-  function render() {
-    document.getElementById('stone_resource').innerText = quantity
+  function render(type) {
+    const div__element = document.getElementById('animation-stone')
+
+    const span__element = document.createElement('span')
+    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
+    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
+    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+    div__element.appendChild(span__element)
+
+    document.getElementById('stone_quantity').innerText = quantity
     document.getElementById('buy_stone_price').innerText = price
     document.getElementById('sell_stone_price').innerText = price
+
+    setTimeout(() => {
+      div__element.removeChild(span__element)
+    }, 1000);
   }
 
   return {
+    reset,
     quantity: () => quantity,
     price: () => price,
     increase,
@@ -139,15 +214,36 @@ const food = createFood()
 const stone = createStone()
 
 export function createGame1() {
+  gold.reset()
+  wood.reset()
+  food.reset()
+  stone.reset()
+
   const section__element = document.createElement('section')
 
   section__element.innerHTML = `
     <div id="game_1">
       <div class="resources">
-        <div><img src=${goldImg} /><span id="gold_resource">${gold.quantity()}</span></div>
-        <div><img src=${woodImg} /><span id="wood_resource">${wood.quantity()}</span></div>
-        <div><img src=${foodImg} /><span id="food_resource">${food.quantity()}</span></div>
-        <div><img src=${stoneImg} /><span id="stone_resource">${stone.quantity()}</span></div>
+        <div>
+          <div id="animation-gold"></div>
+          <img src=${goldImg} />
+          <span id="gold_quantity">${gold.quantity()}</span>
+        </div>
+        <div>
+          <div id="animation-wood"></div>
+          <img src=${woodImg} />
+          <span id="wood_quantity">${wood.quantity()}</span>
+        </div>
+        <div>
+          <div id="animation-food"></div>
+          <img src=${foodImg} />
+          <span id="food_quantity">${food.quantity()}</span>
+        </div>
+        <div>
+          <div id="animation-stone"></div>
+          <img src=${stoneImg} />
+          <span id="stone_quantity">${stone.quantity()}</span>
+        </div>
       </div>
 
       <div class="market">

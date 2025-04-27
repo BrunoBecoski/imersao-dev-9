@@ -8,14 +8,54 @@
   justify-content: space-evenly;
 }
 
+@keyframes increase {
+  from { transform: translateY(14px) }
+  to { transform: translateY(-14px) }
+}
 
-#game_1 .resources div {
+@keyframes decrease {
+  from { transform: translateY(14px) }
+  to { transform: translateY(42px) }
+}
+
+#animation-gold,
+#animation-wood,
+#animation-food,
+#animation-stone {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.animation-increase {
+  right: 0;
+  position: absolute;
+  opacity: .8;
+
+  animation-duration: 1s;
+  animation-name: increase;
+}
+
+.animation-decrease {
+  right: 0;
+  position: absolute;
+  opacity: .8;
+
+  animation-duration: 1s;
+  animation-name: decrease;
+}
+
+#game_1 .resources > div {
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 
-#game_1 .resources div span {
+#game_1 .resources > div span {
   color: #fff;
   font-size: 2rem;
   font-weight: bolder;
