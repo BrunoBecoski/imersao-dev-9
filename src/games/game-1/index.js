@@ -266,41 +266,65 @@ export function createGame1() {
     </div>
   ` 
 
-  section__element.querySelector('#sell_wood').addEventListener('click', () => { 
+  section__element.querySelector('#sell_wood').addEventListener('click', (event) => { 
     if (wood.quantity() >= wood.price()) {
       wood.decrease()
       gold.increase()
     }
+
+    if (wood.quantity() <= wood.price()) {
+      event.currentTarget.disabled = true;
+    }
   })
-  section__element.querySelector('#sell_food').addEventListener('click', () => { 
+  section__element.querySelector('#sell_food').addEventListener('click', (event) => { 
     if (food.quantity() >= food.price()) {
       food.decrease() 
       gold.increase()
     }  
+
+    if (food.quantity() <= food.price()) {
+      event.currentTarget.disabled = true
+    }
   })
-  section__element.querySelector('#sell_stone').addEventListener('click', () => { 
+  section__element.querySelector('#sell_stone').addEventListener('click', (event) => { 
     if (stone.quantity() >= stone.price()) {
       stone.decrease()
       gold.increase()
     } 
+
+    if (stone.quantity() <= stone.price()) {
+      event.currentTarget.disabled = true
+    }
    })
 
-  section__element.querySelector('#buy_wood').addEventListener('click', () => { 
+  section__element.querySelector('#buy_wood').addEventListener('click', (event) => { 
     if (gold.quantity() >= 100) {
       wood.increase()
       gold.decrease()
     }
+
+    if (gold.quantity() <= 100) {
+      event.currentTarget.disabled = true
+    }
   })
-  section__element.querySelector('#buy_food').addEventListener('click', () => { 
+  section__element.querySelector('#buy_food').addEventListener('click', (event) => { 
     if (gold.quantity() >= 100) {
       food.increase()
       gold.decrease()
     }
+
+    if (gold.quantity() <= 100) {
+      event.currentTarget.disabled = true
+    }
   })
-  section__element.querySelector('#buy_stone').addEventListener('click', () => {
+  section__element.querySelector('#buy_stone').addEventListener('click', (event) => {
     if (gold.quantity() >= 100) {
       stone.increase()
       gold.decrease()
+    }
+
+    if (gold.quantity() <= 100) {
+      event.currentTarget.disabled = true
     }
   })
 

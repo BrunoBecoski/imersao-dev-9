@@ -23,6 +23,7 @@
 #animation-food,
 #animation-stone {
   position: absolute;
+  z-index: -1;
 
   top: 0;
   left: 0;
@@ -104,6 +105,11 @@
   transition: all .2s;
 }
 
-#game_1 .exchange button:hover {
+#game_1 .exchange button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+#game_1 .exchange button:not(:disabled):hover {
   filter: brightness(1.5);
 }
