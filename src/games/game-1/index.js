@@ -8,6 +8,7 @@ import './styles.css'
 
 function createGold() {
   let quantity = 1500
+  let price = 100
 
   function reset() {
     quantity = 1500
@@ -15,34 +16,28 @@ function createGold() {
 
   function increase() {
     quantity = quantity + 100
-    render('increase')
+    renderResource({
+      name: 'gold',
+      type: 'increase',
+      quantity,
+      price,
+    })
   }
 
   function decrease() {
     quantity = quantity - 100
-    render('decrease')
-  }
-
-  function render(type) {
-    const div__element = document.getElementById('animation-gold')
-
-    const span__element = document.createElement('span')
-    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
-    span__element.innerText = type === 'increase' ? '+ 100' : '- 100'
-    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
-
-    div__element.appendChild(span__element)
-
-    document.getElementById('gold_quantity').innerText = quantity
-    
-    setTimeout(() => {
-      div__element.removeChild(span__element)
-    }, 1000);
+    renderResource({
+      name: 'gold',
+      type: 'decrease',
+      quantity,
+      price,
+    })
   }
 
   return {
     reset,
     quantity: () => quantity,
+    price: () => price,
     increase,
     decrease,
   }
@@ -59,38 +54,31 @@ function createWood() {
 
   function increase() {
     quantity = quantity + price
+
     if (price < 220) {
       price = price + 5
     }
-    render('increase')
+    renderResource({
+      name: 'wood',
+      type: 'increase',
+      quantity,
+      price,
+    })
   }
 
   function decrease() {
     quantity = quantity - price
+
     if (price > 20) {
       price = price - 5
     }
 
-    render('decrease')
-  }
-
-  function render(type) {
-    const div__element = document.getElementById('animation-wood')
-
-    const span__element = document.createElement('span')
-    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
-    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
-    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
-
-    div__element.appendChild(span__element)
-
-    document.getElementById('wood_quantity').innerText = quantity
-    document.getElementById('buy_wood_price').innerText = price
-    document.getElementById('sell_wood_price').innerText = price
-    
-    setTimeout(() => {
-      div__element.removeChild(span__element)
-    }, 1000);
+    renderResource({
+      name: 'wood',
+      type: 'decrease',
+      quantity,
+      price,
+    })
   }
 
   return {
@@ -113,37 +101,32 @@ function createFood() {
 
   function increase() {
     quantity = quantity + price
+
     if (price < 220) {
       price = price + 5
     }
-    render('increase')
+    
+    renderResource({
+      name: 'food',
+      type: 'increase',
+      quantity,
+      price,
+    })
   }
 
   function decrease() {
     quantity = quantity - price
+
     if (price > 20) {
       price = price - 5
     }
-    render('decrease')
-  }
 
-  function render(type) {
-    const div__element = document.getElementById('animation-food')
-
-    const span__element = document.createElement('span')
-    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
-    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
-    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
-
-    div__element.appendChild(span__element)
-
-    document.getElementById('food_quantity').innerText = quantity
-    document.getElementById('buy_food_price').innerText = price
-    document.getElementById('sell_food_price').innerText = price
-    
-    setTimeout(() => {
-      div__element.removeChild(span__element)
-    }, 1000);
+    renderResource({
+      name: 'food',
+      type: 'decrease',
+      quantity,
+      price,
+    })
   }
 
   return {
@@ -166,37 +149,32 @@ function createStone() {
 
   function increase() {
     quantity = quantity + price
+
     if (price < 220) {
       price = price + 5
     }
-    render('increase')
+
+    renderResource({
+      name: 'stone',
+      type: 'increase',
+      quantity,
+      price,
+    })
   }
 
   function decrease() {
     quantity = quantity - price
+
     if (price > 20) {
       price = price - 5
     }
-    render('decrease')
-  }
 
-  function render(type) {
-    const div__element = document.getElementById('animation-stone')
-
-    const span__element = document.createElement('span')
-    span__element.className = type === 'increase' ? 'animation-increase' : 'animation-decrease'
-    span__element.innerText = type === 'increase' ?  `+ ${price}` : `- ${price}`
-    span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
-
-    div__element.appendChild(span__element)
-
-    document.getElementById('stone_quantity').innerText = quantity
-    document.getElementById('buy_stone_price').innerText = price
-    document.getElementById('sell_stone_price').innerText = price
-
-    setTimeout(() => {
-      div__element.removeChild(span__element)
-    }, 1000);
+    renderResource({
+      name: 'stone',
+      type: 'decrease',
+      quantity,
+      price,
+    })
   }
 
   return {
@@ -206,6 +184,29 @@ function createStone() {
     increase,
     decrease,
   }
+}
+
+function renderResource(resource)  {
+  const { name, type, quantity, price } = resource
+
+  const div__element = document.getElementById(`animation-${name}`)
+  const span__element = document.createElement('span')
+
+  span__element.className = `animation-${type}`
+  span__element.innerText = (type === 'increase' ?  '+' : '-') + price
+  span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+  div__element.appendChild(span__element)
+  
+  document.getElementById(`${name}_quantity`).innerText = quantity
+  if (name != 'gold') {
+    document.getElementById(`buy_${name}_price`).innerText = price
+    document.getElementById(`sell_${name}_price`).innerText = price
+  }
+
+  setTimeout(() => {
+    div__element.removeChild(span__element)
+  }, 1000);
 }
 
 const gold = createGold()
@@ -266,69 +267,67 @@ export function createGame1() {
     </div>
   ` 
 
-  section__element.querySelector('#sell_wood').addEventListener('click', (event) => { 
-    if (wood.quantity() >= wood.price()) {
-      wood.decrease()
-      gold.increase()
-    }
+  section__element.querySelector('#sell_wood').addEventListener('click', () => handleSell('wood'))
+  section__element.querySelector('#sell_food').addEventListener('click', () => handleSell('food'))
+  section__element.querySelector('#sell_stone').addEventListener('click', () => handleSell('stone'))
 
-    if (wood.quantity() <= wood.price()) {
-      event.currentTarget.disabled = true;
-    }
-  })
-  section__element.querySelector('#sell_food').addEventListener('click', (event) => { 
-    if (food.quantity() >= food.price()) {
-      food.decrease() 
-      gold.increase()
-    }  
-
-    if (food.quantity() <= food.price()) {
-      event.currentTarget.disabled = true
-    }
-  })
-  section__element.querySelector('#sell_stone').addEventListener('click', (event) => { 
-    if (stone.quantity() >= stone.price()) {
-      stone.decrease()
-      gold.increase()
-    } 
-
-    if (stone.quantity() <= stone.price()) {
-      event.currentTarget.disabled = true
-    }
-   })
-
-  section__element.querySelector('#buy_wood').addEventListener('click', (event) => { 
-    if (gold.quantity() >= 100) {
-      wood.increase()
-      gold.decrease()
-    }
-
-    if (gold.quantity() <= 100) {
-      event.currentTarget.disabled = true
-    }
-  })
-  section__element.querySelector('#buy_food').addEventListener('click', (event) => { 
-    if (gold.quantity() >= 100) {
-      food.increase()
-      gold.decrease()
-    }
-
-    if (gold.quantity() <= 100) {
-      event.currentTarget.disabled = true
-    }
-  })
-  section__element.querySelector('#buy_stone').addEventListener('click', (event) => {
-    if (gold.quantity() >= 100) {
-      stone.increase()
-      gold.decrease()
-    }
-
-    if (gold.quantity() <= 100) {
-      event.currentTarget.disabled = true
-    }
-  })
+  section__element.querySelector('#buy_wood').addEventListener('click', () => handleBuy('wood'))
+  section__element.querySelector('#buy_food').addEventListener('click', () => handleBuy('food'))
+  section__element.querySelector('#buy_stone').addEventListener('click', () => handleBuy('stone'))
 
   return section__element
+}
+
+function handleSell(resource) {
+  switch (resource) {
+    case 'wood':
+      if (wood.quantity() >= wood.price()) {
+        wood.decrease()
+        gold.increase()
+      }
+      break;
+
+    case 'food':
+      if (food.quantity() >= food.price()) {
+        food.decrease() 
+        gold.increase()
+      }
+      break;
+
+    case 'stone':
+      if (stone.quantity() >= stone.price()) {
+        stone.decrease()
+        gold.increase()
+      }
+      break;
+  
+    default:
+      break;
+  }
+}
+
+function handleBuy(resource) {
+  if (gold.quantity() >= 100) {
+    switch (resource) {
+      case 'wood':
+        wood.increase()
+        gold.decrease()
+        break;
+
+      case 'food':
+        food.increase()
+        gold.decrease()
+        break;
+
+      case 'stone':
+        stone.increase()
+        gold.decrease()
+        break;
+  
+      default:
+        break;
+    }
+  }
 }
 
 // function handlePlay() {
