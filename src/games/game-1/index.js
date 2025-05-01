@@ -6,219 +6,8 @@ import stoneImg from '../../assets/stone.png'
 
 import './styles.css'
 
-function createGold() {
-  let quantity = 1500
-  let price = 100
-
-  function reset() {
-    quantity = 1500
-  }
-
-  function increase() {
-    quantity = quantity + 100
-    renderResource({
-      name: 'gold',
-      type: 'increase',
-      quantity,
-      price,
-    })
-  }
-
-  function decrease() {
-    quantity = quantity - 100
-    renderResource({
-      name: 'gold',
-      type: 'decrease',
-      quantity,
-      price,
-    })
-  }
-
-  return {
-    reset,
-    quantity: () => quantity,
-    price: () => price,
-    increase,
-    decrease,
-  }
-}
-
-function createWood() {
-  let quantity = 500
-  let price = 100
-
-  function reset() {
-    quantity = 500
-    price = 100
-  }
-
-  function increase() {
-    quantity = quantity + price
-
-    if (price < 220) {
-      price = price + 5
-    }
-    renderResource({
-      name: 'wood',
-      type: 'increase',
-      quantity,
-      price,
-    })
-  }
-
-  function decrease() {
-    quantity = quantity - price
-
-    if (price > 20) {
-      price = price - 5
-    }
-
-    renderResource({
-      name: 'wood',
-      type: 'decrease',
-      quantity,
-      price,
-    })
-  }
-
-  return {
-    reset,
-    quantity: () => quantity,
-    price: () => price,
-    increase,
-    decrease,
-  }
-}
-
-function createFood() {
-  let quantity = 500
-  let price = 115
-
-  function reset() {
-    quantity = 500
-    price = 115
-  }
-
-  function increase() {
-    quantity = quantity + price
-
-    if (price < 220) {
-      price = price + 5
-    }
-    
-    renderResource({
-      name: 'food',
-      type: 'increase',
-      quantity,
-      price,
-    })
-  }
-
-  function decrease() {
-    quantity = quantity - price
-
-    if (price > 20) {
-      price = price - 5
-    }
-
-    renderResource({
-      name: 'food',
-      type: 'decrease',
-      quantity,
-      price,
-    })
-  }
-
-  return {
-    reset,
-    quantity: () => quantity,
-    price: () => price,
-    increase,
-    decrease,
-  }
-}
-
-function createStone() {
-  let quantity = 500
-  let price = 130
-
-  function reset() {
-    quantity = 500
-    price = 130
-  }
-
-  function increase() {
-    quantity = quantity + price
-
-    if (price < 220) {
-      price = price + 5
-    }
-
-    renderResource({
-      name: 'stone',
-      type: 'increase',
-      quantity,
-      price,
-    })
-  }
-
-  function decrease() {
-    quantity = quantity - price
-
-    if (price > 20) {
-      price = price - 5
-    }
-
-    renderResource({
-      name: 'stone',
-      type: 'decrease',
-      quantity,
-      price,
-    })
-  }
-
-  return {
-    reset,
-    quantity: () => quantity,
-    price: () => price,
-    increase,
-    decrease,
-  }
-}
-
-function renderResource(resource)  {
-  const { name, type, quantity, price } = resource
-
-  const div__element = document.getElementById(`animation-${name}`)
-  const span__element = document.createElement('span')
-
-  span__element.className = `animation-${type}`
-  span__element.innerText = (type === 'increase' ?  '+' : '-') + price
-  span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
-
-  div__element.appendChild(span__element)
-  
-  document.getElementById(`${name}_quantity`).innerText = quantity
-  if (name != 'gold') {
-    document.getElementById(`buy_${name}_price`).innerText = price
-    document.getElementById(`sell_${name}_price`).innerText = price
-  }
-
-  setTimeout(() => {
-    div__element.removeChild(span__element)
-  }, 1000);
-}
-
-const gold = createGold()
-const wood = createWood()
-const food = createFood()
-const stone = createStone()
-
 export function createGame1() {
-  gold.reset()
-  wood.reset()
-  food.reset()
-  stone.reset()
+  resetResource()
 
   const section__element = document.createElement('section')
 
@@ -276,6 +65,115 @@ export function createGame1() {
   section__element.querySelector('#buy_stone').addEventListener('click', () => handleBuy('stone'))
 
   return section__element
+}
+
+const supplyDemand = 5
+
+const gold = createResource({
+  name: 'gold',
+  initialQuantity: 1500,
+  initialPrice: 100,
+  supplyDemand: 0,
+})
+
+const wood = createResource({
+  name: 'wood',
+  initialQuantity: 500,
+  initialPrice: 100,
+  supplyDemand,
+})
+
+const food = createResource({
+  name: 'food',
+  initialQuantity: 500,
+  initialPrice: 115,
+  supplyDemand,
+})
+
+const stone = createResource({
+  name: 'stone',
+  initialQuantity: 500,
+  initialPrice: 130,
+  supplyDemand,
+})
+
+function createResource(resource) {
+  const { name, initialQuantity, initialPrice, supplyDemand } = resource
+
+  let quantity = initialQuantity
+  let price = initialPrice
+
+  function reset() {
+    quantity = initialQuantity
+    price = initialPrice
+  }
+
+  function increase() {
+    quantity = quantity + price
+
+    if (price < 220) {
+      price = price + supplyDemand
+    }
+    renderResource({
+      name,
+      type: 'increase',
+      quantity,
+      price,
+    })
+  }
+
+  function decrease() {
+    quantity = quantity - price
+
+    if (price > 20) {
+      price = price - supplyDemand
+    }
+
+    renderResource({
+      name,
+      type: 'decrease',
+      quantity,
+      price,
+    })
+  }
+
+  return {
+    reset,
+    quantity: () => quantity,
+    price: () => price,
+    increase,
+    decrease,
+  }
+}
+
+function renderResource(resource)  {
+  const { name, type, quantity, price } = resource
+
+  const div__element = document.getElementById(`animation-${name}`)
+  const span__element = document.createElement('span')
+
+  span__element.className = `animation-${type}`
+  span__element.innerText = (type === 'increase' ?  '+' : '-') + price
+  span__element.style.color = type === 'increase' ? '#00FE00' : '#EB0000'
+
+  div__element.appendChild(span__element)
+  
+  document.getElementById(`${name}_quantity`).innerText = quantity
+  if (name != 'gold') {
+    document.getElementById(`buy_${name}_price`).innerText = price
+    document.getElementById(`sell_${name}_price`).innerText = price
+  }
+
+  setTimeout(() => {
+    div__element.removeChild(span__element)
+  }, 1000);
+}
+
+function resetResource() {
+  gold.reset()
+  wood.reset()
+  food.reset()
+  stone.reset()
 }
 
 function handleSell(resource) {
