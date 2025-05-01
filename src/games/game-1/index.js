@@ -202,10 +202,13 @@ function handleSell(resource) {
     default:
       break;
   }
+
+  disableSell()
+  enableBuy()
 }
 
 function handleBuy(resource) {
-  if (gold.quantity() >= 100) {
+  if (gold.quantity() >= gold.price()) {
     switch (resource) {
       case 'wood':
         wood.increase()
@@ -225,6 +228,69 @@ function handleBuy(resource) {
       default:
         break;
     }
+
+    disableBuy()
+    enableSell()
+  }
+}
+
+function disableBuy() {
+  const buy_wood__element = document.getElementById('buy_wood')
+  const buy_food__element = document.getElementById('buy_food')
+  const buy_stone__element = document.getElementById('buy_stone')
+
+  if (gold.quantity() === 0) {
+    buy_wood__element.disabled = true
+    buy_food__element.disabled = true
+    buy_stone__element.disabled = true
+  } 
+}
+
+function enableBuy() {
+  const buy_wood__element = document.getElementById('buy_wood')
+  const buy_food__element = document.getElementById('buy_food')
+  const buy_stone__element = document.getElementById('buy_stone')
+
+  if (gold.quantity() >= gold.price()) {
+    buy_wood__element.disabled = false
+    buy_food__element.disabled = false
+    buy_stone__element.disabled = false
+  }
+}
+ 
+function disableSell() {
+  const sell_wood__element = document.getElementById('sell_wood')
+  const sell_food__element = document.getElementById('sell_food')
+  const sell_stone__element = document.getElementById('sell_stone')
+
+  if (wood.quantity() < wood.price()) {
+    sell_wood__element.disabled = true
+  }
+
+  if (food.quantity() < food.price()) {
+    sell_food__element.disabled = true
+  }
+
+  if (stone.quantity() < stone.price()) {
+    sell_stone__element.disabled = true
+  }
+}
+
+function enableSell() {
+  const sell_wood__element = document.getElementById('sell_wood')
+  const sell_food__element = document.getElementById('sell_food')
+  const sell_stone__element = document.getElementById('sell_stone')
+
+  if (wood.quantity() >= wood.price()) {
+    sell_wood__element.disabled = false
+  }
+
+  if (food.quantity() >= food.price()) {
+    sell_food__element.disabled = false
+  }
+
+  if (stone.quantity() >= stone.price()) {
+    sell_stone__element.disabled = false
   }
 }
 
