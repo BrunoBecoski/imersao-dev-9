@@ -1,8 +1,8 @@
-import marketImg from '../../assets/market.png'
-import goldImg from '../../assets/gold.png'
-import woodImg from '../../assets/wood.png'
-import foodImg from '../../assets/food.png'
-import stoneImg from '../../assets/stone.png'
+import marketImg from '../../assets/game-1/market.png'
+import goldImg from '../../assets/game-1/gold.png'
+import woodImg from '../../assets/game-1/wood.png'
+import foodImg from '../../assets/game-1/food.png'
+import stoneImg from '../../assets/game-1/stone.png'
 
 import './styles.css'
 
@@ -36,33 +36,58 @@ export function createGame1() {
         </div>
       </div>
 
+      <div id="message"></div>
+
+
       <div class="market">
-        <img src=${marketImg} />
+        <img class="image" src=${marketImg} />
 
         <div class="exchange">
           <div class="sell">
-            <button id="sell_wood" title="Madeira"><span id="sell_wood_price">${wood.price()}</span> <img src=${woodImg} /> Vender</button>
-            <button id="sell_food" title="Comida"><span id="sell_food_price">${food.price()}</span> <img src=${foodImg} /> Vender</button>
-            <button id="sell_stone" title="Pedra"><span id="sell_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Vender</button>
+            <button id="sell_wood" title="Vender Madeira"><span id="sell_wood_price">${wood.price()}</span> <img src=${woodImg} /> Vender</button>
+            <button id="sell_food" title="Vender Comida"><span id="sell_food_price">${food.price()}</span> <img src=${foodImg} /> Vender</button>
+            <button id="sell_stone" title="Vender Pedra"><span id="sell_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Vender</button>
           </div>
 
           <div class="buy">
-            <button id="buy_wood" title="Madeira"><span id="buy_wood_price">${wood.price()}</span> <img src=${woodImg} /> Comprar</button>
-            <button id="buy_food" title="Comida"><span id="buy_food_price">${food.price()}</span> <img src=${foodImg} /> Comprar</button>
-            <button id="buy_stone" title="Pedra"><span id="buy_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Comprar </button>
+            <button id="buy_wood" title="Comprar Madeira"><span id="buy_wood_price">${wood.price()}</span> <img src=${woodImg} /> Comprar</button>
+            <button id="buy_food" title="Comprar Comida"><span id="buy_food_price">${food.price()}</span> <img src=${foodImg} /> Comprar</button>
+            <button id="buy_stone" title="Comprar Pedra"><span id="buy_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Comprar </button>
           </div>
         </div>
       </div>
     </div>
   ` 
 
-  section__element.querySelector('#sell_wood').addEventListener('click', () => handleSell('wood'))
-  section__element.querySelector('#sell_food').addEventListener('click', () => handleSell('food'))
-  section__element.querySelector('#sell_stone').addEventListener('click', () => handleSell('stone'))
+  const sell_wood__element = section__element.querySelector('#sell_wood')
+  sell_wood__element.addEventListener('mouseover', () => handleMessage('sell', 'wood'))
+  sell_wood__element.addEventListener('mouseout', () => handleMessage('remove'))
+  sell_wood__element.addEventListener('click', () => handleSell('wood'))
 
-  section__element.querySelector('#buy_wood').addEventListener('click', () => handleBuy('wood'))
-  section__element.querySelector('#buy_food').addEventListener('click', () => handleBuy('food'))
-  section__element.querySelector('#buy_stone').addEventListener('click', () => handleBuy('stone'))
+  const sell_food__element = section__element.querySelector('#sell_food')
+  sell_food__element.addEventListener('mouseover', () => handleMessage('sell', 'food'))
+  sell_food__element.addEventListener('mouseout', () => handleMessage('remove'))
+  sell_food__element.addEventListener('click', () => handleSell('food'))
+
+  const sell_stone__element = section__element.querySelector('#sell_stone')
+  sell_stone__element.addEventListener('mouseover', () => handleMessage('sell', 'stone'))
+  sell_stone__element.addEventListener('mouseout', () => handleMessage('remove'))
+  sell_stone__element.addEventListener('click', () => handleSell('stone'))
+
+  const buy_wood__element = section__element.querySelector('#buy_wood')
+  buy_wood__element.addEventListener('mouseover', () => handleMessage('buy', 'wood'))
+  buy_wood__element.addEventListener('mouseout', () => handleMessage('remove'))
+  buy_wood__element.addEventListener('click', () => handleBuy('wood'))
+
+  const buy_food__element = section__element.querySelector('#buy_food')
+  buy_food__element.addEventListener('mouseover', () => handleMessage('buy', 'food'))
+  buy_food__element.addEventListener('mouseout', () => handleMessage('remove'))
+  buy_food__element.addEventListener('click', () => handleBuy('food'))
+
+  const buy_stone__element = section__element.querySelector('#buy_stone')
+  buy_stone__element.addEventListener('mouseover', () => handleMessage('buy', 'stone'))
+  buy_stone__element.addEventListener('mouseout', () => handleMessage('remove'))
+  buy_stone__element.addEventListener('click', () => handleBuy('stone'))
 
   return section__element
 }
@@ -174,6 +199,44 @@ function resetResource() {
   wood.reset()
   food.reset()
   stone.reset()
+}
+
+function handleMessage(type, resource) {
+  const messageEvent__element = document.getElementById('message')
+
+  switch (type) {
+    case 'sell':
+      switch (resource) {
+        case 'wood':
+          messageEvent__element.innerHTML = `<p>Vender ${wood.price()} <img src=${woodImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+        case 'food':
+          messageEvent__element.innerHTML = `<p>Vender ${food.price()} <img src=${foodImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+        case 'stone':
+          messageEvent__element.innerHTML = `<p>Vender ${stone.price()} <img src=${stoneImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+      }
+      break;
+
+    case 'buy': 
+      switch (resource) {
+        case 'wood':
+          messageEvent__element.innerHTML = `<p>Comprar ${wood.price()} <img src=${woodImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+        case 'food':
+          messageEvent__element.innerHTML = `<p>Comprar ${food.price()} <img src=${foodImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+        case 'stone':
+          messageEvent__element.innerHTML = `<p>Comprar ${stone.price()} <img src=${stoneImg} /> por  ${gold.price()} <img src=${goldImg} />`
+          break;
+      }
+      break;
+
+    case 'remove':
+      messageEvent__element.innerHTML = ``
+      break;
+  }
 }
 
 function handleSell(resource) {

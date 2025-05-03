@@ -7,6 +7,7 @@ export function createNav(showGame) {
 
   const h1__element = document.createElement('h1')
   h1__element.innerText = 'Imersão DEV - Alura'
+  
   const ul__element = document.createElement('ul')
 
   const li_1__element = 
@@ -29,7 +30,6 @@ export function createNav(showGame) {
     document.createElement('li').innerHTML = 
     createButton({ text: 'SAIR', handleClick: () => showGame() })
 
-
   ul__element.append(
     li_1__element,
     li_2__element,
@@ -42,12 +42,10 @@ export function createNav(showGame) {
   const footer__element = document.createElement('footer')
   footer__element.className = 'footer'
   footer__element.innerText = 'Alura - Imersão DEV - 2025'
-
   
   nav__element.appendChild(h1__element)
   nav__element.appendChild(ul__element)
   nav__element.appendChild(footer__element)
-  
 
   return nav__element
 }

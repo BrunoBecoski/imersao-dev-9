@@ -1,5 +1,18 @@
 #game_1 {
-  padding: 1rem;
+  padding: 2rem;
+}
+
+#game_1 #message {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 2rem;
+
+  width: 100%;
+  height: 4rem;
+}
+
+#game_1 #message img {
+  width: 3rem;
 }
 
 #game_1 .resources {
@@ -54,6 +67,7 @@
   align-items: center;
   gap: 1rem;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 #game_1 .resources > div span {
@@ -64,24 +78,25 @@
 
 #game_1 .market {
   display: flex;
-  align-items: end;
   justify-content: space-between;
 }
 
-#game_1 .market img {
+#game_1 .market .image {
   width: 50%;
+  height: 50%;
 }
 
 #game_1 .exchange {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2rem;
 }
 
 #game_1 .sell, 
 #game_1 .buy {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 #game_1 .exchange button {
@@ -91,7 +106,7 @@
   align-items: center;
 
   width: 6rem;
-  height: 6rem;
+  height: 8rem;
 
   border: 2px solid #ffa32f;
 
@@ -103,6 +118,10 @@
   box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9);
 
   transition: all .2s;
+}
+
+#game_1 .exchange button img {
+  width: 100%;
 }
 
 #game_1 .exchange button:disabled {
