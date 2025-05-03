@@ -203,8 +203,7 @@ function handleSell(resource) {
       break;
   }
 
-  disableSell()
-  enableBuy()
+  enableDisableExchange()
 }
 
 function handleBuy(resource) {
@@ -229,69 +228,17 @@ function handleBuy(resource) {
         break;
     }
 
-    disableBuy()
-    enableSell()
+    enableDisableExchange()
   }
 }
 
-function disableBuy() {
-  const buy_wood__element = document.getElementById('buy_wood')
-  const buy_food__element = document.getElementById('buy_food')
-  const buy_stone__element = document.getElementById('buy_stone')
-
-  if (gold.quantity() === 0) {
-    buy_wood__element.disabled = true
-    buy_food__element.disabled = true
-    buy_stone__element.disabled = true
-  } 
-}
-
-function enableBuy() {
-  const buy_wood__element = document.getElementById('buy_wood')
-  const buy_food__element = document.getElementById('buy_food')
-  const buy_stone__element = document.getElementById('buy_stone')
-
-  if (gold.quantity() >= gold.price()) {
-    buy_wood__element.disabled = false
-    buy_food__element.disabled = false
-    buy_stone__element.disabled = false
-  }
-}
- 
-function disableSell() {
-  const sell_wood__element = document.getElementById('sell_wood')
-  const sell_food__element = document.getElementById('sell_food')
-  const sell_stone__element = document.getElementById('sell_stone')
-
-  if (wood.quantity() < wood.price()) {
-    sell_wood__element.disabled = true
-  }
-
-  if (food.quantity() < food.price()) {
-    sell_food__element.disabled = true
-  }
-
-  if (stone.quantity() < stone.price()) {
-    sell_stone__element.disabled = true
-  }
-}
-
-function enableSell() {
-  const sell_wood__element = document.getElementById('sell_wood')
-  const sell_food__element = document.getElementById('sell_food')
-  const sell_stone__element = document.getElementById('sell_stone')
-
-  if (wood.quantity() >= wood.price()) {
-    sell_wood__element.disabled = false
-  }
-
-  if (food.quantity() >= food.price()) {
-    sell_food__element.disabled = false
-  }
-
-  if (stone.quantity() >= stone.price()) {
-    sell_stone__element.disabled = false
-  }
+function enableDisableExchange() {
+  document.getElementById('buy_wood').disabled = gold.quantity() < gold.price()
+  document.getElementById('buy_food').disabled = gold.quantity() < gold.price()
+  document.getElementById('buy_stone').disabled = gold.quantity() < gold.price()
+  document.getElementById('sell_wood').disabled = wood.quantity() < wood.price()
+  document.getElementById('sell_food').disabled = food.quantity() < food.price()
+  document.getElementById('sell_stone').disabled = stone.quantity() < stone.price()
 }
 
 // function handlePlay() {
