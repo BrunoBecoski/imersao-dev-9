@@ -187,6 +187,7 @@ function renderResource(resource)  {
   if (name != 'gold') {
     document.getElementById(`buy_${name}_price`).innerText = price
     document.getElementById(`sell_${name}_price`).innerText = price
+    document.getElementById(`${name}_price`).innerText = price
   }
 
   setTimeout(() => {
@@ -204,39 +205,37 @@ function resetResource() {
 function handleMessage(type, resource) {
   const messageEvent__element = document.getElementById('message')
 
+  if (type === 'remove') {
+    messageEvent__element.innerHTML = ''
+    return
+  }
+
+  let message = ''
+
   switch (type) {
     case 'sell':
-      switch (resource) {
-        case 'wood':
-          messageEvent__element.innerHTML = `<p>Vender ${wood.price()} <img src=${woodImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-        case 'food':
-          messageEvent__element.innerHTML = `<p>Vender ${food.price()} <img src=${foodImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-        case 'stone':
-          messageEvent__element.innerHTML = `<p>Vender ${stone.price()} <img src=${stoneImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-      }
-      break;
-
+      message = 'Vender '
+      break
     case 'buy': 
-      switch (resource) {
-        case 'wood':
-          messageEvent__element.innerHTML = `<p>Comprar ${wood.price()} <img src=${woodImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-        case 'food':
-          messageEvent__element.innerHTML = `<p>Comprar ${food.price()} <img src=${foodImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-        case 'stone':
-          messageEvent__element.innerHTML = `<p>Comprar ${stone.price()} <img src=${stoneImg} /> por  ${gold.price()} <img src=${goldImg} />`
-          break;
-      }
-      break;
-
-    case 'remove':
-      messageEvent__element.innerHTML = ``
+    message = 'Comprar '
       break;
   }
+
+  switch (resource) {
+    case 'wood':
+      message += `<span id="wood_price">${wood.price()}</span> <img src=${woodImg} />`
+      break;
+    case 'food':
+      message += `<span id="food_price">${food.price()}</span> <img src=${foodImg} />`
+      break;
+    case 'stone':
+      message += `<span id="stone_price">${stone.price()}</span> <img src=${stoneImg} />`
+      break;
+  }
+  
+  message += `por ${gold.price()} <img src=${goldImg} />`
+
+  messageEvent__element.innerHTML = message
 }
 
 function handleSell(resource) {
