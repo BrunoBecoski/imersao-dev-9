@@ -40,19 +40,21 @@ export function createGame1() {
 
 
       <div class="market">
-        <img class="image" src=${marketImg} />
+        <div class="image">
+          <img src=${marketImg} />
+        </div>
 
         <div class="exchange">
           <div class="sell">
-            <button id="sell_wood" title="Vender Madeira"><span id="sell_wood_price">${wood.price()}</span> <img src=${woodImg} /> Vender</button>
-            <button id="sell_food" title="Vender Comida"><span id="sell_food_price">${food.price()}</span> <img src=${foodImg} /> Vender</button>
-            <button id="sell_stone" title="Vender Pedra"><span id="sell_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Vender</button>
+            <button id="sell_wood" title="Vender Madeira"><span class="price" id="sell_wood_price">${wood.price()}</span> <img src=${woodImg} /> <span class="type">Vender</span></button>
+            <button id="sell_food" title="Vender Comida"><span class="price" id="sell_food_price">${food.price()}</span> <img src=${foodImg} /> <span class="type">Vender</span></button>
+            <button id="sell_stone" title="Vender Pedra"><span class="price" id="sell_stone_price">${stone.price()}</span> <img src=${stoneImg} /> <span class="type">Vender</span></button>
           </div>
 
           <div class="buy">
-            <button id="buy_wood" title="Comprar Madeira"><span id="buy_wood_price">${wood.price()}</span> <img src=${woodImg} /> Comprar</button>
-            <button id="buy_food" title="Comprar Comida"><span id="buy_food_price">${food.price()}</span> <img src=${foodImg} /> Comprar</button>
-            <button id="buy_stone" title="Comprar Pedra"><span id="buy_stone_price">${stone.price()}</span> <img src=${stoneImg} /> Comprar </button>
+            <button id="buy_wood" title="Comprar Madeira"><span class="price" id="buy_wood_price">${wood.price()}</span> <img src=${woodImg} /> <span class="type">Comprar</span></button>
+            <button id="buy_food" title="Comprar Comida"><span class="price" id="buy_food_price">${food.price()}</span> <img src=${foodImg} /> <span class="type">Comprar</span></button>
+            <button id="buy_stone" title="Comprar Pedra"><span class="price" id="buy_stone_price">${stone.price()}</span> <img src=${stoneImg} /> <span class="type">Comprar</span></button>
           </div>
         </div>
       </div>

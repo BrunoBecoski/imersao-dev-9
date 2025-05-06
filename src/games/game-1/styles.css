@@ -82,53 +82,79 @@
 }
 
 #game_1 .market .image {
-  width: 50%;
-  height: 50%;
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+
+#game_1 .market .image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 #game_1 .exchange {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 #game_1 .sell, 
 #game_1 .buy {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 #game_1 .exchange button {
-  background: radial-gradient(circle,rgba(130, 5, 19, 1) 0%, rgba(94, 0, 9, 1) 100%);
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   width: 6rem;
-  height: 8rem;
+  height: 6rem;
 
-  border: 2px solid #ffa32f;
+  border: 2px solid #5d5d57;
 
   padding: 10px 20px;
   font-size: 1.2em;
   color: #ffa32f;
   cursor: pointer;
-  font-weight: bolder;
-  box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0px 0px 5px 5px rgba(0, 0, 0, 0.9);
 
   transition: all .2s;
+  position: relative;
 }
 
 #game_1 .exchange button img {
-  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+#game_1 .exchange button .price {
+  z-index: 10;
+  color: white;
+  position: absolute;
+  left: .5rem;
+  top: .5rem;
+  text-shadow: 2px 2px 0 black;
+  font-weight: bolder;
+}
+
+#game_1 .exchange button .type {
+  z-index: 10;
+  color: white;
+  position: absolute;
+  bottom: .5rem;
 }
 
 #game_1 .exchange button:disabled {
   cursor: not-allowed;
-  opacity: .5;
+  filter: brightness(.5);
 }
 
 #game_1 .exchange button:not(:disabled):hover {
-  filter: brightness(1.5);
+  filter: brightness(1.2);
 }
