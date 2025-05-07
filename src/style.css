@@ -28,11 +28,8 @@ section {
   align-items: center;
   justify-content: center;
   
-  border: 2px solid #FFA32F;
-  max-width: calc(100% - 6rem);
-  max-height: calc(100% - 6rem);
-
-  margin: 3rem;
+  border-left: 2px solid #FFA32F;
+  height: 100%;
 
   backdrop-filter: blur(5px) brightness(50%);
 }

@@ -38,7 +38,6 @@ export function createGame1() {
 
       <div id="message"></div>
 
-
       <div class="market">
         <div class="image">
           <img src=${marketImg} />
