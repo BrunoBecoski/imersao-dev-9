@@ -215,26 +215,26 @@ function handleMessage(type, resource) {
 
   switch (type) {
     case 'sell':
-      message = 'Vender '
+      message = '<span>Vender </span>'
       break
     case 'buy': 
-    message = 'Comprar '
+    message = '<span>Comprar </span>'
       break;
   }
 
   switch (resource) {
     case 'wood':
-      message += `<span id="wood_price">${wood.price()}</span> <img src=${woodImg} />`
+      message += `<span><span id="wood_price" class="price">${wood.price()}</span> <img src=${woodImg} /></span>`
       break;
     case 'food':
-      message += `<span id="food_price">${food.price()}</span> <img src=${foodImg} />`
+      message += `<span><span id="food_price" class="price">${food.price()}</span> <img src=${foodImg} /></span>`
       break;
     case 'stone':
-      message += `<span id="stone_price">${stone.price()}</span> <img src=${stoneImg} />`
+      message += `<span><span id="stone_price" class="price">${stone.price()}</span> <img src=${stoneImg} /></span>`
       break;
   }
   
-  message += `por ${gold.price()} <img src=${goldImg} />`
+  message += `<span>por </span><span class="price">${gold.price()} <img src=${goldImg} /><span>`
 
   messageEvent__element.innerHTML = message
 }
