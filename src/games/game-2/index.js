@@ -1,4 +1,6 @@
 import './styles.css'
+ 
+import { createButton } from '../../components/button'
 
 export function createGame2() {
   const section__element = document.createElement('section')
@@ -7,12 +9,30 @@ export function createGame2() {
     <div id="game_2">
       <h2>Pra ganhar é preciso arriscar!!</h2>
       <p>Arqueiro, Escaramuçador, Homem de Armas, Lanceiro ou Batedor a Cavalo?</p>
-      <button>Bora jogar!</button>
+      <div class="choices"></div>
     </div>
   `
 
+  const button_archer__element = createButton({ text: 'Arqueiro', handleClick: () => handlePlay('archer') })
+  const button_skirmisher__element = createButton({ text: 'Escaramuçador', handleClick: () => handlePlay('skirmisher') })
+  const button_manAtArms__element = createButton({ text: 'Homem de Armas', handleClick: () => handlePlay('manAtArms') })
+  const button_spearman__element = createButton({ text: 'Lanceiro', handleClick: () => handlePlay('spearman') })
+  const button_scoutCavalry__element = createButton({ text: 'Batedor a Cavalo', handleClick: () => handlePlay('scoutCavalry') })
+
+  section__element.getElementsByClassName('choices')[0].append(
+    button_archer__element,
+    button_skirmisher__element,
+    button_manAtArms__element,
+    button_spearman__element,
+    button_scoutCavalry__element,
+  )
+
   return section__element
-} 
+}
+
+function handlePlay(unite) {
+  console.log('Unidade: ' + unite) 
+}
 
 
 
