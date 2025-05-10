@@ -10,6 +10,7 @@ export function createGame2() {
       <h2>Pra ganhar é preciso arriscar!!</h2>
       <p>Arqueiro, Escaramuçador, Homem de Armas, Lanceiro ou Batedor a Cavalo?</p>
       <div class="choices"></div>
+      <span id="result"></span>
     </div>
   `
 
@@ -30,8 +31,83 @@ export function createGame2() {
   return section__element
 }
 
-function handlePlay(unite) {
-  console.log('Unidade: ' + unite) 
+function handlePlay(unit) {
+  const units = [
+    'archer',
+    'skirmisher',
+    'manAtArms',
+    'spearman',
+    'scoutCavalry',
+  ]
+
+  const playerChoice = unit
+  const computerChoice = units[Math.floor(Math.random() * 5)]
+  
+  const result = (() => {
+    switch (playerChoice) {
+      case 'archer':
+        switch (computerChoice) {
+          case 'archer': return 'draw'
+          case 'skirmisher': return 'lost'
+          case 'manAtArms': return 'won'
+          case 'spearman': return 'won'
+          case 'scoutCavalry': return 'lost'
+          default: return 'draw'
+        }
+
+      case 'skirmisher':
+        switch (computerChoice) {
+          case 'archer': return 'won'
+          case 'skirmisher': return 'draw'
+          case 'manAtArms': return 'lost'
+          case 'spearman': return 'won'
+          case 'scoutCavalry': return 'lost'
+          default: return 'draw'
+        }
+
+      case 'manAtArms':
+        switch (computerChoice) {
+          case 'archer': return 'lost'
+          case 'skirmisher': return 'won'
+          case 'manAtArms': return 'draw'
+          case 'spearman': return 'won'
+          case 'scoutCavalry': return 'won'
+          default: return 'draw'
+        }
+
+      case 'spearman':
+        switch (computerChoice) {
+          case 'archer': return 'lost'
+          case 'skirmisher': return 'lost'
+          case 'manAtArms': return 'lost'
+          case 'spearman': return 'draw'
+          case 'scoutCavalry': return 'won'
+          default: return 'draw'
+        }
+      
+      case 'scoutCavalry':
+        switch (computerChoice) {
+          case 'archer': return 'won'
+          case 'skirmisher': return 'won'
+          case 'manAtArms': return 'lost'
+          case 'spearman': return 'lost'
+          case 'scoutCavalry': return 'draw'
+        }
+
+      default: return 'draw'
+    }
+  })();
+  
+  const span__element =  document.getElementById('result')
+
+  span__element.innerHTML = `
+    <h2>${playerChoice} VS ${computerChoice}</h2>
+    <h1>
+      ${result === 'draw' ? 'EMPATE' : ''}
+      ${result === 'won' ? 'VENCEU' : ''}
+      ${result === 'lost' ? 'PERDEU' : ''}
+    </h1>
+  `
 }
 
 
