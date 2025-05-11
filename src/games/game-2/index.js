@@ -1,31 +1,31 @@
+import archerIconImg from '../../assets/game-2/archer_icon.png'
+import skirmisherIconImg from '../../assets/game-2/skirmisher_icon.png'
+import manAtArmsIconImg from '../../assets/game-2/manAtArms_icon.png'
+import spearmanIconImg from '../../assets/game-2/spearman_icon.png'
+import scoutCavalryIconImg from '../../assets/game-2/scoutCavalry_icon.png'
+
 import './styles.css'
- 
-import { createButton } from '../../components/button'
 
 export function createGame2() {
   const section__element = document.createElement('section')
 
   section__element.innerHTML = `
     <div id="game_2">
-      <h2>Pra ganhar é preciso arriscar!!</h2>
-      <p>Arqueiro, Escaramuçador, Homem de Armas, Lanceiro ou Batedor a Cavalo?</p>
-      <div class="choices"></div>
-      <span id="result"></span>
+      <div class="header">
+        <h2>Pra ganhar é preciso arriscar!!</h2>
+        <p>Escolha uma unidade para batalhar contra o computador</p>
+      </div>
+      <div id="buttons"></div>
+      <div id="result"></div>
     </div>
   `
 
-  const button_archer__element = createButton({ text: 'Arqueiro', handleClick: () => handlePlay('archer') })
-  const button_skirmisher__element = createButton({ text: 'Escaramuçador', handleClick: () => handlePlay('skirmisher') })
-  const button_manAtArms__element = createButton({ text: 'Homem de Armas', handleClick: () => handlePlay('manAtArms') })
-  const button_spearman__element = createButton({ text: 'Lanceiro', handleClick: () => handlePlay('spearman') })
-  const button_scoutCavalry__element = createButton({ text: 'Batedor a Cavalo', handleClick: () => handlePlay('scoutCavalry') })
-
-  section__element.getElementsByClassName('choices')[0].append(
-    button_archer__element,
-    button_skirmisher__element,
-    button_manAtArms__element,
-    button_spearman__element,
-    button_scoutCavalry__element,
+  section__element.querySelector('#buttons').append(
+    createButtonIcon({ img: archerIconImg, text: 'Arqueiro', handleClick: () => handlePlay('archer') }),
+    createButtonIcon({ img: skirmisherIconImg, text: 'Escaramuçador', handleClick: () => handlePlay('skirmisher') }),
+    createButtonIcon({ img: manAtArmsIconImg, text: 'Homem de Armas', handleClick: () => handlePlay('manAtArms') }),
+    createButtonIcon({ img: spearmanIconImg, text: 'Lanceiro', handleClick: () => handlePlay('spearman') }),
+    createButtonIcon({ img: scoutCavalryIconImg, text: 'Batedor a Cavalo', handleClick: () => handlePlay('scoutCavalry') }),
   )
 
   return section__element
@@ -98,9 +98,9 @@ function handlePlay(unit) {
     }
   })();
   
-  const span__element =  document.getElementById('result')
+  const result__element = document.getElementById('result')
 
-  span__element.innerHTML = `
+  result__element.innerHTML = `
     <h2>${playerChoice} VS ${computerChoice}</h2>
     <h1>
       ${result === 'draw' ? 'EMPATE' : ''}
@@ -108,6 +108,21 @@ function handlePlay(unit) {
       ${result === 'lost' ? 'PERDEU' : ''}
     </h1>
   `
+}
+
+export function createButtonIcon({ img, text, handleClick }) {
+  const buttonIcon__element = document.createElement('button')
+  const img__element = document.createElement('img')
+  const span__element = document.createElement('span')
+  
+  buttonIcon__element.className = 'button-icon'
+  buttonIcon__element.onclick = () => handleClick()
+  img__element.src = img
+  span__element.innerText = text
+
+  buttonIcon__element.append(img__element, span__element )
+
+  return buttonIcon__element
 }
 
 
