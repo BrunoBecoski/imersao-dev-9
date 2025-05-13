@@ -15,17 +15,18 @@ export function createGame2() {
         <h2>Pra ganhar é preciso arriscar!!</h2>
         <p>Escolha uma unidade para batalhar contra o computador</p>
       </div>
+      <div id="info"></div>
       <div id="buttons"></div>
       <div id="result"></div>
     </div>
   `
 
   section__element.querySelector('#buttons').append(
-    createButtonIcon({ img: archerIconImg, text: 'Arqueiro', handleClick: () => handlePlay('archer') }),
-    createButtonIcon({ img: skirmisherIconImg, text: 'Escaramuçador', handleClick: () => handlePlay('skirmisher') }),
-    createButtonIcon({ img: manAtArmsIconImg, text: 'Homem de Armas', handleClick: () => handlePlay('manAtArms') }),
-    createButtonIcon({ img: spearmanIconImg, text: 'Lanceiro', handleClick: () => handlePlay('spearman') }),
-    createButtonIcon({ img: scoutCavalryIconImg, text: 'Batedor a Cavalo', handleClick: () => handlePlay('scoutCavalry') }),
+    createButtonIcon({ img: archerIconImg, text: 'Arqueiro', value: 'archer', handleClick: () => handlePlay('archer') }),
+    createButtonIcon({ img: skirmisherIconImg, text: 'Escaramuçador', value: 'skirmisher', handleClick: () => handlePlay('skirmisher') }),
+    createButtonIcon({ img: manAtArmsIconImg, text: 'Homem de Armas', value: 'manAtArms', handleClick: () => handlePlay('manAtArms') }),
+    createButtonIcon({ img: spearmanIconImg, text: 'Lanceiro', value: 'spearman', handleClick: () => handlePlay('spearman') }),
+    createButtonIcon({ img: scoutCavalryIconImg, text: 'Batedor a Cavalo', value: 'scoutCavalry', handleClick: () => handlePlay('scoutCavalry') }),
   )
 
   return section__element
@@ -110,13 +111,62 @@ function handlePlay(unit) {
   `
 }
 
-export function createButtonIcon({ img, text, handleClick }) {
+function showInformation(unit) {
+  const info__element = document.getElementById('info')
+
+  const winsFrom__element = document.createElement('span')
+  winsFrom__element .className = 'wins'
+
+  const losesFrom__element  = document.createElement('span')
+  losesFrom__element.className = 'loses'
+
+  switch (unit) {
+    case 'archer':
+      winsFrom__element .innerText = '+ Homem de Armas | Lanceiro'
+      losesFrom__element.innerText = '- Escaramuçador | Batedor a Cavalo'
+      break;
+
+    case 'skirmisher':
+      winsFrom__element .innerText = '+ Arqueiro | Lanceiro'
+      losesFrom__element.innerText = '- Homem de Armas  | Batedor a Cavalo'
+      break;
+
+    case 'manAtArms':
+      winsFrom__element .innerText = '+ Escaramuçador | Lanceiro | Batedor a Cavalo'
+      losesFrom__element.innerText = '- Arqueiro'
+      break;
+
+    case 'spearman':
+      winsFrom__element .innerText = '+ Batedor a Cavalo'
+      losesFrom__element.innerText = '- Escaramuçador | Arqueiro | Homem de Armas'
+      break;
+
+    case 'scoutCavalry':
+      winsFrom__element .innerText = '+ Escaramuçador | Arqueiro'
+      losesFrom__element.innerText = '- Homem de Armas | Lanceiro'
+  
+    default:
+      break;
+  }
+
+  info__element.append(winsFrom__element, losesFrom__element)
+}
+
+function hiddenInformation() {
+  const info__element = document.getElementById('info')
+
+  info__element.innerHTML = ''
+}
+
+export function createButtonIcon({ img, text, value, handleClick }) {
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
   
   buttonIcon__element.className = 'button-icon'
   buttonIcon__element.onclick = () => handleClick()
+  buttonIcon__element.addEventListener('mouseover', () => showInformation(value))
+  buttonIcon__element.addEventListener('mouseout', () => hiddenInformation())
   img__element.src = img
   span__element.innerText = text
 
