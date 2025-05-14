@@ -6,6 +6,44 @@ import scoutCavalryIconImg from '../../assets/game-2/scoutCavalry_icon.png'
 
 import './styles.css'
 
+const units = [
+  {
+    name: 'Arqueiro',
+    value: 'archer',
+    img: archerIconImg,
+    wins: ['manAtArms', 'spearman'],
+    loses: ['skirmisher', 'scoutCavalry']
+  },
+   {
+    name: 'Escaramuçador',
+    value: 'skirmisher',
+    img: skirmisherIconImg,
+    wins: ['archer', 'spearman'],
+    loses: ['manAtArms', 'scoutCavalry']
+  },
+   {
+    name: 'Homem de Armas',
+    value: 'manAtArms',
+    img: manAtArmsIconImg,
+    wins: ['skirmisher', 'spearman', 'scoutCavalry'],
+    loses: ['archer']
+  },
+   {
+    name: 'Lanceiro',
+    value: 'spearman',
+    img: spearmanIconImg,
+    wins: ['scoutCavalry'],
+    loses: ['archer', 'skirmisher', 'manAtArms']
+  },
+   {
+    name: 'Batedor a Cavalo',
+    value: 'scoutCavalry',
+    img: scoutCavalryIconImg,
+    wins: ['archer', 'skirmisher',],
+    loses: ['manAtArms', 'spearman']
+  },
+]
+
 export function createGame2() {
   const section__element = document.createElement('section')
 
@@ -17,20 +55,34 @@ export function createGame2() {
       </div>
       <div id="info"></div>
       <div id="buttons"></div>
+      <div id="select"></div>
       <div id="result"></div>
     </div>
   `
 
   section__element.querySelector('#buttons').append(
-    createButtonIcon({ img: archerIconImg, text: 'Arqueiro', value: 'archer', handleClick: () => handlePlay('archer') }),
-    createButtonIcon({ img: skirmisherIconImg, text: 'Escaramuçador', value: 'skirmisher', handleClick: () => handlePlay('skirmisher') }),
-    createButtonIcon({ img: manAtArmsIconImg, text: 'Homem de Armas', value: 'manAtArms', handleClick: () => handlePlay('manAtArms') }),
-    createButtonIcon({ img: spearmanIconImg, text: 'Lanceiro', value: 'spearman', handleClick: () => handlePlay('spearman') }),
-    createButtonIcon({ img: scoutCavalryIconImg, text: 'Batedor a Cavalo', value: 'scoutCavalry', handleClick: () => handlePlay('scoutCavalry') }),
+    createButtonIcon({ unit: units[0], handleClick: () => handlePlay('archer') }),
+    createButtonIcon({ unit: units[1], handleClick: () => handlePlay('skirmisher') }),
+    createButtonIcon({ unit: units[2], handleClick: () => handlePlay('manAtArms') }),
+    createButtonIcon({ unit: units[3], handleClick: () => handlePlay('spearman') }),
+    createButtonIcon({ unit: units[4], handleClick: () => handlePlay('scoutCavalry') }),
   )
 
   return section__element
 }
+
+// function handleChoose(unit) {
+//   const { img } = unit
+
+//   const buttons__element = document.getElementById('buttons')
+//   buttons__element.dataset.unit = unit.value
+
+//   const img__element = document.createElement('img')
+//   img__element.src = img
+  
+//   const select__element = document.getElementById('select')
+//   select__element.appendChild(img__element)
+// }
 
 function handlePlay(unit) {
   const units = [
@@ -158,7 +210,9 @@ function hiddenInformation() {
   info__element.innerHTML = ''
 }
 
-export function createButtonIcon({ img, text, value, handleClick }) {
+export function createButtonIcon({ unit, handleClick }) {
+  const { name, value, img } = unit
+
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
@@ -168,7 +222,7 @@ export function createButtonIcon({ img, text, value, handleClick }) {
   buttonIcon__element.addEventListener('mouseover', () => showInformation(value))
   buttonIcon__element.addEventListener('mouseout', () => hiddenInformation())
   img__element.src = img
-  span__element.innerText = text
+  span__element.innerText = name
 
   buttonIcon__element.append(img__element, span__element )
 
