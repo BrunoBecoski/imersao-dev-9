@@ -6,43 +6,43 @@ import scoutCavalryIconImg from '../../assets/game-2/scoutCavalry_icon.png'
 
 import './styles.css'
 
-const units = [
-  {
+const units = new Map([
+  ['archer', {
     name: 'Arqueiro',
     value: 'archer',
     img: archerIconImg,
     wins: ['manAtArms', 'spearman'],
-    loses: ['skirmisher', 'scoutCavalry']
-  },
-   {
+    loses: ['skirmisher', 'scoutCavalry'],
+  }],
+  ['skirmisher', {
     name: 'Escaramuçador',
     value: 'skirmisher',
     img: skirmisherIconImg,
     wins: ['archer', 'spearman'],
-    loses: ['manAtArms', 'scoutCavalry']
-  },
-   {
+    loses: ['manAtArms', 'scoutCavalry'],
+  }],
+  ['manAtArms', {
     name: 'Homem de Armas',
     value: 'manAtArms',
     img: manAtArmsIconImg,
     wins: ['skirmisher', 'spearman', 'scoutCavalry'],
-    loses: ['archer']
-  },
-   {
+    loses: ['archer'],
+  }],
+  ['spearman', {
     name: 'Lanceiro',
     value: 'spearman',
     img: spearmanIconImg,
     wins: ['scoutCavalry'],
-    loses: ['archer', 'skirmisher', 'manAtArms']
-  },
-   {
+    loses: ['archer', 'skirmisher', 'manAtArms'],
+  }],
+  ['scoutCavalry', {
     name: 'Batedor a Cavalo',
     value: 'scoutCavalry',
     img: scoutCavalryIconImg,
     wins: ['archer', 'skirmisher',],
-    loses: ['manAtArms', 'spearman']
-  },
-]
+    loses: ['manAtArms', 'spearman'],
+  }],
+])
 
 export function createGame2() {
   const section__element = document.createElement('section')
@@ -61,11 +61,11 @@ export function createGame2() {
   `
 
   section__element.querySelector('#buttons').append(
-    createButtonIcon({ unit: units[0], handleClick: () => handlePlay('archer') }),
-    createButtonIcon({ unit: units[1], handleClick: () => handlePlay('skirmisher') }),
-    createButtonIcon({ unit: units[2], handleClick: () => handlePlay('manAtArms') }),
-    createButtonIcon({ unit: units[3], handleClick: () => handlePlay('spearman') }),
-    createButtonIcon({ unit: units[4], handleClick: () => handlePlay('scoutCavalry') }),
+    createButtonIcon({ unit: units.get('archer'), handleClick: handlePlay }),
+    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handlePlay }),
+    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handlePlay }),
+    createButtonIcon({ unit: units.get('spearman'), handleClick: handlePlay }),
+    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handlePlay }),
   )
 
   return section__element
@@ -85,72 +85,19 @@ export function createGame2() {
 // }
 
 function handlePlay(unit) {
-  const units = [
-    'archer',
-    'skirmisher',
-    'manAtArms',
-    'spearman',
-    'scoutCavalry',
-  ]
-
   const playerChoice = unit
-  const computerChoice = units[Math.floor(Math.random() * 5)]
+  const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
   
-  const result = (() => {
-    switch (playerChoice) {
-      case 'archer':
-        switch (computerChoice) {
-          case 'archer': return 'draw'
-          case 'skirmisher': return 'lost'
-          case 'manAtArms': return 'won'
-          case 'spearman': return 'won'
-          case 'scoutCavalry': return 'lost'
-          default: return 'draw'
-        }
+  let  result = 'draw'
 
-      case 'skirmisher':
-        switch (computerChoice) {
-          case 'archer': return 'won'
-          case 'skirmisher': return 'draw'
-          case 'manAtArms': return 'lost'
-          case 'spearman': return 'won'
-          case 'scoutCavalry': return 'lost'
-          default: return 'draw'
-        }
+  if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
+    result = 'won'
+  }
 
-      case 'manAtArms':
-        switch (computerChoice) {
-          case 'archer': return 'lost'
-          case 'skirmisher': return 'won'
-          case 'manAtArms': return 'draw'
-          case 'spearman': return 'won'
-          case 'scoutCavalry': return 'won'
-          default: return 'draw'
-        }
+  if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
+    result = 'lost'
+  }
 
-      case 'spearman':
-        switch (computerChoice) {
-          case 'archer': return 'lost'
-          case 'skirmisher': return 'lost'
-          case 'manAtArms': return 'lost'
-          case 'spearman': return 'draw'
-          case 'scoutCavalry': return 'won'
-          default: return 'draw'
-        }
-      
-      case 'scoutCavalry':
-        switch (computerChoice) {
-          case 'archer': return 'won'
-          case 'skirmisher': return 'won'
-          case 'manAtArms': return 'lost'
-          case 'spearman': return 'lost'
-          case 'scoutCavalry': return 'draw'
-        }
-
-      default: return 'draw'
-    }
-  })();
-  
   const result__element = document.getElementById('result')
 
   result__element.innerHTML = `
@@ -164,42 +111,19 @@ function handlePlay(unit) {
 }
 
 function showInformation(unit) {
+  console.log(unit)
   const info__element = document.getElementById('info')
 
+  const winsFrom = unit.wins
+  const losesFrom = unit.loses
+
   const winsFrom__element = document.createElement('span')
-  winsFrom__element .className = 'wins'
+  winsFrom__element.className = 'wins'
+  winsFrom__element.innerText = `+ ${winsFrom.map(win => units.get(win).name).join(' | ')}`
 
   const losesFrom__element  = document.createElement('span')
   losesFrom__element.className = 'loses'
-
-  switch (unit) {
-    case 'archer':
-      winsFrom__element .innerText = '+ Homem de Armas | Lanceiro'
-      losesFrom__element.innerText = '- Escaramuçador | Batedor a Cavalo'
-      break;
-
-    case 'skirmisher':
-      winsFrom__element .innerText = '+ Arqueiro | Lanceiro'
-      losesFrom__element.innerText = '- Homem de Armas  | Batedor a Cavalo'
-      break;
-
-    case 'manAtArms':
-      winsFrom__element .innerText = '+ Escaramuçador | Lanceiro | Batedor a Cavalo'
-      losesFrom__element.innerText = '- Arqueiro'
-      break;
-
-    case 'spearman':
-      winsFrom__element .innerText = '+ Batedor a Cavalo'
-      losesFrom__element.innerText = '- Escaramuçador | Arqueiro | Homem de Armas'
-      break;
-
-    case 'scoutCavalry':
-      winsFrom__element .innerText = '+ Escaramuçador | Arqueiro'
-      losesFrom__element.innerText = '- Homem de Armas | Lanceiro'
-  
-    default:
-      break;
-  }
+  losesFrom__element.innerText = `- ${losesFrom.map(lose => units.get(lose).name).join(' | ')}`
 
   info__element.append(winsFrom__element, losesFrom__element)
 }
@@ -211,15 +135,15 @@ function hiddenInformation() {
 }
 
 export function createButtonIcon({ unit, handleClick }) {
-  const { name, value, img } = unit
+  const { name, img } = unit
 
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
   
   buttonIcon__element.className = 'button-icon'
-  buttonIcon__element.onclick = () => handleClick()
-  buttonIcon__element.addEventListener('mouseover', () => showInformation(value))
+  buttonIcon__element.onclick = () => handleClick(unit)
+  buttonIcon__element.addEventListener('mouseover', () => showInformation(unit))
   buttonIcon__element.addEventListener('mouseout', () => hiddenInformation())
   img__element.src = img
   span__element.innerText = name
