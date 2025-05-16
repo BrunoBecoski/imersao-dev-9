@@ -53,36 +53,52 @@ export function createGame2() {
         <h2>Pra ganhar é preciso arriscar!!</h2>
         <p>Escolha uma unidade para batalhar contra o computador</p>
       </div>
-      <div id="info"></div>
-      <div id="buttons"></div>
-      <div id="select"></div>
-      <div id="result"></div>
+
+      <div id="main">
+        <div id="chooseUnits"></div>
+        <div id="unitDetails"></div>
+      </div>
     </div>
   `
 
-  section__element.querySelector('#buttons').append(
-    createButtonIcon({ unit: units.get('archer'), handleClick: handlePlay }),
-    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handlePlay }),
-    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handlePlay }),
-    createButtonIcon({ unit: units.get('spearman'), handleClick: handlePlay }),
-    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handlePlay }),
+  section__element.querySelector('#chooseUnits').append(
+    createButtonIcon({ unit: units.get('archer'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('spearman'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handleChoose }),
   )
 
   return section__element
 }
 
-// function handleChoose(unit) {
-//   const { img } = unit
+function handleChoose(unit) {  
+  const { name, img, wins, loses } = unit
 
-//   const buttons__element = document.getElementById('buttons')
-//   buttons__element.dataset.unit = unit.value
+  const unit_details__element = document.getElementById('unitDetails')
+  unit_details__element.innerHTML = `
+    <img src="${img}" />
 
-//   const img__element = document.createElement('img')
-//   img__element.src = img
+    <div class="info">
+      <strong>
+        ${name}
+      </strong>
+
+      <div class="counters">
+        <div>
+          <i>Ganha</i>
+          <span>${wins.map(win => units.get(win).name).join(' | ')}</span>
+        </div>
+
+        <div>
+          <i>Perde</i>
+          <span>${loses.map(lose => units.get(lose).name).join(' | ')}</span>
+        </div>
+      </div>
+    </div>
   
-//   const select__element = document.getElementById('select')
-//   select__element.appendChild(img__element)
-// }
+  `
+}
 
 function handlePlay(unit) {
   const playerChoice = unit
@@ -110,45 +126,17 @@ function handlePlay(unit) {
   `
 }
 
-function showInformation(unit) {
-  console.log(unit)
-  const info__element = document.getElementById('info')
-
-  const winsFrom = unit.wins
-  const losesFrom = unit.loses
-
-  const winsFrom__element = document.createElement('span')
-  winsFrom__element.className = 'wins'
-  winsFrom__element.innerText = `+ ${winsFrom.map(win => units.get(win).name).join(' | ')}`
-
-  const losesFrom__element  = document.createElement('span')
-  losesFrom__element.className = 'loses'
-  losesFrom__element.innerText = `- ${losesFrom.map(lose => units.get(lose).name).join(' | ')}`
-
-  info__element.append(winsFrom__element, losesFrom__element)
-}
-
-function hiddenInformation() {
-  const info__element = document.getElementById('info')
-
-  info__element.innerHTML = ''
-}
-
 export function createButtonIcon({ unit, handleClick }) {
-  const { name, img } = unit
+  const { img } = unit
 
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
-  const span__element = document.createElement('span')
   
   buttonIcon__element.className = 'button-icon'
   buttonIcon__element.onclick = () => handleClick(unit)
-  buttonIcon__element.addEventListener('mouseover', () => showInformation(unit))
-  buttonIcon__element.addEventListener('mouseout', () => hiddenInformation())
   img__element.src = img
-  span__element.innerText = name
 
-  buttonIcon__element.append(img__element, span__element )
+  buttonIcon__element.append(img__element)
 
   return buttonIcon__element
 }
