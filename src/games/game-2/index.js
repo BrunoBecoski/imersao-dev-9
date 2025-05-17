@@ -51,23 +51,24 @@ export function createGame2() {
     <div id="game_2">
       <div class="header">
         <h2>Pra ganhar é preciso arriscar!!</h2>
-        <p>Escolha uma unidade para batalhar contra o computador</p>
+        <p>Escolha uma unidade</p>
       </div>
 
-      <div id="main">
-        <div id="chooseUnits"></div>
-        <div id="unitDetails"></div>
-      </div>
+      <div id="main"></div>
     </div>
   `
 
-  section__element.querySelector('#chooseUnits').append(
+  const chooseUnits__element = document.createElement('div')
+  chooseUnits__element.className = 'chooseUnits'
+  chooseUnits__element.append(
     createButtonIcon({ unit: units.get('archer'), handleClick: handleChoose }),
     createButtonIcon({ unit: units.get('skirmisher'), handleClick: handleChoose }),
     createButtonIcon({ unit: units.get('manAtArms'), handleClick: handleChoose }),
     createButtonIcon({ unit: units.get('spearman'), handleClick: handleChoose }),
     createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handleChoose }),
   )
+  
+  section__element.querySelector('#main').appendChild(chooseUnits__element)
 
   return section__element
 }
@@ -75,15 +76,19 @@ export function createGame2() {
 function handleChoose(unit) {  
   const { name, img, wins, loses } = unit
 
-  const unit_details__element = document.getElementById('unitDetails')
+  const main__element = document.getElementById('main')
+
+  const unit_details__element = document.createElement('div')
+
+  unit_details__element.className = 'unitDetails'
+
   unit_details__element.innerHTML = `
-    <img src="${img}" />
+    <strong>
+      ${name}
+    </strong>
 
     <div class="info">
-      <strong>
-        ${name}
-      </strong>
-
+      <img src="${img}" />
       <div class="counters">
         <div>
           <i>Ganha</i>
@@ -96,35 +101,37 @@ function handleChoose(unit) {
         </div>
       </div>
     </div>
-  
   `
+
+  main__element.innerHTML = ``
+  main__element.appendChild(unit_details__element)
 }
 
-function handlePlay(unit) {
-  const playerChoice = unit
-  const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
+// function handlePlay(unit) {
+  // const playerChoice = unit
+  // const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
   
-  let  result = 'draw'
+  // let  result = 'draw'
 
-  if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
-    result = 'won'
-  }
+  // if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
+  //   result = 'won'
+  // }
 
-  if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
-    result = 'lost'
-  }
+  // if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
+  //   result = 'lost'
+  // }
 
-  const result__element = document.getElementById('result')
+  // const result__element = document.getElementById('result')
 
-  result__element.innerHTML = `
-    <h2>${playerChoice} VS ${computerChoice}</h2>
-    <h1>
-      ${result === 'draw' ? 'EMPATE' : ''}
-      ${result === 'won' ? 'VENCEU' : ''}
-      ${result === 'lost' ? 'PERDEU' : ''}
-    </h1>
-  `
-}
+  // result__element.innerHTML = `
+  //   <h2>${playerChoice} VS ${computerChoice}</h2>
+  //   <h1>
+  //     ${result === 'draw' ? 'EMPATE' : ''}
+  //     ${result === 'won' ? 'VENCEU' : ''}
+  //     ${result === 'lost' ? 'PERDEU' : ''}
+  //   </h1>
+  // `
+// }
 
 export function createButtonIcon({ unit, handleClick }) {
   const { name, img } = unit
@@ -133,15 +140,14 @@ export function createButtonIcon({ unit, handleClick }) {
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
 
+  buttonIcon__element.title = `Selecionar ${name}`
   buttonIcon__element.className = 'button-icon'
   buttonIcon__element.onclick = () => handleClick(unit)
-  buttonIcon__element.addEventListener('mouseover', () => span__element.style.visibility = 'visible')
-  buttonIcon__element.addEventListener('mouseout', () => span__element.style.visibility = 'hidden' )
 
-  span__element.innerText = name
   img__element.src = img
+  span__element.innerText = name
 
-  buttonIcon__element.append(span__element, img__element)
+  buttonIcon__element.append(img__element, span__element)
 
   return buttonIcon__element
 }
