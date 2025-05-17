@@ -127,16 +127,21 @@ function handlePlay(unit) {
 }
 
 export function createButtonIcon({ unit, handleClick }) {
-  const { img } = unit
+  const { name, img } = unit
 
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
-  
+  const span__element = document.createElement('span')
+
   buttonIcon__element.className = 'button-icon'
   buttonIcon__element.onclick = () => handleClick(unit)
+  buttonIcon__element.addEventListener('mouseover', () => span__element.style.visibility = 'visible')
+  buttonIcon__element.addEventListener('mouseout', () => span__element.style.visibility = 'hidden' )
+
+  span__element.innerText = name
   img__element.src = img
 
-  buttonIcon__element.append(img__element)
+  buttonIcon__element.append(span__element, img__element)
 
   return buttonIcon__element
 }
