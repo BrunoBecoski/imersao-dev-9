@@ -51,7 +51,7 @@ export function createGame2() {
     <div id="game_2">
       <div class="header">
         <h2>Pra ganhar é preciso arriscar!!</h2>
-        <p>Escolha uma unidade</p>
+        <p id="subtitle">Selecione uma unidade</p>
       </div>
 
       <div id="main"></div>
@@ -77,31 +77,59 @@ function handleChoose(unit) {
   const { name, img, wins, loses } = unit
 
   const main__element = document.getElementById('main')
+  const p__element = document.getElementById('subtitle')
+
+  p__element.innerHTML = `Unidade seleciona <strong><i>${name}</i></strong>`
 
   const unit_details__element = document.createElement('div')
 
   unit_details__element.className = 'unitDetails'
 
   unit_details__element.innerHTML = `
-    <strong>
+    <h3>
       ${name}
-    </strong>
+    </h3>
 
     <div class="info">
-      <img src="${img}" />
+      <img class="unitImg" src="${img}" />
+      
       <div class="counters">
-        <div>
-          <i>Ganha</i>
-          <span>${wins.map(win => units.get(win).name).join(' | ')}</span>
+        <div class="win">
+          <h4>Ganha</h4>
+          <div id="winUnits"></div>
         </div>
 
-        <div>
-          <i>Perde</i>
-          <span>${loses.map(lose => units.get(lose).name).join(' | ')}</span>
+        <div class="lose">
+          <h4>Perde</h4>
+          <div id="loseUnits"></div>
         </div>
       </div>
     </div>
   `
+
+  wins.map(win =>  {
+    const { name, img } = units.get(win)
+
+    const div__element = document.createElement('div')
+    div__element.innerHTML = `
+      <img src="${img}" />
+      <span>${name}</span>
+    `
+
+     unit_details__element.querySelector('#winUnits').append(div__element)
+  })
+
+  loses.map(lose =>  {
+    const { name, img } = units.get(lose)
+
+    const div__element = document.createElement('div')
+    div__element.innerHTML = `
+      <img src="${img}" />
+      <span>${name}</span>
+    `
+    unit_details__element.querySelector('#loseUnits').append(div__element)
+  })
+
 
   main__element.innerHTML = ``
   main__element.appendChild(unit_details__element)
@@ -133,7 +161,7 @@ function handleChoose(unit) {
   // `
 // }
 
-export function createButtonIcon({ unit, handleClick }) {
+function createButtonIcon({ unit, handleClick }) {
   const { name, img } = unit
 
   const buttonIcon__element = document.createElement('button')
