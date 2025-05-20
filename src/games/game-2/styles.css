@@ -19,7 +19,7 @@
 }
 
 #game_2 .header p {
-  margin-top: 2rem;
+  margin-block: 1rem;
   font-size: 1.5rem;
 }
 
@@ -52,7 +52,6 @@
   border: 4px solid #FFA32F;
   height: 100%;
 }   
-
 
 #game_2 .unitDetails .counters {
   display: flex;
@@ -88,6 +87,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#game_2 .result {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  
 }
 
 #game_2 .button-icon {

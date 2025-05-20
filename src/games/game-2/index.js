@@ -1,3 +1,5 @@
+import { createButton } from '../../components/button'
+
 import archerIconImg from '../../assets/game-2/archer_icon.png'
 import skirmisherIconImg from '../../assets/game-2/skirmisher_icon.png'
 import manAtArmsIconImg from '../../assets/game-2/manAtArms_icon.png'
@@ -76,10 +78,11 @@ export function createGame2() {
 function handleChoose(unit) {  
   const { name, img, wins, loses } = unit
 
-  const main__element = document.getElementById('main')
   const p__element = document.getElementById('subtitle')
+  p__element.innerText = ''
 
-  p__element.innerHTML = `Unidade seleciona <strong><i>${name}</i></strong>`
+  const button__element = createButton({ text: 'Jogar', handleClick: () => handlePlay(unit) })
+  p__element.appendChild(button__element)
 
   const unit_details__element = document.createElement('div')
 
@@ -130,36 +133,49 @@ function handleChoose(unit) {
     unit_details__element.querySelector('#loseUnits').append(div__element)
   })
 
-
+  const main__element = document.getElementById('main')
   main__element.innerHTML = ``
   main__element.appendChild(unit_details__element)
 }
 
-// function handlePlay(unit) {
-  // const playerChoice = unit
-  // const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
+function handlePlay(unit) {
+  const playerChoice = unit
+  const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
+
+  const p__element = document.getElementById('subtitle')
+  p__element.innerText = 'Resultado'
   
-  // let  result = 'draw'
 
-  // if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
-  //   result = 'won'
-  // }
+  let  result = 'draw'
 
-  // if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
-  //   result = 'lost'
-  // }
+  if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
+    result = 'won'
+  }
 
-  // const result__element = document.getElementById('result')
+  if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
+    result = 'lost'
+  }
 
-  // result__element.innerHTML = `
-  //   <h2>${playerChoice} VS ${computerChoice}</h2>
-  //   <h1>
-  //     ${result === 'draw' ? 'EMPATE' : ''}
-  //     ${result === 'won' ? 'VENCEU' : ''}
-  //     ${result === 'lost' ? 'PERDEU' : ''}
-  //   </h1>
-  // `
-// }
+  const result__element = document.createElement('div')
+  result__element.className = 'result'
+
+  result__element.innerHTML = `
+    <h2>
+      ${result === 'draw' ? 'EMPATE' : ''}
+      ${result === 'won' ? 'VENCEU' : ''}
+      ${result === 'lost' ? 'PERDEU' : ''}
+    </h2>
+    <span>${playerChoice.name} VS ${computerChoice.name}</span>
+    <div>
+      <img src="${playerChoice.img}" title="${playerChoice.name}"/>
+      <img src="${computerChoice.img}" title="${computerChoice.name}"/>
+    </div>
+  `
+
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ``
+  main__element.appendChild(result__element)
+}
 
 function createButtonIcon({ unit, handleClick }) {
   const { name, img } = unit
