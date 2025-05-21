@@ -18,9 +18,11 @@
   font-size: 2rem;
 }
 
-#game_2 .header p {
+#game_2 .header #subtitle {
   margin-block: 1rem;
   font-size: 1.5rem;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 #game_2 .chooseUnits {

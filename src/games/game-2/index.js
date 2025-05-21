@@ -53,7 +53,7 @@ export function createGame2() {
     <div id="game_2">
       <div class="header">
         <h2>Pra ganhar é preciso arriscar!!</h2>
-        <p id="subtitle">Selecione uma unidade</p>
+        <div id="subtitle">Selecione uma unidade</div>
       </div>
 
       <div id="main"></div>
@@ -75,14 +75,34 @@ export function createGame2() {
   return section__element
 }
 
+function handleStart() {
+  const subtitle__element = document.getElementById('subtitle')
+  subtitle__element.innerText = 'Selecione uma unidade'
+
+  const chooseUnits__element = document.createElement('div')
+  chooseUnits__element.className = 'chooseUnits'
+  chooseUnits__element.append(
+    createButtonIcon({ unit: units.get('archer'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('spearman'), handleClick: handleChoose }),
+    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handleChoose }),
+  )
+  
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.appendChild(chooseUnits__element)
+}
+
 function handleChoose(unit) {  
   const { name, img, wins, loses } = unit
 
-  const p__element = document.getElementById('subtitle')
-  p__element.innerText = ''
-
-  const button__element = createButton({ text: 'Jogar', handleClick: () => handlePlay(unit) })
-  p__element.appendChild(button__element)
+  
+  const play__element = createButton({ text: 'Jogar', handleClick: () => handlePlay(unit) })
+  const choose__element = createButton({ text: 'Escolher outra unidade', handleClick: handleStart })
+  const subtitle__element = document.getElementById('subtitle')
+  subtitle__element.innerText = ''
+  subtitle__element.append(play__element, choose__element)
 
   const unit_details__element = document.createElement('div')
 
@@ -141,9 +161,11 @@ function handleChoose(unit) {
 function handlePlay(unit) {
   const playerChoice = unit
   const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
-
-  const p__element = document.getElementById('subtitle')
-  p__element.innerText = 'Resultado'
+  
+  const subtitle__element = document.getElementById('subtitle')
+  subtitle__element.innerHTML = ''
+  const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
+  subtitle__element.appendChild(replay__element)
   
 
   let  result = 'draw'
