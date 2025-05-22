@@ -2,8 +2,7 @@
   color: #FFFFFF;
   display: grid;
   grid-template-rows: 20vh 1fr;
-  gap: 2rem;
-
+  gap: 1rem;
 
   width: 100%;
   height: 100%;
@@ -93,10 +92,44 @@
 
 #game_2 .result {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   flex-direction: column;
   align-items: center;
-  
+}
+
+#game_2 .result h2 {
+  color: #FFA32F;
+  font-size: 2rem;
+}
+
+#game_2 .result .units {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 4rem;
+}
+
+#game_2 .result .units .unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+}
+
+#game_2 .result .units .unit img {
+  border: 4px solid #FFFFFF;
+}
+
+#game_2 .result .units .unit[data-wins=true] {
+  color: #FFA32F;
+}
+
+#game_2 .result .units .unit[data-wins=true] img {
+  border-color: #FFA32F;
+  filter: brightness(1.2);
+}
+
+#game_2 .result .units .unit[data-wins=false] img {
+  filter: brightness(.8);
 }
 
 #game_2 .button-icon {

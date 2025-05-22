@@ -97,7 +97,6 @@ function handleStart() {
 function handleChoose(unit) {  
   const { name, img, wins, loses } = unit
 
-  
   const play__element = createButton({ text: 'Jogar', handleClick: () => handlePlay(unit) })
   const choose__element = createButton({ text: 'Escolher outra unidade', handleClick: handleStart })
   const subtitle__element = document.getElementById('subtitle')
@@ -161,12 +160,6 @@ function handleChoose(unit) {
 function handlePlay(unit) {
   const playerChoice = unit
   const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
-  
-  const subtitle__element = document.getElementById('subtitle')
-  subtitle__element.innerHTML = ''
-  const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
-  subtitle__element.appendChild(replay__element)
-  
 
   let  result = 'draw'
 
@@ -178,6 +171,9 @@ function handlePlay(unit) {
     result = 'lost'
   }
 
+  const subtitle__element = document.getElementById('subtitle')
+  subtitle__element.innerHTML = 'Resultado'
+
   const result__element = document.createElement('div')
   result__element.className = 'result'
 
@@ -187,12 +183,24 @@ function handlePlay(unit) {
       ${result === 'won' ? 'VENCEU' : ''}
       ${result === 'lost' ? 'PERDEU' : ''}
     </h2>
-    <span>${playerChoice.name} VS ${computerChoice.name}</span>
-    <div>
-      <img src="${playerChoice.img}" title="${playerChoice.name}"/>
-      <img src="${computerChoice.img}" title="${computerChoice.name}"/>
+
+    <div class="units">
+      <div class="unit" data-wins=${result === 'won'}>
+        <strong>${playerChoice.name}</strong>
+        <span>Você</span>
+        <img src="${playerChoice.img}" />
+      </div>
+      
+      <div class="unit" data-wins=${result === 'lost'}>
+        <strong>${computerChoice.name}</strong>
+        <span>Computador</span>
+        <img src="${computerChoice.img}" title="${computerChoice.name}"/>
+      </div>
     </div>
   `
+
+  const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
+  result__element.appendChild(replay__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ``
