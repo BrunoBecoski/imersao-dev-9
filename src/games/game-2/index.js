@@ -187,13 +187,13 @@ function handlePlay(unit) {
     <div class="units">
       <div class="unit" data-wins=${result === 'won'}>
         <strong>${playerChoice.name}</strong>
-        <span>Você</span>
+        <span>(Você)</span>
         <img src="${playerChoice.img}" />
       </div>
       
       <div class="unit" data-wins=${result === 'lost'}>
         <strong>${computerChoice.name}</strong>
-        <span>Computador</span>
+        <span>(Computador)</span>
         <img src="${computerChoice.img}" title="${computerChoice.name}"/>
       </div>
     </div>
