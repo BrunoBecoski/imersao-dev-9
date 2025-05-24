@@ -1,3 +1,9 @@
+import { createButton } from '../../components/button'
+
+import palisadeGateImg from '../../assets/game-3/palisade_gate.png'
+import stoneGateImg from '../../assets/game-3/stone_gate.png'
+import relicImg from '../../assets/game-3/relic.png'
+
 import './styles.css'
 
 export function createGame3() {
@@ -6,13 +12,23 @@ export function createGame3() {
   section__element.innerHTML = `
     <div id="game_3">
       <div class="header">
-        <h2>Pra ganhar, é preciso coragem!</h2>
+        <h2>Pra ganhar, é preciso coragem!<h2>
       </div>
-
+      
+      <div id="main">
+        <p>Escolhas os portões corretos para ganhar</p>
+      </div>
     </div>
   `
 
+  const main__element = section__element.querySelector('#main')
+  main__element.append(createButton({ text: 'Começar', handleClick: handleStart }))
+
   return section__element
+}
+
+function handleStart() {
+  console.log('começar')
 }
 
 

@@ -1,4 +1,24 @@
+#game_3 {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#game_3 .header {
+  text-align: center;
+}
+
 #game_3 .header h2 {
   color: #FFFFFF;
   font-size: 3rem;
+}
+
+#game_3 #main {
+  text-align: center;
+}
+
+#game_3 #main p {
+  color: #FFFFFF;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
