@@ -28,7 +28,35 @@ export function createGame3() {
 }
 
 function handleStart() {
-  console.log('começar')
+  const p__element = document.createElement('p')
+  p__element.innerText = 'Primeira fase'
+
+  const gate1__element = createButtonGate({ img: palisadeGateImg })
+  const gate2__element = createButtonGate({ img: palisadeGateImg })
+  const gate3__element = createButtonGate({ img: palisadeGateImg })
+
+  const gates__element = document.createElement('div')
+  gates__element.className = 'gates'
+
+  gates__element.append(gate1__element, gate2__element, gate3__element)
+
+  const main__element = document.getElementById('main')
+console.log(main__element)
+  main__element.innerHTML = ''
+  main__element.append(p__element, gates__element)
+}
+
+function createButtonGate({ img }) {
+  const button__element = document.createElement('button')
+  const img__element = document.createElement('img')
+  
+  button__element.className = 'button-gate'
+  img__element.className = 'button-img'
+
+  img__element.src = img
+  button__element.appendChild(img__element)
+
+  return button__element
 }
 
 
