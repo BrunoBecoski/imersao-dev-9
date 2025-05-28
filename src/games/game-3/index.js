@@ -28,36 +28,37 @@ export function createGame3() {
 }
 
 function handleStart() {
-  let step = 1
-
   const p__element = document.createElement('p')
-  p__element.innerText = 'Primeira fase'
-
-  const gate1__element = createButtonGate({ img: palisadeGateImg, handleClick: () => handleSelect(1) })
-  const gate2__element = createButtonGate({ img: palisadeGateImg, handleClick: () => handleSelect(2) })
-  const gate3__element = createButtonGate({ img: palisadeGateImg, handleClick: () => handleSelect(3) })
+  p__element.innerText = `1ª fase`
 
   const gates__element = document.createElement('div')
   gates__element.className = 'gates'
 
-  gates__element.append(gate1__element, gate2__element, gate3__element)
+  gates__element.append(
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(1) }),
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(2) }), 
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(3) }),
+  )
 
   const main__element = document.getElementById('main')
-
   main__element.innerHTML = ''
   main__element.append(p__element, gates__element)
+}
 
-  const correctGates = [
-    Math.floor(Math.random() * 3) + 1,
-    Math.floor(Math.random() * 3) + 4,
-    Math.floor(Math.random() * 3) + 7,
-  ] 
+function handleRound1(value) {
+  const correctGate = Math.floor(Math.random() * 3) + 1
+  const main__element = document.getElementById('main')
 
-  console.log(correctGates)
-
-  function handleSelect(value) {
-    console.log(value)
-    console.log(correctGates.includes(value))
+  if (correctGate === value) {
+    const p__element = document.createElement('p')
+    p__element.innerText = `VENCEU`
+    main__element.innerHTML = ''
+    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+  } else {
+    const p__element = document.createElement('p')
+    p__element.innerText = `PERDEU`
+    main__element.innerHTML = ''
+    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   }
 }
 
