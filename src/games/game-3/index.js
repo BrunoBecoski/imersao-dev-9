@@ -28,24 +28,38 @@ export function createGame3() {
 }
 
 function handleStart() {
-  const p__element = document.createElement('p')
-  p__element.innerText = `1ª fase`
-
-  const gates__element = document.createElement('div')
-  gates__element.className = 'gates'
-
-  gates__element.append(
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(1) }),
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(2) }), 
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleRound1(3) }),
-  )
-
-  const main__element = document.getElementById('main')
-  main__element.innerHTML = ''
-  main__element.append(p__element, gates__element)
+  createGates({ handleClick: handleRound1, round: '1' })
 }
 
 function handleRound1(value) {
+  const correctGate = Math.floor(Math.random() * 3) + 1
+  const main__element = document.getElementById('main')
+
+  if (correctGate === value) {
+   createGates({ handleClick: handleRound2, round: '2' })
+  } else {
+    const p__element = document.createElement('p')
+    p__element.innerText = `PERDEU`
+    main__element.innerHTML = ''
+    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+  }
+}
+
+function handleRound2(value) {
+  const correctGate = Math.floor(Math.random() * 3) + 1
+  const main__element = document.getElementById('main')
+
+  if (correctGate === value) {
+    createGates({ handleClick: handleRound3, round: '3' })
+  } else {
+    const p__element = document.createElement('p')
+    p__element.innerText = `PERDEU`
+    main__element.innerHTML = ''
+    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+  }
+}
+
+function handleRound3(value) {
   const correctGate = Math.floor(Math.random() * 3) + 1
   const main__element = document.getElementById('main')
 
@@ -60,6 +74,24 @@ function handleRound1(value) {
     main__element.innerHTML = ''
     main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   }
+}
+
+function createGates({ handleClick, round }) {
+  const p__element = document.createElement('p')
+  p__element.innerText = `${round}ª fase`
+
+  const gates__element = document.createElement('div')
+  gates__element.className = 'gates'
+
+  gates__element.append(
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(1) }),
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(2) }), 
+    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(3) }),
+  )
+
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.append(p__element, gates__element)
 }
 
 function createButtonGate({ img, handleClick }) {
