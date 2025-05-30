@@ -11,12 +11,12 @@ export function createGame3() {
 
   section__element.innerHTML = `
     <div id="game_3">
-      <div class="header">
+      <div id="header">
         <h2>Pra ganhar, é preciso coragem!<h2>
       </div>
       
       <div id="main">
-        <p>Escolhas os portões corretos para ganhar</p>
+        <p>Conseguira chegar até final</p>
       </div>
     </div>
   `
@@ -38,10 +38,10 @@ function handleRound1(value) {
   if (correctGate === value) {
    createGates({ handleClick: handleRound2, round: '2' })
   } else {
-    const p__element = document.createElement('p')
-    p__element.innerText = `PERDEU`
+    const h2__element = document.querySelector('#header h2')
+    h2__element.innerText = 'PERDEU'
     main__element.innerHTML = ''
-    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   }
 }
 
@@ -52,10 +52,10 @@ function handleRound2(value) {
   if (correctGate === value) {
     createGates({ handleClick: handleRound3, round: '3' })
   } else {
-    const p__element = document.createElement('p')
-    p__element.innerText = `PERDEU`
+    const h2__element = document.querySelector('#header h2')
+    h2__element.innerText = 'PERDEU'
     main__element.innerHTML = ''
-    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   }
 }
 
@@ -64,29 +64,32 @@ function handleRound3(value) {
   const main__element = document.getElementById('main')
 
   if (correctGate === value) {
-    const p__element = document.createElement('p')
-    p__element.innerText = `VENCEU`
+    const h2__element = document.querySelector('#header h2')
+    h2__element.innerText = `VENCEU`
     main__element.innerHTML = ''
-    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   } else {
-    const p__element = document.createElement('p')
-    p__element.innerText = `PERDEU`
+    const h2__element = document.querySelector('#header h2')
+    h2__element.innerText = 'PERDEU'
     main__element.innerHTML = ''
-    main__element.append(p__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   }
 }
 
 function createGates({ handleClick, round }) {
+  const h2__element = document.querySelector('#header h2')
+  h2__element.innerText = `${round}ª fase`
+
   const p__element = document.createElement('p')
-  p__element.innerText = `${round}ª fase`
+  p__element.innerText = 'Escolha os portão correto para avançar'
 
   const gates__element = document.createElement('div')
   gates__element.className = 'gates'
 
   gates__element.append(
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(1) }),
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(2) }), 
-    createButtonGate({ img: palisadeGateImg, handleClick: () => handleClick(3) }),
+    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(1) }),
+    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(2) }), 
+    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(3) }),
   )
 
   const main__element = document.getElementById('main')

@@ -5,11 +5,11 @@
   padding-inline: 2rem;
 }
 
-#game_3 .header {
+#game_3 #header {
   text-align: center;
 }
 
-#game_3 .header h2 {
+#game_3 #header h2 {
   color: #FFFFFF;
   font-size: 3rem;
 }
