@@ -16,6 +16,10 @@
 
 #game_3 #main {
   text-align: center;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-direction: column;
 }
 
 #game_3 #main p {

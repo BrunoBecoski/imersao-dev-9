@@ -28,7 +28,7 @@ export function createGame3() {
 }
 
 function handleStart() {
-  createGates({ handleClick: handleRound1, round: '1' })
+  createGates({ handleClick: handleRound1, round: '1', img: palisadeGateImg })
 }
 
 function handleRound1(value) {
@@ -36,7 +36,7 @@ function handleRound1(value) {
   const main__element = document.getElementById('main')
 
   if (correctGate === value) {
-   createGates({ handleClick: handleRound2, round: '2' })
+   createGates({ handleClick: handleRound2, round: '2', img: stoneGateImg })
   } else {
     const h2__element = document.querySelector('#header h2')
     h2__element.innerText = 'PERDEU'
@@ -50,7 +50,7 @@ function handleRound2(value) {
   const main__element = document.getElementById('main')
 
   if (correctGate === value) {
-    createGates({ handleClick: handleRound3, round: '3' })
+    createGates({ handleClick: handleRound3, round: '3', img: stoneGateImg })
   } else {
     const h2__element = document.querySelector('#header h2')
     h2__element.innerText = 'PERDEU'
@@ -66,8 +66,12 @@ function handleRound3(value) {
   if (correctGate === value) {
     const h2__element = document.querySelector('#header h2')
     h2__element.innerText = `VENCEU`
+
+    const img__element = document.createElement('img')
+    img__element.src = relicImg
+
     main__element.innerHTML = ''
-    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    main__element.append(img__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
   } else {
     const h2__element = document.querySelector('#header h2')
     h2__element.innerText = 'PERDEU'
@@ -76,7 +80,7 @@ function handleRound3(value) {
   }
 }
 
-function createGates({ handleClick, round }) {
+function createGates({ handleClick, round, img }) {
   const h2__element = document.querySelector('#header h2')
   h2__element.innerText = `${round}ª fase`
 
@@ -87,9 +91,9 @@ function createGates({ handleClick, round }) {
   gates__element.className = 'gates'
 
   gates__element.append(
-    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(1) }),
-    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(2) }), 
-    createButtonGate({ img: stoneGateImg, handleClick: () => handleClick(3) }),
+    createButtonGate({ img, handleClick: () => handleClick(1) }),
+    createButtonGate({ img, handleClick: () => handleClick(2) }), 
+    createButtonGate({ img, handleClick: () => handleClick(3) }),
   )
 
   const main__element = document.getElementById('main')
