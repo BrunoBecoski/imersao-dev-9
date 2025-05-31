@@ -1,6 +1,5 @@
 import { createButton } from '../../components/button'
 
-import palisadeGateImg from '../../assets/game-3/palisade_gate.png'
 import stoneGateImg from '../../assets/game-3/stone_gate.png'
 import relicImg from '../../assets/game-3/relic.png'
 
@@ -28,56 +27,50 @@ export function createGame3() {
 }
 
 function handleStart() {
-  createGates({ handleClick: handleRound1, round: '1', img: palisadeGateImg })
+  createGates({ handleClick: handleRound1, round: '1' })
 }
 
 function handleRound1(value) {
-  const correctGate = Math.floor(Math.random() * 3) + 1
-  const main__element = document.getElementById('main')
-
-  if (correctGate === value) {
-   createGates({ handleClick: handleRound2, round: '2', img: stoneGateImg })
+  if (Math.floor(Math.random() * 3) + 1) {
+   createGates({ handleClick: handleRound2, round: '2' })
   } else {
-    const h2__element = document.querySelector('#header h2')
-    h2__element.innerText = 'PERDEU'
-    main__element.innerHTML = ''
-    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    lose()
   }
 }
 
 function handleRound2(value) {
-  const correctGate = Math.floor(Math.random() * 3) + 1
-  const main__element = document.getElementById('main')
-
-  if (correctGate === value) {
-    createGates({ handleClick: handleRound3, round: '3', img: stoneGateImg })
+  if (Math.floor(Math.random() * 3) + 1 === value) {
+    createGates({ handleClick: handleRound3, round: '3' })
   } else {
-    const h2__element = document.querySelector('#header h2')
-    h2__element.innerText = 'PERDEU'
-    main__element.innerHTML = ''
-    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    lose()
   }
 }
 
 function handleRound3(value) {
-  const correctGate = Math.floor(Math.random() * 3) + 1
-  const main__element = document.getElementById('main')
-
-  if (correctGate === value) {
-    const h2__element = document.querySelector('#header h2')
-    h2__element.innerText = `VENCEU`
-
-    const img__element = document.createElement('img')
-    img__element.src = relicImg
-
-    main__element.innerHTML = ''
-    main__element.append(img__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+  if (Math.floor(Math.random() * 3) + 1 === value) {
+    win()
   } else {
-    const h2__element = document.querySelector('#header h2')
-    h2__element.innerText = 'PERDEU'
-    main__element.innerHTML = ''
-    main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+    lose()
   }
+}
+
+function win() {
+  const main__element = document.getElementById('main')
+  const h2__element = document.querySelector('#header h2')
+  const img__element = document.createElement('img')
+
+  h2__element.innerText = 'VENCEU'
+  img__element.src = relicImg
+  main__element.innerHTML = ''
+  main__element.append(img__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+}
+
+function lose() {
+  const h2__element = document.querySelector('#header h2')
+
+  h2__element.innerText = 'PERDEU'
+  main__element.innerHTML = ''
+  main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
 }
 
 function createGates({ handleClick, round, img }) {
@@ -101,7 +94,7 @@ function createGates({ handleClick, round, img }) {
   main__element.append(p__element, gates__element)
 }
 
-function createButtonGate({ img, handleClick }) {
+function createButtonGate({ handleClick }) {
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
 
@@ -109,7 +102,7 @@ function createButtonGate({ img, handleClick }) {
   img__element.className = 'button-img'
 
   button__element.onclick = () => handleClick()
-  img__element.src = img
+  img__element.src = stoneGateImg
   button__element.appendChild(img__element)
 
   return button__element
