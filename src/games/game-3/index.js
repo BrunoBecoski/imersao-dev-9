@@ -1,6 +1,7 @@
 import { createButton } from '../../components/button'
 
-import stoneGateImg from '../../assets/game-3/stone_gate.png'
+import gateCloseImg from '../../assets/game-3/gate_close.png'
+import gateOpenImg from '../../assets/game-3/gate_open.png'
 import relicImg from '../../assets/game-3/relic.png'
 
 import './styles.css'
@@ -66,6 +67,7 @@ function win() {
 }
 
 function lose() {
+  const main__element = document.getElementById('main')
   const h2__element = document.querySelector('#header h2')
 
   h2__element.innerText = 'PERDEU'
@@ -102,8 +104,16 @@ function createButtonGate({ handleClick }) {
   img__element.className = 'button-img'
 
   button__element.onclick = () => handleClick()
-  img__element.src = stoneGateImg
+  img__element.src = gateCloseImg
   button__element.appendChild(img__element)
+
+  button__element.addEventListener('mouseover', () => {
+    img__element.src = gateOpenImg
+  })
+
+  button__element.addEventListener('mouseout', () => {
+    img__element.src = gateCloseImg
+  })
 
   return button__element
 }
