@@ -5,36 +5,50 @@ import championIconImg from '../../assets/game-4/champion_icon.png'
 import paladinIconImg from '../../assets/game-4/paladin_icon.png'
 import camelIconImg from '../../assets/game-4/camel_icon.png'
 
+import './styles.css'
+
 const units = new Map([
   ['arbalester', {
     name: 'Arbalesteiro',
     value: 'arbalester',
     img: arbalesterIconImg,
+    type: 'archer',
+    strong: 'infantry',
   }],
   ['skirmisher', {
     name: 'Escaramuçador',
     value: 'skirmisher',
     img: skirmisherIconImg,
+    type: 'archer',
+    type: 'archer',
   }],
   ['champion', {
     name: 'Campeão',
     value: 'champion',
     img: championIconImg,
+    type: 'infantry',
+    strong: 'infantry',
   }],
   ['halberdier', {
     name: 'Alabardeiro',
     value: 'halberdier',
     img: halberdierIconImg,
+    type: 'infantry',
+    strong: 'cavalry',
   }],
   ['paladin', {
     name: 'Paladino',
     value: 'paladin',
     img: paladinIconImg,
+    type: 'cavalry',
+    strong: 'archer',
   }],
   ['camel', {
     name: 'Cameleiro',
     value: 'camel',
     img: camelIconImg,
+    type: 'cavalry',
+    strong: 'cavalry',
   }],
 ])
 
@@ -42,44 +56,46 @@ export function createGame4() {
   const section__element = document.createElement('section')
   
   section__element.innerHTML = `
-    <div class="container">
-      <div class="content">Escolha três unidades</div>
+    <div id="game-4">
+      <div class="header"> 
+        <h2>Escolha três unidades</h2>
+      </div>
 
       <div id="main"></div>
     </div>
   `
 
-  const arbalester = document.createElement('img')
-  arbalester.src = units.get('arbalester').img
-
-  const skirmisher = document.createElement('img')
-  skirmisher.src = units.get('skirmisher').img
-
-  const champion = document.createElement('img')
-  champion.src = units.get('champion').img
-
-  const halberdier = document.createElement('img')
-  halberdier.src = units.get('halberdier').img
-
-  const paladin = document.createElement('img')
-  paladin.src = units.get('paladin').img
-
-  const camel = document.createElement('img')
-  camel.src = units.get('camel').img
 
   const units__element = document.createElement('div')
+  units__element.className = 'units'
   units__element.append(
-    arbalester,
-    skirmisher,
-    champion,
-    halberdier,
-    paladin,
-    camel,
+    createSelectUnit('arbalester'),
+    createSelectUnit('skirmisher'),
+    createSelectUnit('champion'),
+    createSelectUnit('halberdier'),
+    createSelectUnit('paladin'),
+    createSelectUnit('camel'),
   )
 
   section__element.querySelector('#main').appendChild(units__element)
 
   return section__element
+}
+
+function createSelectUnit(unit) {
+  const { img, name } = units.get(unit)
+
+  const button__element = document.createElement('button')
+  const img__element = document.createElement('img')
+  const span__element = document.createElement('span')
+  
+  button__element.className = 'select-unit'
+  img__element.src = img
+  span__element.innerText = name
+
+  button__element.append(img__element, span__element)
+
+  return button__element
 }
 
 
