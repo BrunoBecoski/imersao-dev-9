@@ -1,3 +1,5 @@
+import { createButton } from '../../components/button'
+
 import arbalesterIconImg from '../../assets/game-4/arbalester_icon.png'
 import skirmisherIconImg from '../../assets/game-4/skirmisher_icon.png'
 import halberdierIconImg from '../../assets/game-4/halberdier_icon.png'
@@ -22,19 +24,19 @@ const units = new Map([
     type: 'archer',
     type: 'archer',
   }],
-  ['champion', {
-    name: 'Campeão',
-    value: 'champion',
-    img: championIconImg,
-    type: 'infantry',
-    strong: 'infantry',
-  }],
   ['halberdier', {
     name: 'Alabardeiro',
     value: 'halberdier',
     img: halberdierIconImg,
     type: 'infantry',
     strong: 'cavalry',
+  }],
+  ['champion', {
+    name: 'Campeão',
+    value: 'champion',
+    img: championIconImg,
+    type: 'infantry',
+    strong: 'infantry',
   }],
   ['paladin', {
     name: 'Paladino',
@@ -58,28 +60,59 @@ export function createGame4() {
   section__element.innerHTML = `
     <div id="game-4">
       <div class="header"> 
-        <h2>Escolha três unidades</h2>
+        <h2 id="title">Monte se exército e ganhe</h2>
       </div>
 
-      <div id="main"></div>
+      <div id="main">
+
+      </div>
     </div>
   `
 
+  const main__element =  section__element.querySelector('#main')
+  main__element.appendChild(createButton({ text: 'Começar', handleClick: handleStart }))
 
-  const units__element = document.createElement('div')
-  units__element.className = 'units'
-  units__element.append(
+  return section__element
+}
+
+function handleStart() {
+  const archer__element = document.createElement('div')
+  const archer_title__element = document.createElement('span')
+  archer_title__element.innerText = 'Arqueiros'
+  archer__element.append(
+    archer_title__element,
     createSelectUnit('arbalester'),
     createSelectUnit('skirmisher'),
-    createSelectUnit('champion'),
+  )
+
+  const infantry__element = document.createElement('div')
+  const infantry_title__element = document.createElement('span')
+  infantry_title__element.innerText = 'Infantarias'
+  infantry__element.append(
+    infantry_title__element,
     createSelectUnit('halberdier'),
+    createSelectUnit('champion'),
+  )
+
+  const cavalry__element = document.createElement('div')
+  const cavalry_title__element = document.createElement('span')
+  cavalry_title__element.innerText = 'Cavalarias'
+  cavalry__element.append(
+    cavalry_title__element,
     createSelectUnit('paladin'),
     createSelectUnit('camel'),
   )
 
-  section__element.querySelector('#main').appendChild(units__element)
+  const units__element = document.createElement('div')
+  units__element.className = 'units'
+  units__element.append(archer__element, infantry__element, cavalry__element)
 
-  return section__element
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Escolha três unidades'
+
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.appendChild(units__element)
 }
 
 function createSelectUnit(unit) {
