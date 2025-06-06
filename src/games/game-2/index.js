@@ -1,10 +1,8 @@
 import { createButton } from '../../components/button'
 
 import archerIconImg from '../../assets/game-2/archer_icon.png'
-import skirmisherIconImg from '../../assets/game-2/skirmisher_icon.png'
-import manAtArmsIconImg from '../../assets/game-2/manAtArms_icon.png'
 import spearmanIconImg from '../../assets/game-2/spearman_icon.png'
-import scoutCavalryIconImg from '../../assets/game-2/scoutCavalry_icon.png'
+import scoutIconImg from '../../assets/game-2/scout_icon.png'
 
 import './styles.css'
 
@@ -13,36 +11,22 @@ const units = new Map([
     name: 'Arqueiro',
     value: 'archer',
     img: archerIconImg,
-    wins: ['manAtArms', 'spearman'],
-    loses: ['skirmisher', 'scoutCavalry'],
-  }],
-  ['skirmisher', {
-    name: 'Escaramuçador',
-    value: 'skirmisher',
-    img: skirmisherIconImg,
-    wins: ['archer', 'spearman'],
-    loses: ['manAtArms', 'scoutCavalry'],
-  }],
-  ['manAtArms', {
-    name: 'Homem de Armas',
-    value: 'manAtArms',
-    img: manAtArmsIconImg,
-    wins: ['skirmisher', 'spearman', 'scoutCavalry'],
-    loses: ['archer'],
+    win: 'spearman',
+    lose: 'scout',
   }],
   ['spearman', {
     name: 'Lanceiro',
     value: 'spearman',
     img: spearmanIconImg,
-    wins: ['scoutCavalry'],
-    loses: ['archer', 'skirmisher', 'manAtArms'],
+    win: 'scout',
+    lose: 'archer',
   }],
-  ['scoutCavalry', {
-    name: 'Batedor a Cavalo',
-    value: 'scoutCavalry',
-    img: scoutCavalryIconImg,
-    wins: ['archer', 'skirmisher',],
-    loses: ['manAtArms', 'spearman'],
+  ['scout', {
+    name: 'Batedor',
+    value: 'scout',
+    img: scoutIconImg,
+    win: 'archer',
+    lose: 'spearman',
   }],
 ])
 
@@ -52,114 +36,39 @@ export function createGame2() {
   section__element.innerHTML = `
     <div id="game_2">
       <div class="header">
-        <h2>Pra ganhar é preciso arriscar!!</h2>
-        <div id="subtitle">Selecione uma unidade</div>
+        <h2 id="title">Pra ganhar é preciso arriscar!!</h2>
       </div>
 
       <div id="main"></div>
     </div>
   `
 
-  const chooseUnits__element = document.createElement('div')
-  chooseUnits__element.className = 'chooseUnits'
-  chooseUnits__element.append(
-    createButtonIcon({ unit: units.get('archer'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('spearman'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handleChoose }),
-  )
+  const main__element =  section__element.querySelector('#main')
+  main__element.appendChild(createButton({ text: 'Começar', handleClick: handleStart }))
   
-  section__element.querySelector('#main').appendChild(chooseUnits__element)
-
   return section__element
 }
 
 function handleStart() {
-  const subtitle__element = document.getElementById('subtitle')
-  subtitle__element.innerText = 'Selecione uma unidade'
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Selecione uma unidade'
 
   const chooseUnits__element = document.createElement('div')
   chooseUnits__element.className = 'chooseUnits'
   chooseUnits__element.append(
-    createButtonIcon({ unit: units.get('archer'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('skirmisher'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('manAtArms'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('spearman'), handleClick: handleChoose }),
-    createButtonIcon({ unit: units.get('scoutCavalry'), handleClick: handleChoose }),
+    createButtonIcon({ unit: 'archer' }),
+    createButtonIcon({ unit: 'spearman' }),
+    createButtonIcon({ unit: 'scout' }),
   )
-  
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.appendChild(chooseUnits__element)
 }
 
-function handleChoose(unit) {  
-  const { name, img, wins, loses } = unit
-
-  const play__element = createButton({ text: 'Jogar', handleClick: () => handlePlay(unit) })
-  const choose__element = createButton({ text: 'Escolher outra unidade', handleClick: handleStart })
-  const subtitle__element = document.getElementById('subtitle')
-  subtitle__element.innerText = ''
-  subtitle__element.append(play__element, choose__element)
-
-  const unit_details__element = document.createElement('div')
-
-  unit_details__element.className = 'unitDetails'
-
-  unit_details__element.innerHTML = `
-    <h3>
-      ${name}
-    </h3>
-
-    <div class="info">
-      <img class="unitImg" src="${img}" />
-      
-      <div class="counters">
-        <div class="win">
-          <h4>Ganha</h4>
-          <div id="winUnits"></div>
-        </div>
-
-        <div class="lose">
-          <h4>Perde</h4>
-          <div id="loseUnits"></div>
-        </div>
-      </div>
-    </div>
-  `
-
-  wins.map(win =>  {
-    const { name, img } = units.get(win)
-
-    const div__element = document.createElement('div')
-    div__element.innerHTML = `
-      <img src="${img}" />
-      <span>${name}</span>
-    `
-
-     unit_details__element.querySelector('#winUnits').append(div__element)
-  })
-
-  loses.map(lose =>  {
-    const { name, img } = units.get(lose)
-
-    const div__element = document.createElement('div')
-    div__element.innerHTML = `
-      <img src="${img}" />
-      <span>${name}</span>
-    `
-    unit_details__element.querySelector('#loseUnits').append(div__element)
-  })
-
-  const main__element = document.getElementById('main')
-  main__element.innerHTML = ``
-  main__element.appendChild(unit_details__element)
-}
-
 function handlePlay(unit) {
-  const playerChoice = unit
-  const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 5)][1]
+  const playerChoice = units.get(unit)
+  const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 3)][1]
 
   let  result = 'draw'
 
@@ -171,8 +80,8 @@ function handlePlay(unit) {
     result = 'lost'
   }
 
-  const subtitle__element = document.getElementById('subtitle')
-  subtitle__element.innerHTML = 'Resultado'
+  const title__element = document.getElementById('title')
+  title__element.innerHTML = 'Resultado'
 
   const result__element = document.createElement('div')
   result__element.className = 'result'
@@ -185,7 +94,7 @@ function handlePlay(unit) {
     </h2>
 
     <div class="units">
-      <div class="unit" data-wins=${result === 'won'}>
+      <div class="unit" data-wins=${result === 'won'}> 
         <strong>${playerChoice.name}</strong>
         <span>(Você)</span>
         <img src="${playerChoice.img}" />
@@ -207,21 +116,50 @@ function handlePlay(unit) {
   main__element.appendChild(result__element)
 }
 
-function createButtonIcon({ unit, handleClick }) {
-  const { name, img } = unit
+function createButtonIcon({ unit }) {
+  const { name, img, win, lose } = units.get(unit)
 
   const buttonIcon__element = document.createElement('button')
   const img__element = document.createElement('img')
-  const span__element = document.createElement('span')
+  const name__element = document.createElement('span')
+  const info__element = document.createElement('span')
 
+  buttonIcon__element.id = unit
   buttonIcon__element.title = `Selecionar ${name}`
   buttonIcon__element.className = 'button-icon'
-  buttonIcon__element.onclick = () => handleClick(unit)
+  buttonIcon__element.onclick = () => handlePlay(unit)
 
+  buttonIcon__element.addEventListener('mouseover', () => {
+    img__element.style.borderColor = 'yellow'
+
+    const win__element = document.getElementById(win)
+    win__element.querySelector('img').style.borderColor = 'green'
+    win__element.querySelector('.info').innerText = 'Ganha'
+
+    const lose__element = document.getElementById(lose)
+    lose__element.querySelector('img').style.borderColor = 'red'
+    lose__element.querySelector('.info').innerText = 'Perde'
+  })
+
+
+  buttonIcon__element.addEventListener('mouseout', () => {
+    img__element.style.borderColor = 'white'
+
+    const win__element = document.getElementById(win)
+    win__element.querySelector('img').style.borderColor = 'white'
+    win__element.querySelector('.info').innerText = ''
+
+    const lose__element = document.getElementById(lose)
+    lose__element.querySelector('img').style.borderColor = 'white'
+    lose__element.querySelector('.info').innerText = ''
+  })
+
+  name__element.className = 'name'
+  name__element.innerText = name
   img__element.src = img
-  span__element.innerText = name
+  info__element.className = 'info'
 
-  buttonIcon__element.append(img__element, span__element)
+  buttonIcon__element.append(name__element, img__element, info__element )
 
   return buttonIcon__element
 }
