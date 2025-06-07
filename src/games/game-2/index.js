@@ -22,7 +22,7 @@ const units = new Map([
     lose: 'archer',
   }],
   ['scout', {
-    name: 'Batedor',
+    name: 'Cavaleiro',
     value: 'scout',
     img: scoutIconImg,
     win: 'archer',
@@ -121,49 +121,57 @@ function handlePlay(unit) {
 }
 
 function createButtonIcon({ unit }) {
-  const { name, img, win, lose } = units.get(unit)
+  const { name, img } = units.get(unit)
 
   const buttonIcon__element = document.createElement('button')
+  const info__element = document.createElement('span')
   const img__element = document.createElement('img')
   const name__element = document.createElement('span')
-  const info__element = document.createElement('span')
 
   buttonIcon__element.id = unit
   buttonIcon__element.title = `Selecionar ${name}`
   buttonIcon__element.className = 'button-icon'
   buttonIcon__element.onclick = () => handlePlay(unit)
 
-  buttonIcon__element.addEventListener('mouseover', () => {
+  buttonIcon__element.addEventListener('mouseover', () => handleButtonIconMouseover(unit))
+  buttonIcon__element.addEventListener('mouseout', () => handleButtonIconMouseout(unit))
 
-    const win__element = document.getElementById(win)
-    win__element.querySelector('.info').innerText = 'Ganha'
-    
-    const lose__element = document.getElementById(lose)
-    lose__element.querySelector('.info').innerText = 'Perde'
-
-    win__element.classList.add('win')
-    lose__element.classList.add('lose')
-  })
-
-  buttonIcon__element.addEventListener('mouseout', () => {
-    const win__element = document.getElementById(win)
-    win__element.querySelector('.info').innerText = ''
-
-    const lose__element = document.getElementById(lose)
-    lose__element.querySelector('.info').innerText = ''
-
-    win__element.classList.remove('win')
-    lose__element.classList.remove('lose')
-  })
-
+  info__element.className = 'info'
+  img__element.src = img
   name__element.className = 'name'
   name__element.innerText = name
-  img__element.src = img
-  info__element.className = 'info'
 
-  buttonIcon__element.append(name__element, img__element, info__element )
+  buttonIcon__element.append(info__element, img__element, name__element)
 
   return buttonIcon__element
+}
+
+function handleButtonIconMouseover(unit) {
+  const { win, lose } = units.get(unit)
+
+  const win__element = document.getElementById(win)
+  win__element.querySelector('.info').innerText = 'Ganha'
+  win__element.querySelector('.info').classList.add('win')
+  win__element.classList.add('win')
+
+  const lose__element = document.getElementById(lose)
+  lose__element.querySelector('.info').innerText = 'Perde'
+  lose__element.querySelector('.info').classList.add('lose')
+  lose__element.classList.add('lose')
+}
+
+function handleButtonIconMouseout(unit) {
+  const { win, lose } = units.get(unit)
+
+  const win__element = document.getElementById(win)
+  win__element.querySelector('.info').innerText = ''
+  win__element.querySelector('.info').classList.remove('win')
+  win__element.classList.remove('win')
+
+  const lose__element = document.getElementById(lose)
+  lose__element.querySelector('.info').innerText = ''
+  lose__element.querySelector('.info').classList.remove('lose')
+  lose__element.classList.remove('lose')
 }
 
 
