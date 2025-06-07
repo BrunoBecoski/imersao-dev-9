@@ -2,7 +2,7 @@
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   gap: 1rem;
 
   width: 100%;
@@ -18,7 +18,6 @@
 }
 
 #game_2 .header #subtitle {
-  margin-block: 1rem;
   font-size: 1.5rem;
   display: flex;
   justify-content: space-evenly;
@@ -93,8 +92,15 @@
 }
 
 #game_2 .button-icon img {
-  border: 4px solid white;
-  width: 100%;
+  border: 4px solid #FFFFFF;
+}
+
+#game_2 .button-icon.win img {
+  border-color: #00FF00;
+}
+
+#game_2 .button-icon.lose img {
+  border-color: #FF0000;
 }
 
 #game_2 .button-icon .name {

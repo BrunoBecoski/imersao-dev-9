@@ -70,13 +70,17 @@ function handlePlay(unit) {
   const playerChoice = units.get(unit)
   const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 3)][1]
 
-  let  result = 'draw'
+  let  result = ''
 
-  if (playerChoice.wins.includes(computerChoice.value) && computerChoice.loses.includes(playerChoice.value)) {
+  if (playerChoice.value == computerChoice.value) {
+    result = 'draw'
+  }
+
+  if (playerChoice.win == computerChoice.lose) {
     result = 'won'
   }
 
-  if (playerChoice.loses.includes(computerChoice.value) && computerChoice.wins.includes(playerChoice.value)) {
+  if (playerChoice.lose == computerChoice.win) {
     result = 'lost'
   }
 
@@ -130,28 +134,26 @@ function createButtonIcon({ unit }) {
   buttonIcon__element.onclick = () => handlePlay(unit)
 
   buttonIcon__element.addEventListener('mouseover', () => {
-    img__element.style.borderColor = 'yellow'
 
     const win__element = document.getElementById(win)
-    win__element.querySelector('img').style.borderColor = 'green'
     win__element.querySelector('.info').innerText = 'Ganha'
-
+    
     const lose__element = document.getElementById(lose)
-    lose__element.querySelector('img').style.borderColor = 'red'
     lose__element.querySelector('.info').innerText = 'Perde'
+
+    win__element.classList.add('win')
+    lose__element.classList.add('lose')
   })
 
-
   buttonIcon__element.addEventListener('mouseout', () => {
-    img__element.style.borderColor = 'white'
-
     const win__element = document.getElementById(win)
-    win__element.querySelector('img').style.borderColor = 'white'
     win__element.querySelector('.info').innerText = ''
 
     const lose__element = document.getElementById(lose)
-    lose__element.querySelector('img').style.borderColor = 'white'
     lose__element.querySelector('.info').innerText = ''
+
+    win__element.classList.remove('win')
+    lose__element.classList.remove('lose')
   })
 
   name__element.className = 'name'
