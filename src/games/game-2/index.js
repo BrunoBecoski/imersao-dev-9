@@ -8,22 +8,22 @@ import './styles.css'
 
 const units = new Map([
   ['archer', {
-    name: 'Arqueiro',
     value: 'archer',
+    name: 'Arqueiro',
     img: archerIconImg,
     win: 'spearman',
     lose: 'scout',
   }],
   ['spearman', {
-    name: 'Lanceiro',
     value: 'spearman',
+    name: 'Lanceiro',
     img: spearmanIconImg,
     win: 'scout',
     lose: 'archer',
   }],
   ['scout', {
-    name: 'Cavaleiro',
     value: 'scout',
+    name: 'Cavaleiro',
     img: scoutIconImg,
     win: 'archer',
     lose: 'spearman',
@@ -56,9 +56,9 @@ function handleStart() {
   const chooseUnits__element = document.createElement('div')
   chooseUnits__element.className = 'chooseUnits'
   chooseUnits__element.append(
-    createButtonIcon({ unit: 'archer' }),
-    createButtonIcon({ unit: 'spearman' }),
-    createButtonIcon({ unit: 'scout' }),
+    createButtonUnit({ unit: 'archer' }),
+    createButtonUnit({ unit: 'spearman' }),
+    createButtonUnit({ unit: 'scout' }),
   )
 
   const main__element = document.getElementById('main')
@@ -70,18 +70,17 @@ function handlePlay(unit) {
   const playerChoice = units.get(unit)
   const computerChoice = Array.from(units.entries())[Math.floor(Math.random() * 3)][1]
 
-  let  result = ''
+  let playerResult = 'draw'
+  let computerResult = 'draw'
 
-  if (playerChoice.value == computerChoice.value) {
-    result = 'draw'
+  if (playerChoice.value === computerChoice.lose && playerChoice.win === computerChoice.value) {
+    playerResult = 'won'
+    computerResult = 'lose'
   }
 
-  if (playerChoice.win == computerChoice.lose) {
-    result = 'won'
-  }
-
-  if (playerChoice.lose == computerChoice.win) {
-    result = 'lost'
+  if (playerChoice.value === computerChoice.win && playerChoice.lose === computerChoice.value) {
+    playerResult = 'lose'
+    computerResult = 'won'
   }
 
   const title__element = document.getElementById('title')
@@ -91,23 +90,27 @@ function handlePlay(unit) {
   result__element.className = 'result'
 
   result__element.innerHTML = `
-    <h2>
-      ${result === 'draw' ? 'EMPATE' : ''}
-      ${result === 'won' ? 'VENCEU' : ''}
-      ${result === 'lost' ? 'PERDEU' : ''}
+    <h2 class="title">
+      ${playerResult === 'draw' ? 'EMPATE' : ''}
+      ${playerResult === 'won' ? 'VENCEU' : ''}
+      ${playerResult === 'lose' ? 'PERDEU' : ''}
     </h2>
 
     <div class="units">
-      <div class="unit" data-wins=${result === 'won'}> 
-        <strong>${playerChoice.name}</strong>
-        <span>(Você)</span>
-        <img src="${playerChoice.img}" />
+      <div class="unit" data-result=${playerResult}> 
+        <span>Você</span>
+        <div>
+          <img src="${playerChoice.img}" />
+          <span>${playerChoice.name}</span>
+        </div>
       </div>
       
-      <div class="unit" data-wins=${result === 'lost'}>
-        <strong>${computerChoice.name}</strong>
-        <span>(Computador)</span>
-        <img src="${computerChoice.img}" title="${computerChoice.name}"/>
+      <div class="unit" data-result=${computerResult}>
+      <span>Computador</span>
+        <div>
+          <img src="${computerChoice.img}" title="${computerChoice.name}"/>
+          <span>${computerChoice.name}</span>
+        </div>
       </div>
     </div>
   `
@@ -120,33 +123,33 @@ function handlePlay(unit) {
   main__element.appendChild(result__element)
 }
 
-function createButtonIcon({ unit }) {
-  const { name, img } = units.get(unit)
+function createButtonUnit({ unit }) {
+  const { value, name, img } = units.get(unit)
 
-  const buttonIcon__element = document.createElement('button')
+  const buttonUnit__element = document.createElement('button')
   const info__element = document.createElement('span')
   const img__element = document.createElement('img')
   const name__element = document.createElement('span')
 
-  buttonIcon__element.id = unit
-  buttonIcon__element.title = `Selecionar ${name}`
-  buttonIcon__element.className = 'button-icon'
-  buttonIcon__element.onclick = () => handlePlay(unit)
+  buttonUnit__element.id = value
+  buttonUnit__element.title = `Selecionar ${name}`
+  buttonUnit__element.className = 'button-unit'
+  buttonUnit__element.onclick = () => handlePlay(value)
 
-  buttonIcon__element.addEventListener('mouseover', () => handleButtonIconMouseover(unit))
-  buttonIcon__element.addEventListener('mouseout', () => handleButtonIconMouseout(unit))
+  buttonUnit__element.addEventListener('mouseover', () => handleButtonUnitMouseover(value))
+  buttonUnit__element.addEventListener('mouseout', () => handleButtonUnitMouseout(value))
 
   info__element.className = 'info'
   img__element.src = img
   name__element.className = 'name'
   name__element.innerText = name
 
-  buttonIcon__element.append(info__element, img__element, name__element)
+  buttonUnit__element.append(info__element, img__element, name__element)
 
-  return buttonIcon__element
+  return buttonUnit__element
 }
 
-function handleButtonIconMouseover(unit) {
+function handleButtonUnitMouseover(unit) {
   const { win, lose } = units.get(unit)
 
   const win__element = document.getElementById(win)
@@ -160,7 +163,7 @@ function handleButtonIconMouseover(unit) {
   lose__element.classList.add('lose')
 }
 
-function handleButtonIconMouseout(unit) {
+function handleButtonUnitMouseout(unit) {
   const { win, lose } = units.get(unit)
 
   const win__element = document.getElementById(win)
