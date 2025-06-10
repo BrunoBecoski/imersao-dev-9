@@ -81,8 +81,8 @@ function handleStart() {
   archer_title__element.innerText = 'Arqueiros'
   archer__element.append(
     archer_title__element,
-    createSelectUnit('arbalester'),
-    createSelectUnit('skirmisher'),
+    createSelectUnit({ unit: 'arbalester', onClick: handleSelectUnit }),
+    createSelectUnit({ unit: 'skirmisher', onClick: handleSelectUnit }),
   )
 
   const infantry__element = document.createElement('div')
@@ -90,8 +90,8 @@ function handleStart() {
   infantry_title__element.innerText = 'Infantarias'
   infantry__element.append(
     infantry_title__element,
-    createSelectUnit('halberdier'),
-    createSelectUnit('champion'),
+    createSelectUnit({ unit: 'halberdier', onClick: handleSelectUnit }),
+    createSelectUnit({ unit: 'champion', onClick: handleSelectUnit }),
   )
 
   const cavalry__element = document.createElement('div')
@@ -99,8 +99,8 @@ function handleStart() {
   cavalry_title__element.innerText = 'Cavalarias'
   cavalry__element.append(
     cavalry_title__element,
-    createSelectUnit('paladin'),
-    createSelectUnit('camel'),
+    createSelectUnit({ unit: 'paladin', onClick: handleSelectUnit }),
+    createSelectUnit({ unit: 'camel', onClick: handleSelectUnit }),
   )
 
   const units__element = document.createElement('div')
@@ -110,12 +110,27 @@ function handleStart() {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Escolha três unidades'
 
+  const selected_units__element = document.createElement('div')
+  selected_units__element.id = 'selected-units'
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.appendChild(units__element)
+  main__element.append(selected_units__element, units__element)
 }
 
-function createSelectUnit(unit) {
+function handleSelectUnit(unit) {
+  const selected_units__element = document.getElementById('selected-units')
+
+  if (selected_units__element.childNodes.length > 2) {
+    return
+  }
+
+  const unit__element = createSelectedUnit({ unit, onClick: () => {} })
+
+  selected_units__element.appendChild(unit__element)
+}
+
+function createSelectUnit({ unit, onClick }) {
   const { img, name } = units.get(unit)
 
   const button__element = document.createElement('button')
@@ -123,6 +138,24 @@ function createSelectUnit(unit) {
   const span__element = document.createElement('span')
   
   button__element.className = 'select-unit'
+  button__element.onclick = () => onClick(unit)
+  img__element.src = img
+  span__element.innerText = name
+
+  button__element.append(img__element, span__element)
+
+  return button__element
+}
+
+function createSelectedUnit({ unit, onClick }) {
+  const { img, name } = units.get(unit)
+
+  const button__element = document.createElement('button')
+  const img__element = document.createElement('img')
+  const span__element = document.createElement('span')
+  
+  button__element.className = 'selected-unit'
+  button__element.onclick = () => onClick(unit)
   img__element.src = img
   span__element.innerText = name
 
