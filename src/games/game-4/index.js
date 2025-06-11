@@ -81,8 +81,8 @@ function handleStart() {
   archer_title__element.innerText = 'Arqueiros'
   archer__element.append(
     archer_title__element,
-    createSelectUnit({ unit: 'arbalester', onClick: handleSelectUnit }),
-    createSelectUnit({ unit: 'skirmisher', onClick: handleSelectUnit }),
+    createButtonUnit('arbalester'),
+    createButtonUnit('skirmisher'),
   )
 
   const infantry__element = document.createElement('div')
@@ -90,8 +90,8 @@ function handleStart() {
   infantry_title__element.innerText = 'Infantarias'
   infantry__element.append(
     infantry_title__element,
-    createSelectUnit({ unit: 'halberdier', onClick: handleSelectUnit }),
-    createSelectUnit({ unit: 'champion', onClick: handleSelectUnit }),
+    createButtonUnit('halberdier'),
+    createButtonUnit('champion'),
   )
 
   const cavalry__element = document.createElement('div')
@@ -99,8 +99,8 @@ function handleStart() {
   cavalry_title__element.innerText = 'Cavalarias'
   cavalry__element.append(
     cavalry_title__element,
-    createSelectUnit({ unit: 'paladin', onClick: handleSelectUnit }),
-    createSelectUnit({ unit: 'camel', onClick: handleSelectUnit }),
+    createButtonUnit('paladin'),
+    createButtonUnit('camel'),
   )
 
   const units__element = document.createElement('div')
@@ -118,19 +118,36 @@ function handleStart() {
   main__element.append(selected_units__element, units__element)
 }
 
-function handleSelectUnit(unit) {
+function handleAddUnit(unit) {
   const selected_units__element = document.getElementById('selected-units')
 
   if (selected_units__element.childNodes.length > 2) {
     return
   }
 
-  const unit__element = createSelectedUnit({ unit, onClick: () => {} })
+  const unit__element = createSelectedUnit(unit)
 
   selected_units__element.appendChild(unit__element)
+
+  if (selected_units__element.childNodes.length == 3) {
+    const start_battle__element = createButton({ text: 'Batalhar', handleClick: () => console.log('Batalhar') })
+    start_battle__element.id = 'start-battle'
+
+    selected_units__element.appendChild(start_battle__element)
+  }
 }
 
-function createSelectUnit({ unit, onClick }) {
+function handleRemoveUnit(id) {
+  document.getElementById(id).remove()
+
+  const selected_units__element = document.getElementById('selected-units')
+
+  if (selected_units__element.childNodes.length >= 2) {
+    document.getElementById('start-battle').remove()
+  }
+}
+
+function createButtonUnit(unit) {
   const { img, name } = units.get(unit)
 
   const button__element = document.createElement('button')
@@ -138,7 +155,7 @@ function createSelectUnit({ unit, onClick }) {
   const span__element = document.createElement('span')
   
   button__element.className = 'select-unit'
-  button__element.onclick = () => onClick(unit)
+  button__element.onclick = () => handleAddUnit(unit)
   img__element.src = img
   span__element.innerText = name
 
@@ -147,15 +164,18 @@ function createSelectUnit({ unit, onClick }) {
   return button__element
 }
 
-function createSelectedUnit({ unit, onClick }) {
+function createSelectedUnit(unit) {
   const { img, name } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
+
+  const id = new Date().getTime()
   
+  button__element.id = new Date().getTime()
   button__element.className = 'selected-unit'
-  button__element.onclick = () => onClick(unit)
+  button__element.onclick = () => handleRemoveUnit(id)
   img__element.src = img
   span__element.innerText = name
 
