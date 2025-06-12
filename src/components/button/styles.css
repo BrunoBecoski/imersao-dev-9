@@ -13,6 +13,11 @@
   transition: all .2s;
 }
 
-.button:hover {
+.button:enabled:hover {
   filter: brightness(1.5);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1) ;
 }

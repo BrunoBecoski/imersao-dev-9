@@ -113,37 +113,58 @@ function handleStart() {
   const selected_units__element = document.createElement('div')
   selected_units__element.id = 'selected-units'
 
+  selected_units__element.append(
+    document.createElement('div'),
+    document.createElement('div'),
+    document.createElement('div'),
+  )
+
+  const start_battle__element = createButton({ text: 'Batalhar', handleClick: handleBattle })
+  start_battle__element.disabled = true
+  start_battle__element.id = 'start-battle-button'
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(selected_units__element, units__element)
+  main__element.append(selected_units__element, start_battle__element, units__element)
 }
 
 function handleAddUnit(unit) {
   const selected_units__element = document.getElementById('selected-units')
 
-  if (selected_units__element.childNodes.length > 2) {
-    return
+  const slot_1__element = selected_units__element.querySelectorAll('div')[0]
+  const slot_2__element = selected_units__element.querySelectorAll('div')[1]
+  const slot_3__element = selected_units__element.querySelectorAll('div')[2]
+
+  if (slot_1__element.hasChildNodes() === false) {
+    slot_1__element.dataset.unit = unit
+    slot_1__element.appendChild(createSelectedUnit(unit))
+  } else if (slot_2__element.hasChildNodes() === false) {
+    slot_2__element.dataset.unit = unit
+    slot_2__element.appendChild(createSelectedUnit(unit))
+  } else if (slot_3__element.hasChildNodes() === false) {
+    slot_3__element.dataset.unit = unit
+    slot_3__element.appendChild(createSelectedUnit(unit))
   }
 
-  const unit__element = createSelectedUnit(unit)
+  if (slot_1__element.hasChildNodes() && slot_2__element.hasChildNodes() && slot_3__element.hasChildNodes()) {
+    const start_battle__element = document.getElementById('start-battle-button')
+    start_battle__element.disabled = false
+  }  
+}
 
-  selected_units__element.appendChild(unit__element)
+function handleBattle() {
+  const selected_units__element = document.getElementById('selected-units')
 
-  if (selected_units__element.childNodes.length == 3) {
-    const start_battle__element = createButton({ text: 'Batalhar', handleClick: () => console.log('Batalhar') })
-    start_battle__element.id = 'start-battle'
-
-    selected_units__element.appendChild(start_battle__element)
-  }
+  console.log(selected_units__element)
 }
 
 function handleRemoveUnit(id) {
   document.getElementById(id).remove()
 
-  const selected_units__element = document.getElementById('selected-units')
+  const slots__element = document.getElementById('selected-units').querySelectorAll('div')
 
-  if (selected_units__element.childNodes.length >= 2) {
-    document.getElementById('start-battle').remove()
+  if (slots__element[0].hasChildNodes() || slots__element[1].hasChildNodes() || slots__element[2].hasChildNodes()) {
+    document.getElementById('start-battle-button').disabled = true
   }
 }
 
@@ -165,7 +186,7 @@ function createButtonUnit(unit) {
 }
 
 function createSelectedUnit(unit) {
-  const { img, name } = units.get(unit)
+  const { name, img } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
