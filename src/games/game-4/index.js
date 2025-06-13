@@ -153,9 +153,32 @@ function handleAddUnit(unit) {
 }
 
 function handleBattle() {
-  const selected_units__element = document.getElementById('selected-units')
+  const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
-  console.log(selected_units__element)
+  const unit_1 = units.get(slots__elements[0].dataset.unit)
+  const unit_2 = units.get(slots__elements[1].dataset.unit)
+  const unit_3 = units.get(slots__elements[2].dataset.unit)
+
+  if (unit_1 && unit_2 && unit_3) {
+    const unit_1__element = document.createElement('img')
+    unit_1__element.src = unit_1.img
+
+    const unit_2__element = document.createElement('img')
+    unit_2__element.src = unit_2.img
+
+    const unit_3__element = document.createElement('img')
+    unit_3__element.src = unit_3.img
+
+    const main__element = document.getElementById('main')
+
+    main__element.innerHTML = ''
+    
+    main__element.append(
+      unit_1__element,
+      unit_2__element,
+      unit_3__element,
+    )
+  }
 }
 
 function handleRemoveUnit(id) {
