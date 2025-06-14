@@ -155,29 +155,61 @@ function handleAddUnit(unit) {
 function handleBattle() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
-  const unit_1 = units.get(slots__elements[0].dataset.unit)
-  const unit_2 = units.get(slots__elements[1].dataset.unit)
-  const unit_3 = units.get(slots__elements[2].dataset.unit)
+  const player_units__element = document.createElement('div')
+  const computer_units__element = document.createElement('div')
 
-  if (unit_1 && unit_2 && unit_3) {
-    const unit_1__element = document.createElement('img')
-    unit_1__element.src = unit_1.img
+  const player_unit_1 = units.get(slots__elements[0].dataset.unit)
+  const player_unit_2 = units.get(slots__elements[1].dataset.unit)
+  const player_unit_3 = units.get(slots__elements[2].dataset.unit)
 
-    const unit_2__element = document.createElement('img')
-    unit_2__element.src = unit_2.img
+  const computer_unit_1 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
+  const computer_unit_2 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
+  const computer_unit_3 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
 
-    const unit_3__element = document.createElement('img')
-    unit_3__element.src = unit_3.img
+  if (player_unit_1 && player_unit_2 && player_unit_3) {
+
+    const player_unit_1__element = document.createElement('img')
+    player_unit_1__element.src = player_unit_1.img
+
+    const player_unit_2__element = document.createElement('img')
+    player_unit_2__element.src = player_unit_2.img
+
+    const player_unit_3__element = document.createElement('img')
+    player_unit_3__element.src = player_unit_3.img
+
+    player_units__element.append(
+      player_unit_1__element,
+      player_unit_2__element,
+      player_unit_3__element,
+    )
+
+    const computer_unit_1__element = document.createElement('img')
+    computer_unit_1__element.src = computer_unit_1.img
+
+    const computer_unit_2__element = document.createElement('img')
+    computer_unit_2__element.src = computer_unit_2.img
+
+    const computer_unit_3__element = document.createElement('img')
+    computer_unit_3__element.src = computer_unit_3.img
+
+    computer_units__element.append(
+      computer_unit_1__element,
+      computer_unit_2__element,
+      computer_unit_3__element,
+    )
+
+    const battle__element = document.createElement('div')
+    battle__element.className = 'battle'
+    battle__element.append(
+      player_units__element,
+      computer_units__element,
+    )
 
     const main__element = document.getElementById('main')
 
     main__element.innerHTML = ''
     
-    main__element.append(
-      unit_1__element,
-      unit_2__element,
-      unit_3__element,
-    )
+    main__element.appendChild(battle__element)
   }
 }
 

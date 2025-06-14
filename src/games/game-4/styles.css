@@ -25,11 +25,27 @@
   gap: 1rem;
 }
 
-
 #game-4 .units > div > span {
   color: #FFFFFF;
   font-weight: bold;
   font-size: 1.5rem;
+}
+
+#game-4 .battle {
+  display: flex;
+  gap: 5rem;
+  justify-content: space-between;
+}
+
+#game-4 .battle div {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+#game-4 .battle div img {
+  width: 150px;
+  height: 150px;
 }
 
 #game-4 #selected-units {
