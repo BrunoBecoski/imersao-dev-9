@@ -15,42 +15,49 @@ const units = new Map([
     value: 'arbalester',
     img: arbalesterIconImg,
     type: 'archer',
-    strong: 'infantry',
+    strong: ['halberdier', 'champion'],
+    weak:  ['paladin', 'camel'],
   }],
   ['skirmisher', {
     name: 'Escaramuçador',
     value: 'skirmisher',
     img: skirmisherIconImg,
     type: 'archer',
-    type: 'archer',
+    strong: ['arbalester'],
+    weak: ['paladin', 'camel']
   }],
   ['halberdier', {
     name: 'Alabardeiro',
     value: 'halberdier',
     img: halberdierIconImg,
     type: 'infantry',
-    strong: 'cavalry',
+    strong: ['paladin', 'camel'],
+    weak: ['arbalester', 'skirmisher'],
   }],
   ['champion', {
     name: 'Campeão',
     value: 'champion',
     img: championIconImg,
     type: 'infantry',
-    strong: 'infantry',
+    strong: ['halberdier'],
+    weak: ['arbalester', 'skirmisher'],
   }],
   ['paladin', {
     name: 'Paladino',
     value: 'paladin',
     img: paladinIconImg,
     type: 'cavalry',
-    strong: 'archer',
+    strong: ['arbalester', 'skirmisher'],
+    weak: ['halberdier', 'champion'],
+
   }],
   ['camel', {
     name: 'Cameleiro',
     value: 'camel',
     img: camelIconImg,
     type: 'cavalry',
-    strong: 'cavalry',
+    strong: ['paladin'],
+    weak: ['halberdier', 'champion'],
   }],
 ])
 
@@ -60,7 +67,7 @@ export function createGame4() {
   section__element.innerHTML = `
     <div id="game-4">
       <div class="header"> 
-        <h2 id="title">Monte se exército e ganhe</h2>
+        <h2 id="title">Monte seu exército e ganhe</h2>
       </div>
 
       <div id="main">
@@ -76,36 +83,39 @@ export function createGame4() {
 }
 
 function handleStart() {
-  const archer__element = document.createElement('div')
+  const archers__element = document.createElement('div')
+  archers__element.className = 'archers'
   const archer_title__element = document.createElement('span')
   archer_title__element.innerText = 'Arqueiros'
-  archer__element.append(
+  archers__element.append(
     archer_title__element,
     createButtonUnit('arbalester'),
     createButtonUnit('skirmisher'),
   )
 
-  const infantry__element = document.createElement('div')
-  const infantry_title__element = document.createElement('span')
-  infantry_title__element.innerText = 'Infantarias'
-  infantry__element.append(
-    infantry_title__element,
+  const infantries__element = document.createElement('div')
+  infantries__element.className = 'infantries'
+  const infantries_title__element = document.createElement('span')
+  infantries_title__element.innerText = 'Infantarias'
+  infantries__element.append(
+    infantries_title__element,
     createButtonUnit('halberdier'),
     createButtonUnit('champion'),
   )
 
-  const cavalry__element = document.createElement('div')
-  const cavalry_title__element = document.createElement('span')
-  cavalry_title__element.innerText = 'Cavalarias'
-  cavalry__element.append(
-    cavalry_title__element,
+  const cavalries__element = document.createElement('div')
+  cavalries__element.className = 'cavalries'
+  const cavalries_title__element = document.createElement('span')
+  cavalries_title__element.innerText = 'Cavalarias'
+  cavalries__element.append(
+    cavalries_title__element,
     createButtonUnit('paladin'),
     createButtonUnit('camel'),
   )
 
   const units__element = document.createElement('div')
   units__element.className = 'units'
-  units__element.append(archer__element, infantry__element, cavalry__element)
+  units__element.append(archers__element, infantries__element, cavalries__element)
 
   const title__element = document.getElementById('title')
   title__element.innerText = 'Escolha três unidades'
@@ -113,19 +123,20 @@ function handleStart() {
   const selected_units__element = document.createElement('div')
   selected_units__element.id = 'selected-units'
 
-  selected_units__element.append(
-    document.createElement('div'),
-    document.createElement('div'),
-    document.createElement('div'),
-  )
-
   const start_battle__element = createButton({ text: 'Batalhar', handleClick: handleBattle })
   start_battle__element.disabled = true
   start_battle__element.id = 'start-battle-button'
 
+  selected_units__element.append(
+    document.createElement('div'),
+    document.createElement('div'),
+    document.createElement('div'),
+    start_battle__element,
+  )
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(selected_units__element, start_battle__element, units__element)
+  main__element.append(selected_units__element, units__element)
 }
 
 function handleAddUnit(unit) {
@@ -205,11 +216,12 @@ function handleBattle() {
       computer_units__element,
     )
 
-    const main__element = document.getElementById('main')
+    const title__element = document.getElementById('title')
+    title__element.innerText = 'Batalha'
 
+    const main__element = document.getElementById('main')
     main__element.innerHTML = ''
-    
-    main__element.appendChild(battle__element)
+    main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: handleStart }))
   }
 }
 
@@ -224,16 +236,20 @@ function handleRemoveUnit(id) {
 }
 
 function createButtonUnit(unit) {
-  const { img, name } = units.get(unit)
+  const { value, img, name } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
   
+  button__element.id = value
   button__element.className = 'select-unit'
   button__element.onclick = () => handleAddUnit(unit)
   img__element.src = img
   span__element.innerText = name
+
+  button__element.addEventListener('mouseover', () => handleMouseOver(value))
+  button__element.addEventListener('mouseout', () => handleMouseOut(value))
 
   button__element.append(img__element, span__element)
 
@@ -241,7 +257,7 @@ function createButtonUnit(unit) {
 }
 
 function createSelectedUnit(unit) {
-  const { name, img } = units.get(unit)
+  const { value, name, img } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
@@ -258,6 +274,20 @@ function createSelectedUnit(unit) {
   button__element.append(img__element, span__element)
 
   return button__element
+}
+
+function handleMouseOver(value) {
+  const { strong, weak } = units.get(value)
+
+  strong.forEach(unit => document.getElementById(unit).classList.add('strong'))
+  weak.forEach(unit => document.getElementById(unit).classList.add('weak'))
+}
+
+function handleMouseOut(value) {
+  const { strong, weak } = units.get(value)
+
+  strong.forEach(unit => document.getElementById(unit).classList.remove('strong'))
+  weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
 }
 
 
