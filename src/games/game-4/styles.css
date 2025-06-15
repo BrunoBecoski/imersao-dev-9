@@ -39,15 +39,53 @@
   justify-content: space-between;
 }
 
-#game-4 .battle div {
+#game-4 .battle > div {
   display: flex;
   gap: 1rem;
   flex-direction: column;
 }
 
-#game-4 .battle div img {
+#game-4 .battle-unit {
+  display: flex;
+  flex-direction: column;
+}
+
+#game-4 .battle-unit  img {
   width: 150px;
   height: 150px;
+}
+
+
+#game-4 .battle-unit .unit-life {
+  background-color: #00FC42;
+  height: 1rem;
+  width: 100%;
+}
+
+.battle-unit .unit-name {
+  background-color: #306B7F;
+  text-align: center;
+  color: #FFFFFF
+}
+
+.battle-unit[data-life="1"] .unit-life {
+  background: linear-gradient(90deg, #00FC42 10%,#F41A28 10%);
+}
+
+.battle-unit[data-life="2"] .unit-life {
+  background: linear-gradient(90deg, #00FC42 25%, #F41A28 25%);
+}
+
+.battle-unit[data-life="3"] .unit-life {
+  background: linear-gradient(90deg, #00FC42 50%, #F41A28 50%);
+}
+
+.battle-unit[data-life="4"] .unit-life {
+  background: linear-gradient(90deg, #00FC42 75%, #F41A28 75%);
+
+}
+.battle-unit[data-life="5"] .unit-life {
+  background: linear-gradient(90deg, #00FC42 100%, #F41A28 100%);
 }
 
 #game-4 #selected-units {

@@ -179,34 +179,16 @@ function handleBattle() {
 
   if (player_unit_1 && player_unit_2 && player_unit_3) {
 
-    const player_unit_1__element = document.createElement('img')
-    player_unit_1__element.src = player_unit_1.img
-
-    const player_unit_2__element = document.createElement('img')
-    player_unit_2__element.src = player_unit_2.img
-
-    const player_unit_3__element = document.createElement('img')
-    player_unit_3__element.src = player_unit_3.img
-
     player_units__element.append(
-      player_unit_1__element,
-      player_unit_2__element,
-      player_unit_3__element,
+      createBattleUnit(player_unit_1.value),
+      createBattleUnit(player_unit_2.value),
+      createBattleUnit(player_unit_3.value),
     )
 
-    const computer_unit_1__element = document.createElement('img')
-    computer_unit_1__element.src = computer_unit_1.img
-
-    const computer_unit_2__element = document.createElement('img')
-    computer_unit_2__element.src = computer_unit_2.img
-
-    const computer_unit_3__element = document.createElement('img')
-    computer_unit_3__element.src = computer_unit_3.img
-
     computer_units__element.append(
-      computer_unit_1__element,
-      computer_unit_2__element,
-      computer_unit_3__element,
+      createBattleUnit(computer_unit_1.value),
+      createBattleUnit(computer_unit_2.value),
+      createBattleUnit(computer_unit_3.value),
     )
 
     const battle__element = document.createElement('div')
@@ -288,6 +270,28 @@ function handleMouseOut(value) {
 
   strong.forEach(unit => document.getElementById(unit).classList.remove('strong'))
   weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
+}
+
+function createBattleUnit(unit) {
+  const { img, name } = units.get(unit)
+
+  const battle_unit__element = document.createElement('div')
+  const img__element = document.createElement('img')
+  const life__element = document.createElement('span')
+  const name__element = document.createElement('span')
+
+  life__element.className = 'unit-life'
+  battle_unit__element.className = 'battle-unit'
+  name__element.className = 'unit-name'
+
+  img__element.src = img
+  name__element.innerText = name
+
+  battle_unit__element.dataset.life = Math.floor(Math.random() * 5) + 1
+
+  battle_unit__element.append(life__element, img__element, name__element)
+
+  return battle_unit__element
 }
 
 
