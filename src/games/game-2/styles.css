@@ -44,7 +44,7 @@
 }
 
 #game_2 .result .title {
-  color: #FFA32F;
+  color: #FFFB47;
   font-size: 3rem;
   font-weight: bold;
 }
@@ -67,32 +67,118 @@
   font-size: 2rem;
 }
 
+#game_2 .result .units .unit .life {
+  height: 1rem;
+  width: 100%;
+  background-color: #00FC42;
+}
+
+#game_2 .result .units .unit:last-child .life {
+  transform: rotate(180deg);
+}
+
 #game_2 .result .units .unit div {
   background-color: #306B7F;
-  border: 5px solid;
+  border: 5px solid #306B7F;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#game_2 .result .units .unit.right-animation {
+  animation-name: right-unit;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+}
+
+#game_2 .result .units .unit.left-animation {
+  animation-name: left-unit;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
+
+#game_2 .result .units .unit[data-result='draw'] .life {
+  animation-name: life-draw;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
+
+#game_2 .result .units .unit[data-result='won'] .life {
+  animation-name: life-won;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
+
+#game_2 .result .units .unit[data-result='lose'] .life {
+  animation-name: life-lose;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
+
+@keyframes right-unit {
+  0% { transform: translateX(0) }
+  15% { transform: translateX(2rem) }
+  30% { transform: translateX(0) }
+  45% { transform: translateX(2rem) }
+  60% { transform: translateX(0) }
+  75% { transform: translateX(2rem) }
+  100% { transform: translateX(0) }
+}
+
+@keyframes left-unit {
+  0% { transform: translateX(0) }
+  15% { transform: translateX(-2rem) }
+  30% { transform: translateX(0) }
+  45% { transform: translateX(-2rem) }
+  60% { transform: translateX(0) }
+  75% { transform: translateX(-2rem) }
+  100% { transform: translateX(0) }
+}
+
+@keyframes life-won {
+  0% { background: linear-gradient(90deg, #00FC42 100%, #F41A28 100%) }
+  25% { background: linear-gradient(90deg, #00FC42 84%, #F41A28 84%) }
+  60% { background: linear-gradient(90deg, #00FC42 66%, #F41A28 66%) }
+  85% { background: linear-gradient(90deg, #00FC42 50%, #F41A28 50%) }
+  100% { background: linear-gradient(90deg, #00FC42 50%, #F41A28 50%) }
+}
+
+@keyframes life-lose {
+  0% { background: linear-gradient(90deg, #00FC42 100%, #F41A28 100%) }
+  25% { background: linear-gradient(90deg, #00FC42 66%, #F41A28 66%) }
+  60% { background: linear-gradient(90deg, #00FC42 33%, #F41A28 33%) }
+  85% { background: linear-gradient(90deg, #00FC42 0%, #F41A28 0%) }
+  100% { background: linear-gradient(90deg, #00FC42 0%, #F41A28 0%) }
+}
+
+@keyframes life-draw {
+  0% { background: linear-gradient(90deg, #00FC42 100%, #F41A28 100%) }
+  25% { background: linear-gradient(90deg, #00FC42 70%, #F41A28 70%) }
+  60% { background: linear-gradient(90deg, #00FC42 40%, #F41A28 40%) }
+  85% { background: linear-gradient(90deg, #00FC42 10%, #F41A28 10%) }
+  100% { background: linear-gradient(90deg, #00FC42 10%, #F41A28 10%) }
 }
 
 #game_2 .result .units .unit div span {
   font-weight: bold;
 }
 
-#game_2 .result .units .unit div img{
+#game_2 .result .units .unit div img {
   width: 100%;
 }
 
-#game_2 .result .units .unit[data-result='draw'] div {
-  border-color: #FFFFFF;
+#game_2 .result .units .unit.unit-result {
+  width: 25%;
 }
 
-#game_2 .result .units .unit[data-result='won'] div {
-  border-color: #00FC42;
-}
-
-#game_2 .result .units .unit[data-result='lose'] div {
-  border-color: #F41A28;
+#game_2 .result .units .unit.unit-result > span {
+  font-size: 1rem;
 }
 
 #game_2 .button-unit {

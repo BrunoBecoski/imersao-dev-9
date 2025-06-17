@@ -97,17 +97,19 @@ function handlePlay(unit) {
     </h2>
 
     <div class="units">
-      <div class="unit" data-result=${playerResult}> 
+      <div class="unit right-animation" data-result=${playerResult}> 
         <span>Você</span>
         <div>
+          <span class="life"></span>
           <img src="${playerChoice.img}" />
           <span>${playerChoice.name}</span>
         </div>
       </div>
       
-      <div class="unit" data-result=${computerResult}>
+      <div class="unit left-animation" data-result=${computerResult}>
       <span>Computador</span>
         <div>
+          <span class="life"></span>
           <img src="${computerChoice.img}" title="${computerChoice.name}"/>
           <span>${computerChoice.name}</span>
         </div>
@@ -115,8 +117,36 @@ function handlePlay(unit) {
     </div>
   `
 
-  const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
-  result__element.appendChild(replay__element)
+  setTimeout(() => {
+    const lose__element = document.querySelector("[data-result='lose']")
+    const won__element = document.querySelector("[data-result='won']")
+    const draw__elements = document.querySelectorAll("[data-result='draw']")
+
+    if(lose__element && won__element) {
+      lose__element.remove()
+
+      won__element.classList.remove('left-animation')
+      won__element.classList.remove('right-animation')
+
+      won__element.classList.add('unit-result')
+      won__element.querySelector('.life').remove()
+    }
+
+    if (draw__elements.length === 2) {
+      console.log(draw__elements)
+      console.log(draw__elements[0])
+      draw__elements[0].classList.add('unit-result')
+      draw__elements[0].classList.remove('right-animation')
+      draw__elements[0].querySelector('.life').remove()
+      
+      draw__elements[1].classList.add('unit-result')
+      draw__elements[1].classList.remove('left-animation')
+      draw__elements[1].querySelector('.life').remove()
+    }
+
+    const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
+    result__element.appendChild(replay__element)
+  }, 2000)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ``
