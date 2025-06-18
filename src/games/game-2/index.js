@@ -84,18 +84,12 @@ function handlePlay(unit) {
   }
 
   const title__element = document.getElementById('title')
-  title__element.innerHTML = 'Resultado'
+  title__element.innerHTML = 'Batalhando'
 
   const result__element = document.createElement('div')
   result__element.className = 'result'
 
   result__element.innerHTML = `
-    <h2 class="title">
-      ${playerResult === 'draw' ? 'EMPATE' : ''}
-      ${playerResult === 'won' ? 'VENCEU' : ''}
-      ${playerResult === 'lose' ? 'PERDEU' : ''}
-    </h2>
-
     <div class="units">
       <div class="unit right-animation" data-result=${playerResult}> 
         <span>Você</span>
@@ -123,25 +117,35 @@ function handlePlay(unit) {
     const draw__elements = document.querySelectorAll("[data-result='draw']")
 
     if(lose__element && won__element) {
-      lose__element.remove()
+      lose__element.classList.remove('left-animation')
+      lose__element.classList.remove('right-animation')
 
       won__element.classList.remove('left-animation')
       won__element.classList.remove('right-animation')
 
-      won__element.classList.add('unit-result')
+      lose__element.style.filter = 'grayscale(100%)'
+      
       won__element.querySelector('.life').remove()
+      lose__element.querySelector('.life').remove()
     }
 
     if (draw__elements.length === 2) {
-      console.log(draw__elements)
-      console.log(draw__elements[0])
-      draw__elements[0].classList.add('unit-result')
       draw__elements[0].classList.remove('right-animation')
       draw__elements[0].querySelector('.life').remove()
-      
-      draw__elements[1].classList.add('unit-result')
+      draw__elements[0].style.filter = 'grayscale(50%)'
+
       draw__elements[1].classList.remove('left-animation')
       draw__elements[1].querySelector('.life').remove()
+      draw__elements[1].style.filter = 'grayscale(50%)'
+    }
+
+    const title__element = document.getElementById('title')
+    if (playerResult === 'draw') {
+      title__element.innerHTML = 'EMPATE'
+    } else if (playerResult === 'won') {
+      title__element.innerHTML = 'VENCEU'
+    } else if (playerResult === 'lose') {
+      title__element.innerHTML = 'PERDEU'
     }
 
     const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })

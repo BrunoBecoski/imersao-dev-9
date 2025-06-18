@@ -173,14 +173,6 @@
   width: 100%;
 }
 
-#game_2 .result .units .unit.unit-result {
-  width: 25%;
-}
-
-#game_2 .result .units .unit.unit-result > span {
-  font-size: 1rem;
-}
-
 #game_2 .button-unit {
   display: flex;
   flex-direction: column;
