@@ -67,13 +67,13 @@
   font-size: 2rem;
 }
 
-#game_2 .result .units .unit .life {
+#game_2 .result .units .unit #life {
   height: 1rem;
   width: 100%;
   background-color: #00FC42;
 }
 
-#game_2 .result .units .unit:last-child .life {
+#game_2 .result .units .unit:last-child #life {
   transform: rotate(180deg);
 }
 
@@ -121,7 +121,7 @@
   animation-timing-function: ease-in;
 }
 
-@keyframes right-unit {
+/* @keyframes right-unit {
   0% { transform: translateX(0) }
   15% { transform: translateX(2rem) }
   30% { transform: translateX(0) }
@@ -163,7 +163,7 @@
   60% { background: linear-gradient(90deg, #00FC42 40%, #F41A28 40%) }
   85% { background: linear-gradient(90deg, #00FC42 10%, #F41A28 10%) }
   100% { background: linear-gradient(90deg, #00FC42 10%, #F41A28 10%) }
-}
+} */
 
 #game_2 .result .units .unit div span {
   font-weight: bold;

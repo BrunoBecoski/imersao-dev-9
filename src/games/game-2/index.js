@@ -93,8 +93,8 @@ function handlePlay(unit) {
     <div class="units">
       <div class="unit right-animation" data-result=${playerResult}> 
         <span>Você</span>
-        <div>
-          <span class="life"></span>
+        <div id="right-unit">
+          <span id="life"></span>
           <img src="${playerChoice.img}" />
           <span>${playerChoice.name}</span>
         </div>
@@ -102,55 +102,91 @@ function handlePlay(unit) {
       
       <div class="unit left-animation" data-result=${computerResult}>
       <span>Computador</span>
-        <div>
-          <span class="life"></span>
+        <div id="left-unit">
+          <span id="life"></span>
           <img src="${computerChoice.img}" title="${computerChoice.name}"/>
           <span>${computerChoice.name}</span>
         </div>
       </div>
     </div>
   `
+  
+  const right_unit__element =  result__element.querySelector('#right-unit')
+  const right_unit__keyframe = new KeyframeEffect(
+      right_unit__element,
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(2rem)' }, { transform: 'translateX(0)' }],
+      { duration: 2000 },
+    )
+  const right_unit__animation = new Animation(right_unit__keyframe)
+  const right_unit_life__keyframe = new KeyframeEffect(
+    right_unit__element.querySelector('#life'),
+    [{ background: 'linear-gradient(90deg, #00FC42 100%, #F41A28 100%)' }, { background: 'linear-gradient(90deg, #00FC42 50%, #F41A28 50%)' }],
+    { duration: 2000 },
+  )
+
+  const left_unit__element =  result__element.querySelector('#left-unit')
+  const left_unit__keyframe = new KeyframeEffect(
+    left_unit__element,
+    [{ transform: 'translateX(0)' }, { transform: 'translateX(-2rem)' }, { transform: 'translateX(0)' }],
+    { duration: 2000 },
+  )
+  const left_unit__animation = new Animation(left_unit__keyframe)
+  const left_unit_life__keyframe = new KeyframeEffect(
+    left_unit__element.querySelector('#life'),
+    [{ background: 'linear-gradient(90deg, #00FC42 100%, #F41A28 100%)' }, { background: 'linear-gradient(90deg, #00FC42 50%, #F41A28 50%)' }],
+    { duration: 2000 },
+  )
 
   setTimeout(() => {
-    const lose__element = document.querySelector("[data-result='lose']")
-    const won__element = document.querySelector("[data-result='won']")
-    const draw__elements = document.querySelectorAll("[data-result='draw']")
-
-    if(lose__element && won__element) {
-      lose__element.classList.remove('left-animation')
-      lose__element.classList.remove('right-animation')
-
-      won__element.classList.remove('left-animation')
-      won__element.classList.remove('right-animation')
-
-      lose__element.style.filter = 'grayscale(100%)'
-      
-      won__element.querySelector('.life').remove()
-      lose__element.querySelector('.life').remove()
-    }
-
-    if (draw__elements.length === 2) {
-      draw__elements[0].classList.remove('right-animation')
-      draw__elements[0].querySelector('.life').remove()
-      draw__elements[0].style.filter = 'grayscale(50%)'
-
-      draw__elements[1].classList.remove('left-animation')
-      draw__elements[1].querySelector('.life').remove()
-      draw__elements[1].style.filter = 'grayscale(50%)'
-    }
-
-    const title__element = document.getElementById('title')
-    if (playerResult === 'draw') {
-      title__element.innerHTML = 'EMPATE'
-    } else if (playerResult === 'won') {
-      title__element.innerHTML = 'VENCEU'
-    } else if (playerResult === 'lose') {
-      title__element.innerHTML = 'PERDEU'
-    }
-
-    const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
-    result__element.appendChild(replay__element)
+    right_unit__animation.play()
+    left_unit__animation.play()
+  }, 1000)
+  
+  setTimeout(() => {
+    new Animation(right_unit_life__keyframe).play()
+    new Animation(left_unit_life__keyframe).play()
   }, 2000)
+
+  // setTimeout(() => {
+  //   const lose__element = document.querySelector("[data-result='lose']")
+  //   const won__element = document.querySelector("[data-result='won']")
+  //   const draw__elements = document.querySelectorAll("[data-result='draw']")
+
+  //   if(lose__element && won__element) {
+  //     lose__element.classList.remove('left-animation')
+  //     lose__element.classList.remove('right-animation')
+
+  //     won__element.classList.remove('left-animation')
+  //     won__element.classList.remove('right-animation')
+
+  //     lose__element.style.filter = 'grayscale(100%)'
+      
+  //     won__element.querySelector('.life').remove()
+  //     lose__element.querySelector('.life').remove()
+  //   }
+
+  //   if (draw__elements.length === 2) {
+  //     draw__elements[0].classList.remove('right-animation')
+  //     draw__elements[0].querySelector('.life').remove()
+  //     draw__elements[0].style.filter = 'grayscale(50%)'
+
+  //     draw__elements[1].classList.remove('left-animation')
+  //     draw__elements[1].querySelector('.life').remove()
+  //     draw__elements[1].style.filter = 'grayscale(50%)'
+  //   }
+
+  //   const title__element = document.getElementById('title')
+  //   if (playerResult === 'draw') {
+  //     title__element.innerHTML = 'EMPATE'
+  //   } else if (playerResult === 'won') {
+  //     title__element.innerHTML = 'VENCEU'
+  //   } else if (playerResult === 'lose') {
+  //     title__element.innerHTML = 'PERDEU'
+  //   }
+
+  //   const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
+  //   result__element.appendChild(replay__element)
+  // }, 2000)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ``
