@@ -91,10 +91,13 @@ function handlePlay(unit) {
 
   result__element.innerHTML = `
     <div class="units">
-      <div class="unit right-animation" data-result=${playerResult}> 
+      <div id="player-unit" class="unit right-animation" data-result=${playerResult}> 
         <span>Você</span>
-        <div id="right-unit">
-          <span id="life"></span>
+        <div id="player-unit">
+          <div id="life" data-life="99" >
+            <span></span>
+            <span></span>
+          </div>
           <img src="${playerChoice.img}" />
           <span>${playerChoice.name}</span>
         </div>
@@ -102,8 +105,12 @@ function handlePlay(unit) {
       
       <div class="unit left-animation" data-result=${computerResult}>
       <span>Computador</span>
-        <div id="left-unit">
-          <span id="life"></span>
+        <div id="computer-unit">
+          <div id="life" data-life="99" >
+            <span></span>
+            <span></span>
+          </div>
+
           <img src="${computerChoice.img}" title="${computerChoice.name}"/>
           <span>${computerChoice.name}</span>
         </div>
@@ -111,82 +118,147 @@ function handlePlay(unit) {
     </div>
   `
   
-  const right_unit__element =  result__element.querySelector('#right-unit')
-  const right_unit__keyframe = new KeyframeEffect(
-      right_unit__element,
-      [{ transform: 'translateX(0)' }, { transform: 'translateX(2rem)' }, { transform: 'translateX(0)' }],
-      { duration: 2000 },
-    )
-  const right_unit__animation = new Animation(right_unit__keyframe)
-  const right_unit_life__keyframe = new KeyframeEffect(
-    right_unit__element.querySelector('#life'),
-    [{ background: 'linear-gradient(90deg, #00FC42 100%, #F41A28 100%)' }, { background: 'linear-gradient(90deg, #00FC42 50%, #F41A28 50%)' }],
-    { duration: 2000 },
-  )
-
-  const left_unit__element =  result__element.querySelector('#left-unit')
-  const left_unit__keyframe = new KeyframeEffect(
-    left_unit__element,
-    [{ transform: 'translateX(0)' }, { transform: 'translateX(-2rem)' }, { transform: 'translateX(0)' }],
-    { duration: 2000 },
-  )
-  const left_unit__animation = new Animation(left_unit__keyframe)
-  const left_unit_life__keyframe = new KeyframeEffect(
-    left_unit__element.querySelector('#life'),
-    [{ background: 'linear-gradient(90deg, #00FC42 100%, #F41A28 100%)' }, { background: 'linear-gradient(90deg, #00FC42 50%, #F41A28 50%)' }],
-    { duration: 2000 },
-  )
+  const player_unit__element =  result__element.querySelector('#player-unit')
+  const computer_unit__element =  result__element.querySelector('#computer-unit')
 
   setTimeout(() => {
-    right_unit__animation.play()
-    left_unit__animation.play()
+    setTimeout(() => {
+      life()
+      playerRotateAnimation()
+      computerRotateAnimation()
+    }, 250)
+    playerAnimation()
+    computerAnimation()
   }, 1000)
-  
+
   setTimeout(() => {
-    new Animation(right_unit_life__keyframe).play()
-    new Animation(left_unit_life__keyframe).play()
+    setTimeout(() => {
+      life()
+      playerRotateAnimation(player_unit__element)
+      computerRotateAnimation()
+    }, 250)
+    playerAnimation()
+    computerAnimation()
   }, 2000)
 
-  // setTimeout(() => {
-  //   const lose__element = document.querySelector("[data-result='lose']")
-  //   const won__element = document.querySelector("[data-result='won']")
-  //   const draw__elements = document.querySelectorAll("[data-result='draw']")
+  setTimeout(() => {
+    setTimeout(() => {
+      life()
+      playerRotateAnimation(player_unit__element)
+      computerRotateAnimation()
+    }, 250)
+    playerAnimation()
+    computerAnimation()
+  }, 3000)
 
-  //   if(lose__element && won__element) {
-  //     lose__element.classList.remove('left-animation')
-  //     lose__element.classList.remove('right-animation')
+  function life() {
+    const player_life__element = player_unit__element.querySelector('#life')
+    const computer_life__element = computer_unit__element.querySelector('#life')
 
-  //     won__element.classList.remove('left-animation')
-  //     won__element.classList.remove('right-animation')
+    const player_life = player_life__element.dataset.life
+    const computer_life = computer_life__element.dataset.life
 
-  //     lose__element.style.filter = 'grayscale(100%)'
+    switch (playerResult) {
+      case 'won':
+        player_life__element.dataset.life = player_life - 16
+        computer_life__element.dataset.life = computer_life - 33
+        break;
+
+      case 'lose':
+        player_life__element.dataset.life = player_life - 33
+        computer_life__element.dataset.life = computer_life - 16
+        break;
+
+      case 'draw':
+        player_life__element.dataset.life = player_life - 33
+        computer_life__element.dataset.life = computer_life - 33
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  function playerAnimation() {
+    const keyframe = new KeyframeEffect(
+      player_unit__element,
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(2rem)' }, { transform: 'translateX(0)' }],
+      { duration: 500 },
+    )
+    new Animation(keyframe).play()
+  }
+
+  function computerAnimation() {
+    const keyframe = new KeyframeEffect(
+      computer_unit__element,
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(-2rem)' }, { transform: 'translateX(0)' }],
+      { duration: 500 },
+    )
+
+    new Animation(keyframe).play()
+  }
+
+  function playerAnimation() {
+    const keyframe = new KeyframeEffect(
+      player_unit__element,
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(2rem)' }, { transform: 'translateX(0)' }],
+      { duration: 500 },
+    )
+    new Animation(keyframe).play()
+  }
+
+  function playerRotateAnimation(element) {
+    const keyframe = new KeyframeEffect(
+      player_unit__element,
+      [{ transform: 'rotate(0deg)' }, { transform: 'rotate(10deg)' }, { transform: 'rotate(0deg)' }, { transform: 'rotate(-10deg)'}, { transform: 'rotate(0deg)' }],
+      { duration: 500 },
+    )
+
+    new Animation(keyframe).play()
+  }
+
+  function computerRotateAnimation() {
+    const keyframe = new KeyframeEffect(
+      computer_unit__element,
+      [{ transform: 'rotate(0deg)' }, { transform: 'rotate(-10deg)' }, { transform: 'rotate(0deg)' }, { transform: 'rotate(10deg)'}, { transform: 'rotate(0deg)' }],
+      { duration: 500 },
+    )
+
+    new Animation(keyframe).play()
+  }
+
+  setTimeout(() => {
+    const lose__element = document.querySelector("[data-result='lose']")
+    const won__element = document.querySelector("[data-result='won']")
+    const draw__elements = document.querySelectorAll("[data-result='draw']")
+
+    if(lose__element && won__element) {
+      lose__element.style.filter = 'grayscale(100%)'
       
-  //     won__element.querySelector('.life').remove()
-  //     lose__element.querySelector('.life').remove()
-  //   }
+      won__element.querySelector('#life').remove()
+      lose__element.querySelector('#life').remove()
+    }
 
-  //   if (draw__elements.length === 2) {
-  //     draw__elements[0].classList.remove('right-animation')
-  //     draw__elements[0].querySelector('.life').remove()
-  //     draw__elements[0].style.filter = 'grayscale(50%)'
+    if (draw__elements.length === 2) {
+      draw__elements[0].querySelector('#life').remove()
+      draw__elements[0].style.filter = 'grayscale(50%)'
 
-  //     draw__elements[1].classList.remove('left-animation')
-  //     draw__elements[1].querySelector('.life').remove()
-  //     draw__elements[1].style.filter = 'grayscale(50%)'
-  //   }
+      draw__elements[1].querySelector('#life').remove()
+      draw__elements[1].style.filter = 'grayscale(50%)'
+    }
 
-  //   const title__element = document.getElementById('title')
-  //   if (playerResult === 'draw') {
-  //     title__element.innerHTML = 'EMPATE'
-  //   } else if (playerResult === 'won') {
-  //     title__element.innerHTML = 'VENCEU'
-  //   } else if (playerResult === 'lose') {
-  //     title__element.innerHTML = 'PERDEU'
-  //   }
+    const title__element = document.getElementById('title')
+    if (playerResult === 'draw') {
+      title__element.innerHTML = 'EMPATE'
+    } else if (playerResult === 'won') {
+      title__element.innerHTML = 'VENCEU'
+    } else if (playerResult === 'lose') {
+      title__element.innerHTML = 'PERDEU'
+    }
 
-  //   const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
-  //   result__element.appendChild(replay__element)
-  // }, 2000)
+    const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })
+    result__element.appendChild(replay__element)
+  }, 4000)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ``
