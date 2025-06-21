@@ -179,16 +179,25 @@ function handleBattle() {
 
   if (player_unit_1 && player_unit_2 && player_unit_3) {
 
+    const player_unit_1__element = createBattleUnit(player_unit_1.value)
+    const player_unit_2__element = createBattleUnit(player_unit_2.value)
+    const player_unit_3__element = createBattleUnit(player_unit_3.value)
+
     player_units__element.append(
-      createBattleUnit(player_unit_1.value),
-      createBattleUnit(player_unit_2.value),
-      createBattleUnit(player_unit_3.value),
+      player_unit_1__element,
+      player_unit_2__element,
+      player_unit_3__element,
     )
 
+    const computer_unit_1__element =  createBattleUnit(computer_unit_1.value)
+    const computer_unit_2__element =  createBattleUnit(computer_unit_2.value)
+    const computer_unit_3__element =  createBattleUnit(computer_unit_3.value)
+
+
     computer_units__element.append(
-      createBattleUnit(computer_unit_1.value),
-      createBattleUnit(computer_unit_2.value),
-      createBattleUnit(computer_unit_3.value),
+      computer_unit_1__element,
+      computer_unit_2__element,
+      computer_unit_3__element,
     )
 
     const battle__element = document.createElement('div')
@@ -204,6 +213,36 @@ function handleBattle() {
     const main__element = document.getElementById('main')
     main__element.innerHTML = ''
     main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: handleStart }))
+    
+    setTimeout(() => {
+      unitAnimation(player_unit_1__element, 'left').play()
+      unitAnimation(computer_unit_1__element, 'right').play()
+
+      setTimeout(() => {
+        player_unit_1__element.dataset.life = 3
+        computer_unit_1__element.dataset.life = 3
+      }, 500)
+    }, 1000)
+  
+    setTimeout(() => {
+      unitAnimation(player_unit_2__element, 'left').play()
+      unitAnimation(computer_unit_2__element, 'right').play()
+
+      setTimeout(() => {
+        player_unit_2__element.dataset.life = 3
+        computer_unit_2__element.dataset.life = 3
+      }, 500)
+    }, 2000)
+
+    setTimeout(() => {
+      unitAnimation(player_unit_3__element, 'left').play()
+      unitAnimation(computer_unit_3__element, 'right').play()
+
+      setTimeout(() => {
+        player_unit_3__element.dataset.life = 3
+        computer_unit_3__element.dataset.life = 3
+      }, 500)
+    }, 3000)
   }
 }
 
@@ -215,6 +254,49 @@ function handleRemoveUnit(id) {
   if (slots__element[0].hasChildNodes() || slots__element[1].hasChildNodes() || slots__element[2].hasChildNodes()) {
     document.getElementById('start-battle-button').disabled = true
   }
+}
+
+function unitAnimation(element, side) {
+  const css = (() => { 
+    switch (side) {
+      case 'left':
+        return { 
+          translate: '2.5rem',
+          rotate1: '10deg',
+          rotate2: '-10deg',
+        }
+    
+      case 'right':
+        return { 
+          translate: '-2.5rem',
+          rotate1: '-10deg',
+          rotate2: '10deg',
+        }
+      default:
+        return { 
+          translate: '0',
+          rotate1: '0',
+          rotate2: '0',
+        }
+    }
+  })()
+
+  const keyframe = new KeyframeEffect(
+    element,
+    [ 
+      { transform: 'translateX(0)' },
+      { transform: `translateX(${css.translate})` },
+      { transform: `rotate(${css.rotate1})` },
+      { transform: 'rotate(0deg)' },
+      { transform: `rotate(${css.rotate2})`}, 
+      { transform: 'rotate(0deg)' },
+      { transform: 'translateX(0)' },
+    ],
+    { duration: 500 } 
+  )
+
+  return new Animation(keyframe)
+
 }
 
 function createButtonUnit(unit) {
@@ -239,7 +321,7 @@ function createButtonUnit(unit) {
 }
 
 function createSelectedUnit(unit) {
-  const { value, name, img } = units.get(unit)
+  const { name, img } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
@@ -273,23 +355,20 @@ function handleMouseOut(value) {
 }
 
 function createBattleUnit(unit) {
-  const { img, name } = units.get(unit)
+  const { img } = units.get(unit)
 
   const battle_unit__element = document.createElement('div')
   const img__element = document.createElement('img')
   const life__element = document.createElement('span')
-  const name__element = document.createElement('span')
 
   life__element.className = 'unit-life'
   battle_unit__element.className = 'battle-unit'
-  name__element.className = 'unit-name'
 
   img__element.src = img
-  name__element.innerText = name
 
-  battle_unit__element.dataset.life = Math.floor(Math.random() * 5) + 1
+  battle_unit__element.dataset.life = 5
 
-  battle_unit__element.append(life__element, img__element, name__element)
+  battle_unit__element.append(life__element, img__element)
 
   return battle_unit__element
 }

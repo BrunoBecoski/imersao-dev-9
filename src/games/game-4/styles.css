@@ -93,22 +93,14 @@
   gap: 2rem;
 }
 
-#game-4 .select-unit.weak span,
-#game-4 .select-unit.strong span {
-  color: #000000;
-}
-
 #game-4 .select-unit.strong {
-  background-color: #00FC42;
+  border-color: #00FC42;
 }
 
 #game-4 .select-unit.weak {
-  background-color: #F41A28;
+  border-color: #F41A28;
 }
 
-#game-4 .select-unit.weak span {
-  color: #000000;
-}
 
 #game-4 #selected-units div {
   border: 5px solid #FFFFFF;
@@ -166,7 +158,7 @@
 }
 
 #game-4 .selected-unit:hover {
-  border-color: #F41A28;
+  background-color: #F41A28;
 }
 
 #game-4 .selected-unit img {
