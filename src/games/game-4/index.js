@@ -168,6 +168,7 @@ function handleBattle() {
 
   const player_units__element = document.createElement('div')
   const computer_units__element = document.createElement('div')
+  computer_units__element.className = 'computer-units'
 
   const player_unit_1 = units.get(slots__elements[0].dataset.unit)
   const player_unit_2 = units.get(slots__elements[1].dataset.unit)
@@ -216,31 +217,40 @@ function handleBattle() {
     
     setTimeout(() => {
       unitAnimation(player_unit_1__element, 'left').play()
+      lifeAnimation(player_unit_1__element.querySelector('#life'))
+      
       unitAnimation(computer_unit_1__element, 'right').play()
+      lifeAnimation(computer_unit_1__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_1__element.dataset.life = 3
-        computer_unit_1__element.dataset.life = 3
+        player_unit_1__element.dataset.life = 2
+        computer_unit_1__element.dataset.life = 2
       }, 500)
     }, 1000)
   
     setTimeout(() => {
       unitAnimation(player_unit_2__element, 'left').play()
+      lifeAnimation(player_unit_2__element.querySelector('#life'))
+
       unitAnimation(computer_unit_2__element, 'right').play()
+      lifeAnimation(computer_unit_2__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_2__element.dataset.life = 3
-        computer_unit_2__element.dataset.life = 3
+        player_unit_2__element.dataset.life = 2
+        computer_unit_2__element.dataset.life = 2
       }, 500)
     }, 2000)
 
     setTimeout(() => {
       unitAnimation(player_unit_3__element, 'left').play()
+      lifeAnimation(player_unit_3__element.querySelector('#life'))
+
       unitAnimation(computer_unit_3__element, 'right').play()
+      lifeAnimation(computer_unit_3__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_3__element.dataset.life = 3
-        computer_unit_3__element.dataset.life = 3
+        player_unit_3__element.dataset.life = 2
+        computer_unit_3__element.dataset.life = 2
       }, 500)
     }, 3000)
   }
@@ -296,7 +306,26 @@ function unitAnimation(element, side) {
   )
 
   return new Animation(keyframe)
+}
 
+function lifeAnimation(element) {
+  new Animation( new KeyframeEffect(
+    element.firstChild,
+    [ 
+      { width: '100%' },
+      { width: '50%' },
+    ],
+    { duration: 500 } 
+  )).play()
+
+  new Animation( new KeyframeEffect(
+    element.lastChild,
+    [ 
+      { width: '0%' },
+      { width: '50%' },
+    ],
+    { duration: 500 } 
+  )).play()
 }
 
 function createButtonUnit(unit) {
@@ -359,14 +388,17 @@ function createBattleUnit(unit) {
 
   const battle_unit__element = document.createElement('div')
   const img__element = document.createElement('img')
-  const life__element = document.createElement('span')
+  const life__element = document.createElement('div')
 
+  life__element.append(document.createElement('span'), document.createElement('span'))
+
+  life__element.id = 'life'
   life__element.className = 'unit-life'
   battle_unit__element.className = 'battle-unit'
 
   img__element.src = img
 
-  battle_unit__element.dataset.life = 5
+  battle_unit__element.dataset.life = 4
 
   battle_unit__element.append(life__element, img__element)
 

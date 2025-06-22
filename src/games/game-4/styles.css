@@ -45,6 +45,10 @@
   flex-direction: column;
 }
 
+#game-4 .battle .computer-units .unit-life {
+  transform: rotate(180deg);
+}
+
 #game-4 .battle-unit {
   display: flex;
   flex-direction: column;
@@ -57,9 +61,9 @@
 
 
 #game-4 .battle-unit .unit-life {
-  background-color: #00FC42;
   height: 1rem;
   width: 100%;
+  display: flex;
 }
 
 .battle-unit .unit-name {
@@ -68,24 +72,52 @@
   color: #FFFFFF
 }
 
-.battle-unit[data-life="1"] .unit-life {
-  background: linear-gradient(90deg, #00FC42 10%,#F41A28 10%);
+.battle-unit .unit-life span:first-child {
+  background-color: #00FC42;
 }
 
-.battle-unit[data-life="2"] .unit-life {
-  background: linear-gradient(90deg, #00FC42 25%, #F41A28 25%);
+.battle-unit .unit-life span:last-child {
+  background-color: #F41A28;
 }
 
-.battle-unit[data-life="3"] .unit-life {
-  background: linear-gradient(90deg, #00FC42 50%, #F41A28 50%);
+.battle-unit[data-life="0"] .unit-life span:first-child {
+  width: 0%;
 }
 
-.battle-unit[data-life="4"] .unit-life {
-  background: linear-gradient(90deg, #00FC42 75%, #F41A28 75%);
-
+.battle-unit[data-life="0"] .unit-life span:last-child {
+  width: 100%;
 }
-.battle-unit[data-life="5"] .unit-life {
-  background: linear-gradient(90deg, #00FC42 100%, #F41A28 100%);
+
+.battle-unit[data-life="1"] .unit-life span:first-child {
+  width: 25%;
+}
+
+.battle-unit[data-life="1"] .unit-life span:last-child {
+  width: 75%;
+}
+
+.battle-unit[data-life="2"] .unit-life span:first-child {
+  width: 50%;
+}
+
+.battle-unit[data-life="2"] .unit-life span:last-child {
+  width: 50%;
+}
+
+.battle-unit[data-life="3"] .unit-life span:first-child {
+  width: 75%;
+}
+
+.battle-unit[data-life="3"] .unit-life span:last-child {
+  width: 25%;
+}
+
+.battle-unit[data-life="4"] .unit-life span:first-child {
+  width: 100%;
+}
+
+.battle-unit[data-life="4"] .unit-life span:last-child {
+  width: 0%;
 }
 
 #game-4 #selected-units {
@@ -100,7 +132,6 @@
 #game-4 .select-unit.weak {
   border-color: #F41A28;
 }
-
 
 #game-4 #selected-units div {
   border: 5px solid #FFFFFF;
