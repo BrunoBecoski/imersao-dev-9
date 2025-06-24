@@ -16,7 +16,7 @@ const units = new Map([
     img: arbalesterIconImg,
     type: 'archer',
     strong: ['halberdier', 'champion'],
-    weak:  ['paladin', 'camel'],
+    weak:  ['paladin', 'camel', 'skirmisher'],
   }],
   ['skirmisher', {
     name: 'Escaramuçador',
@@ -32,7 +32,7 @@ const units = new Map([
     img: halberdierIconImg,
     type: 'infantry',
     strong: ['paladin', 'camel'],
-    weak: ['arbalester', 'skirmisher'],
+    weak: ['arbalester', 'skirmisher', 'champion'],
   }],
   ['champion', {
     name: 'Campeão',
@@ -48,7 +48,7 @@ const units = new Map([
     img: paladinIconImg,
     type: 'cavalry',
     strong: ['arbalester', 'skirmisher'],
-    weak: ['halberdier', 'champion'],
+    weak: ['halberdier', 'champion', 'camel'],
 
   }],
   ['camel', {
@@ -217,40 +217,37 @@ function handleBattle() {
     
     setTimeout(() => {
       unitAnimation(player_unit_1__element, 'left').play()
-      lifeAnimation(player_unit_1__element.querySelector('#life'))
+      // lifeAnimation(player_unit_1__element.querySelector('#life'))
       
       unitAnimation(computer_unit_1__element, 'right').play()
-      lifeAnimation(computer_unit_1__element.querySelector('#life'))
+      // lifeAnimation(computer_unit_1__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_1__element.dataset.life = 2
-        computer_unit_1__element.dataset.life = 2
+         combat(player_unit_1__element, computer_unit_1__element)
       }, 500)
     }, 1000)
   
     setTimeout(() => {
       unitAnimation(player_unit_2__element, 'left').play()
-      lifeAnimation(player_unit_2__element.querySelector('#life'))
+      // lifeAnimation(player_unit_2__element.querySelector('#life'))
 
       unitAnimation(computer_unit_2__element, 'right').play()
-      lifeAnimation(computer_unit_2__element.querySelector('#life'))
+      // lifeAnimation(computer_unit_2__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_2__element.dataset.life = 2
-        computer_unit_2__element.dataset.life = 2
+        combat(player_unit_2__element, computer_unit_2__element)
       }, 500)
     }, 2000)
 
     setTimeout(() => {
       unitAnimation(player_unit_3__element, 'left').play()
-      lifeAnimation(player_unit_3__element.querySelector('#life'))
+      // lifeAnimation(player_unit_3__element.querySelector('#life'))
 
       unitAnimation(computer_unit_3__element, 'right').play()
-      lifeAnimation(computer_unit_3__element.querySelector('#life'))
+      // lifeAnimation(computer_unit_3__element.querySelector('#life'))
 
       setTimeout(() => {
-        player_unit_3__element.dataset.life = 2
-        computer_unit_3__element.dataset.life = 2
+        combat(player_unit_3__element, computer_unit_3__element)
       }, 500)
     }, 3000)
   }
@@ -328,6 +325,25 @@ function lifeAnimation(element) {
   )).play()
 }
 
+function combat(player_unit__element, computer_unit__element) {
+  const playerUnit = units.get(player_unit__element.dataset.unit)
+  const playerLife = player_unit__element.dataset.life
+
+  const computerUnit = units.get(computer_unit__element.dataset.unit)
+  const computerLife = computer_unit__element.dataset.life
+
+  if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
+    player_unit__element.dataset.life = playerLife - 1
+    computer_unit__element.dataset.life = computerLife - 2
+  } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
+    player_unit__element.dataset.life = playerLife - 2
+    computer_unit__element.dataset.life = computerLife - 1
+  } else {
+    player_unit__element.dataset.life = playerLife - 1
+    computer_unit__element.dataset.life = computerLife - 1
+  }
+}
+
 function createButtonUnit(unit) {
   const { value, img, name } = units.get(unit)
 
@@ -384,7 +400,7 @@ function handleMouseOut(value) {
 }
 
 function createBattleUnit(unit) {
-  const { img } = units.get(unit)
+  const { value, img } = units.get(unit)
 
   const battle_unit__element = document.createElement('div')
   const img__element = document.createElement('img')
@@ -399,6 +415,7 @@ function createBattleUnit(unit) {
   img__element.src = img
 
   battle_unit__element.dataset.life = 4
+  battle_unit__element.dataset.unit = value
 
   battle_unit__element.append(life__element, img__element)
 
