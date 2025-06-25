@@ -217,10 +217,7 @@ function handleBattle() {
     
     setTimeout(() => {
       unitAnimation(player_unit_1__element, 'left').play()
-      // lifeAnimation(player_unit_1__element.querySelector('#life'))
-      
       unitAnimation(computer_unit_1__element, 'right').play()
-      // lifeAnimation(computer_unit_1__element.querySelector('#life'))
 
       setTimeout(() => {
          combat(player_unit_1__element, computer_unit_1__element)
@@ -229,10 +226,7 @@ function handleBattle() {
   
     setTimeout(() => {
       unitAnimation(player_unit_2__element, 'left').play()
-      // lifeAnimation(player_unit_2__element.querySelector('#life'))
-
       unitAnimation(computer_unit_2__element, 'right').play()
-      // lifeAnimation(computer_unit_2__element.querySelector('#life'))
 
       setTimeout(() => {
         combat(player_unit_2__element, computer_unit_2__element)
@@ -241,10 +235,7 @@ function handleBattle() {
 
     setTimeout(() => {
       unitAnimation(player_unit_3__element, 'left').play()
-      // lifeAnimation(player_unit_3__element.querySelector('#life'))
-
       unitAnimation(computer_unit_3__element, 'right').play()
-      // lifeAnimation(computer_unit_3__element.querySelector('#life'))
 
       setTimeout(() => {
         combat(player_unit_3__element, computer_unit_3__element)
@@ -305,9 +296,15 @@ function unitAnimation(element, side) {
   return new Animation(keyframe)
 }
 
-function lifeAnimation(element) {
+function lifeAnimation(element, life, damage) {
+  console.log(element)
+  console.log(life)
+  console.log(damage)
+
+  const life__element = element.querySelector('#life')
+
   new Animation( new KeyframeEffect(
-    element.firstChild,
+    life__element.firstChild,
     [ 
       { width: '100%' },
       { width: '50%' },
@@ -316,7 +313,7 @@ function lifeAnimation(element) {
   )).play()
 
   new Animation( new KeyframeEffect(
-    element.lastChild,
+    life__element.lastChild,
     [ 
       { width: '0%' },
       { width: '50%' },
@@ -333,14 +330,32 @@ function combat(player_unit__element, computer_unit__element) {
   const computerLife = computer_unit__element.dataset.life
 
   if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
-    player_unit__element.dataset.life = playerLife - 1
-    computer_unit__element.dataset.life = computerLife - 2
+    const playerDamage = playerLife - 1
+    const computerDamage = computerLife - 2
+
+    player_unit__element.dataset.life = playerDamage
+    computer_unit__element.dataset.life = computerDamage
+
+    lifeAnimation(player_unit__element, playerLife, playerDamage)
+    lifeAnimation(computer_unit__element, computerLife, computerDamage)
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
-    player_unit__element.dataset.life = playerLife - 2
-    computer_unit__element.dataset.life = computerLife - 1
+    const playerDamage = playerLife - 2
+    const computerDamage = computerLife - 1
+    
+    player_unit__element.dataset.life = playerDamage
+    computer_unit__element.dataset.life = computerDamage
+
+    lifeAnimation(player_unit__element, playerLife, playerDamage)
+    lifeAnimation(computer_unit__element, computerLife, computerDamage)
   } else {
-    player_unit__element.dataset.life = playerLife - 1
-    computer_unit__element.dataset.life = computerLife - 1
+    const playerDamage = playerLife - 1
+    const computerDamage = computerLife - 1
+
+    player_unit__element.dataset.life = playerDamage
+    computer_unit__element.dataset.life = computerDamage
+
+    lifeAnimation(player_unit__element, playerLife, playerDamage)
+    lifeAnimation(computer_unit__element, computerLife, computerDamage)
   }
 }
 
