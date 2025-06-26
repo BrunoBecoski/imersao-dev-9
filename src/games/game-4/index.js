@@ -194,7 +194,6 @@ function handleBattle() {
     const computer_unit_2__element =  createBattleUnit(computer_unit_2.value)
     const computer_unit_3__element =  createBattleUnit(computer_unit_3.value)
 
-
     computer_units__element.append(
       computer_unit_1__element,
       computer_unit_2__element,
@@ -260,21 +259,21 @@ function unitAnimation(element, side) {
       case 'left':
         return { 
           translate: '2.5rem',
-          rotate1: '10deg',
-          rotate2: '-10deg',
+          rotate_1: '10deg',
+          rotate_2: '-10deg',
         }
     
       case 'right':
         return { 
           translate: '-2.5rem',
-          rotate1: '-10deg',
-          rotate2: '10deg',
+          rotate_1: '-10deg',
+          rotate_2: '10deg',
         }
       default:
         return { 
           translate: '0',
-          rotate1: '0',
-          rotate2: '0',
+          rotate_1: '0',
+          rotate_2: '0',
         }
     }
   })()
@@ -284,9 +283,9 @@ function unitAnimation(element, side) {
     [ 
       { transform: 'translateX(0)' },
       { transform: `translateX(${css.translate})` },
-      { transform: `rotate(${css.rotate1})` },
+      { transform: `rotate(${css.rotate_1})` },
       { transform: 'rotate(0deg)' },
-      { transform: `rotate(${css.rotate2})`}, 
+      { transform: `rotate(${css.rotate_2})`}, 
       { transform: 'rotate(0deg)' },
       { transform: 'translateX(0)' },
     ],
@@ -297,17 +296,177 @@ function unitAnimation(element, side) {
 }
 
 function lifeAnimation(element, life, damage) {
-  console.log(element)
-  console.log(life)
-  console.log(damage)
+  let css = {
+    life: {
+      width_1: '0%',
+      width_2: '0%',
+    },
+    damage: {
+      width_1: '0%',
+      width_2: '0%',
+    }
+  }
+  
+  switch (damage) {
+    case 1:
+      switch (life) {
+        case 1:
+          css = {
+            life: {
+              width_1: '25%',
+              width_2: '0%',
+            },
+            damage: {
+              width_1:'75%',
+              width_2: '100%',
+            }
+          }
+          break;
+
+        case 2:
+          css = {
+            life: {
+              width_1: '50%',
+              width_2: '25%',
+            },
+            damage: {
+              width_1:'50%',
+              width_2: '75%',
+            }
+          }
+          break;
+
+        case 3:
+          css = {
+            life: {
+              width_1: '75%',
+              width_2: '50%',
+            },
+            damage: {
+              width_1:'25%',
+              width_2: '50%',
+            }
+          }
+          break;
+
+        case 4:
+          css = {
+            life: {
+              width_1: '100%',
+              width_2: '75%',
+            },
+            damage: {
+              width_1:'0%',
+              width_2: '25%',
+            }
+          }
+          break;
+
+        default:
+          css = {
+            life: {
+              width_1: '0%',
+              width_2: '0%',
+            },
+            damage: {
+              width_1: '0%',
+              width_2: '0%',
+            }
+          }
+          break;
+      }
+      break;
+
+    case 2:
+      switch (life) {
+        case 1:
+          css = {
+            life: {
+              width_1: '25%',
+              width_2: '0%',
+            },
+            damage: {
+              width_1:'75%',
+              width_2: '100%',
+            }
+          }
+          break;
+
+        case 2:
+          css = {
+            life: {
+              width_1: '50%',
+              width_2: '0%',
+            },
+            damage: {
+              width_1:'50%',
+              width_2: '100%',
+            }
+          }
+          break;
+
+        case 3:
+          css = {
+            life: {
+              width_1: '75%',
+              width_2: '25%',
+            },
+            damage: {
+              width_1:'25%',
+              width_2: '75%',
+            }
+          }
+          break;
+          
+        case 4:
+          css = {
+            life: {
+              width_1: '100%',
+              width_2: '50%',
+            },
+            damage: {
+              width_1:'0%',
+              width_2: '50%',
+            }
+          }
+          break;
+
+        default:
+          css = {
+            life: {
+              width_1: '0%',
+              width_2: '0%',
+            },
+            damage: {
+              width_1: '0%',
+              width_2: '0%',
+            }
+          }
+          break;
+      }
+      break;
+
+    default:
+      css = {
+        life: {
+          width_1: '0%',
+          width_2: '0%',
+        },
+        damage: {
+          width_1: '0%',
+          width_2: '0%',
+        }
+      }
+      break;
+  }
 
   const life__element = element.querySelector('#life')
 
   new Animation( new KeyframeEffect(
     life__element.firstChild,
     [ 
-      { width: '100%' },
-      { width: '50%' },
+      { width: css.life.width_1 },
+      { width: css.life.width_2 },
     ],
     { duration: 500 } 
   )).play()
@@ -315,8 +474,8 @@ function lifeAnimation(element, life, damage) {
   new Animation( new KeyframeEffect(
     life__element.lastChild,
     [ 
-      { width: '0%' },
-      { width: '50%' },
+      { width: css.damage.width_1 },
+      { width: css.damage.width_2 },
     ],
     { duration: 500 } 
   )).play()
@@ -324,10 +483,10 @@ function lifeAnimation(element, life, damage) {
 
 function combat(player_unit__element, computer_unit__element) {
   const playerUnit = units.get(player_unit__element.dataset.unit)
-  const playerLife = player_unit__element.dataset.life
+  const playerLife = Number(player_unit__element.dataset.life)
 
   const computerUnit = units.get(computer_unit__element.dataset.unit)
-  const computerLife = computer_unit__element.dataset.life
+  const computerLife = Number(computer_unit__element.dataset.life)
 
   if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
     const playerDamage = playerLife - 1
@@ -336,8 +495,8 @@ function combat(player_unit__element, computer_unit__element) {
     player_unit__element.dataset.life = playerDamage
     computer_unit__element.dataset.life = computerDamage
 
-    lifeAnimation(player_unit__element, playerLife, playerDamage)
-    lifeAnimation(computer_unit__element, computerLife, computerDamage)
+    lifeAnimation(player_unit__element, playerLife, 1)
+    lifeAnimation(computer_unit__element, computerLife, 2)
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
     const playerDamage = playerLife - 2
     const computerDamage = computerLife - 1
@@ -345,8 +504,8 @@ function combat(player_unit__element, computer_unit__element) {
     player_unit__element.dataset.life = playerDamage
     computer_unit__element.dataset.life = computerDamage
 
-    lifeAnimation(player_unit__element, playerLife, playerDamage)
-    lifeAnimation(computer_unit__element, computerLife, computerDamage)
+    lifeAnimation(player_unit__element, playerLife, 2)
+    lifeAnimation(computer_unit__element, computerLife, 1)
   } else {
     const playerDamage = playerLife - 1
     const computerDamage = computerLife - 1
@@ -354,8 +513,8 @@ function combat(player_unit__element, computer_unit__element) {
     player_unit__element.dataset.life = playerDamage
     computer_unit__element.dataset.life = computerDamage
 
-    lifeAnimation(player_unit__element, playerLife, playerDamage)
-    lifeAnimation(computer_unit__element, computerLife, computerDamage)
+    lifeAnimation(player_unit__element, playerLife, 1)
+    lifeAnimation(computer_unit__element, computerLife, 1)
   }
 }
 
