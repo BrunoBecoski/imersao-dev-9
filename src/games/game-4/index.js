@@ -298,166 +298,13 @@ function unitAnimation(element, side) {
 function lifeAnimation(element, life, damage) {
   let css = {
     life: {
-      width_1: '0%',
-      width_2: '0%',
+      width_1: (100 * life) / 4,
+      width_2: (100 * (life - damage)) / 4,
     },
     damage: {
-      width_1: '0%',
-      width_2: '0%',
+      width_1: 100 - ((100 * life) / 4),
+      width_2: (100 * damage) / 4,
     }
-  }
-  
-  switch (damage) {
-    case 1:
-      switch (life) {
-        case 1:
-          css = {
-            life: {
-              width_1: '25%',
-              width_2: '0%',
-            },
-            damage: {
-              width_1:'75%',
-              width_2: '100%',
-            }
-          }
-          break;
-
-        case 2:
-          css = {
-            life: {
-              width_1: '50%',
-              width_2: '25%',
-            },
-            damage: {
-              width_1:'50%',
-              width_2: '75%',
-            }
-          }
-          break;
-
-        case 3:
-          css = {
-            life: {
-              width_1: '75%',
-              width_2: '50%',
-            },
-            damage: {
-              width_1:'25%',
-              width_2: '50%',
-            }
-          }
-          break;
-
-        case 4:
-          css = {
-            life: {
-              width_1: '100%',
-              width_2: '75%',
-            },
-            damage: {
-              width_1:'0%',
-              width_2: '25%',
-            }
-          }
-          break;
-
-        default:
-          css = {
-            life: {
-              width_1: '0%',
-              width_2: '0%',
-            },
-            damage: {
-              width_1: '0%',
-              width_2: '0%',
-            }
-          }
-          break;
-      }
-      break;
-
-    case 2:
-      switch (life) {
-        case 1:
-          css = {
-            life: {
-              width_1: '25%',
-              width_2: '0%',
-            },
-            damage: {
-              width_1:'75%',
-              width_2: '100%',
-            }
-          }
-          break;
-
-        case 2:
-          css = {
-            life: {
-              width_1: '50%',
-              width_2: '0%',
-            },
-            damage: {
-              width_1:'50%',
-              width_2: '100%',
-            }
-          }
-          break;
-
-        case 3:
-          css = {
-            life: {
-              width_1: '75%',
-              width_2: '25%',
-            },
-            damage: {
-              width_1:'25%',
-              width_2: '75%',
-            }
-          }
-          break;
-          
-        case 4:
-          css = {
-            life: {
-              width_1: '100%',
-              width_2: '50%',
-            },
-            damage: {
-              width_1:'0%',
-              width_2: '50%',
-            }
-          }
-          break;
-
-        default:
-          css = {
-            life: {
-              width_1: '0%',
-              width_2: '0%',
-            },
-            damage: {
-              width_1: '0%',
-              width_2: '0%',
-            }
-          }
-          break;
-      }
-      break;
-
-    default:
-      css = {
-        life: {
-          width_1: '0%',
-          width_2: '0%',
-        },
-        damage: {
-          width_1: '0%',
-          width_2: '0%',
-        }
-      }
-      break;
   }
 
   const life__element = element.querySelector('#life')
@@ -465,8 +312,8 @@ function lifeAnimation(element, life, damage) {
   new Animation( new KeyframeEffect(
     life__element.firstChild,
     [ 
-      { width: css.life.width_1 },
-      { width: css.life.width_2 },
+      { width: css.life.width_1 + '%' },
+      { width: css.life.width_2 + '%' },
     ],
     { duration: 500 } 
   )).play()
@@ -474,8 +321,8 @@ function lifeAnimation(element, life, damage) {
   new Animation( new KeyframeEffect(
     life__element.lastChild,
     [ 
-      { width: css.damage.width_1 },
-      { width: css.damage.width_2 },
+      { width: css.damage.width_1 + '%' },
+      { width: css.damage.width_2 + '%' },
     ],
     { duration: 500 } 
   )).play()
