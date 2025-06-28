@@ -59,7 +59,6 @@
   height: 150px;
 }
 
-
 #game-4 .battle-unit .unit-life {
   height: 1rem;
   width: 100%;
@@ -80,45 +79,17 @@
   background-color: #F41A28;
 }
 
-.battle-unit[data-life="0"] .unit-life span:first-child {
-  width: 0%;
-}
+.battle-unit[data-life="0"] .unit-life span:first-child { width: 0% }
+.battle-unit[data-life="1"] .unit-life span:first-child { width: 25% }
+.battle-unit[data-life="2"] .unit-life span:first-child { width: 50% }
+.battle-unit[data-life="3"] .unit-life span:first-child { width: 75% }
+.battle-unit[data-life="4"] .unit-life span:first-child { width: 100% }
 
-.battle-unit[data-life="0"] .unit-life span:last-child {
-  width: 100%;
-}
-
-.battle-unit[data-life="1"] .unit-life span:first-child {
-  width: 25%;
-}
-
-.battle-unit[data-life="1"] .unit-life span:last-child {
-  width: 75%;
-}
-
-.battle-unit[data-life="2"] .unit-life span:first-child {
-  width: 50%;
-}
-
-.battle-unit[data-life="2"] .unit-life span:last-child {
-  width: 50%;
-}
-
-.battle-unit[data-life="3"] .unit-life span:first-child {
-  width: 75%;
-}
-
-.battle-unit[data-life="3"] .unit-life span:last-child {
-  width: 25%;
-}
-
-.battle-unit[data-life="4"] .unit-life span:first-child {
-  width: 100%;
-}
-
-.battle-unit[data-life="4"] .unit-life span:last-child {
-  width: 0%;
-}
+.battle-unit[data-life="0"] .unit-life span:last-child { width: 100% }
+.battle-unit[data-life="1"] .unit-life span:last-child { width: 75% }
+.battle-unit[data-life="2"] .unit-life span:last-child { width: 50% }
+.battle-unit[data-life="3"] .unit-life span:last-child { width: 25% }
+.battle-unit[data-life="4"] .unit-life span:last-child { width: 0% }
 
 #game-4 #selected-units {
   display: flex;

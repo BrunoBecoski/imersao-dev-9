@@ -9,6 +9,10 @@ import camelIconImg from '../../assets/game-4/camel_icon.png'
 
 import './styles.css'
 
+const initialLife = 4
+const weakDamage = 1
+const strongDamage = 2
+
 const units = new Map([
   ['arbalester', {
     name: 'Arbalesteiro',
@@ -282,12 +286,16 @@ function unitAnimation(element, side) {
     element,
     [ 
       { transform: 'translateX(0)' },
+      { filter: 'blur(5px)' },
       { transform: `translateX(${css.translate})` },
+      { transform: 'translateX(0)' },
+      { filter: 'blur(0)' },
+      { filter: 'contrast(50%)' },
       { transform: `rotate(${css.rotate_1})` },
       { transform: 'rotate(0deg)' },
       { transform: `rotate(${css.rotate_2})`}, 
       { transform: 'rotate(0deg)' },
-      { transform: 'translateX(0)' },
+      { filter: 'contrast(100%)' },
     ],
     { duration: 500 } 
   )
@@ -295,18 +303,22 @@ function unitAnimation(element, side) {
   return new Animation(keyframe)
 }
 
-function lifeAnimation(element, life, damage) {
-  const lifePercentage = (100 * life) / 4
-  const damagePercentage = (100 * damage) / 4
+function calcPercent(value) {
+  return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
+}
 
- let css = {
-    life: {
-      width_1: lifePercentage,
-      width_2: lifePercentage - damagePercentage,
+function lifeAnimation(element, currentLife, newLife) {
+  const currentPercentage  = calcPercent(currentLife)
+  const newPercentage = calcPercent(newLife)
+
+  let css = {
+    current: {
+      width_1: currentPercentage + '%',
+      width_2: newPercentage + '%',
     },
-    damage: {
-      width_1: 100 - lifePercentage,
-      width_2: damagePercentage,
+    new: {
+      width_1: 100 - currentPercentage + '%',
+      width_2: 100 - newPercentage + '%',
     }
   }
 
@@ -315,8 +327,8 @@ function lifeAnimation(element, life, damage) {
   new Animation( new KeyframeEffect(
     life__element.firstChild,
     [ 
-      { width: css.life.width_1 + '%' },
-      { width: css.life.width_2 + '%' },
+      { width: css.current.width_1 },
+      { width: css.current.width_2 },
     ],
     { duration: 500 } 
   )).play()
@@ -324,8 +336,8 @@ function lifeAnimation(element, life, damage) {
   new Animation( new KeyframeEffect(
     life__element.lastChild,
     [ 
-      { width: css.damage.width_1 + '%' },
-      { width: css.damage.width_2 + '%' },
+      { width: css.new.width_1 },
+      { width: css.new.width_2 },
     ],
     { duration: 500 } 
   )).play()
@@ -333,39 +345,30 @@ function lifeAnimation(element, life, damage) {
 
 function combat(player_unit__element, computer_unit__element) {
   const playerUnit = units.get(player_unit__element.dataset.unit)
-  const playerLife = Number(player_unit__element.dataset.life)
+  const currentPlayerLife = Number(player_unit__element.dataset.life)
 
   const computerUnit = units.get(computer_unit__element.dataset.unit)
-  const computerLife = Number(computer_unit__element.dataset.life)
+  const currentComputerLife = Number(computer_unit__element.dataset.life)
+
+  let newPlayerLife = 0
+  let newComputerLife = 0
 
   if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
-    const playerDamage = playerLife - 1
-    const computerDamage = computerLife - 2
-
-    player_unit__element.dataset.life = playerDamage
-    computer_unit__element.dataset.life = computerDamage
-
-    lifeAnimation(player_unit__element, playerLife, 1)
-    lifeAnimation(computer_unit__element, computerLife, 2)
+    newPlayerLife = currentPlayerLife - weakDamage
+    newComputerLife = currentComputerLife - strongDamage
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
-    const playerDamage = playerLife - 2
-    const computerDamage = computerLife - 1
-    
-    player_unit__element.dataset.life = playerDamage
-    computer_unit__element.dataset.life = computerDamage
-
-    lifeAnimation(player_unit__element, playerLife, 2)
-    lifeAnimation(computer_unit__element, computerLife, 1)
+    newPlayerLife = currentPlayerLife - strongDamage
+    newComputerLife = currentComputerLife - weakDamage
   } else {
-    const playerDamage = playerLife - 1
-    const computerDamage = computerLife - 1
-
-    player_unit__element.dataset.life = playerDamage
-    computer_unit__element.dataset.life = computerDamage
-
-    lifeAnimation(player_unit__element, playerLife, 1)
-    lifeAnimation(computer_unit__element, computerLife, 1)
+    newPlayerLife = currentPlayerLife - weakDamage
+    newComputerLife = currentComputerLife - weakDamage
   }
+
+  player_unit__element.dataset.life = newPlayerLife
+  computer_unit__element.dataset.life = newComputerLife
+
+  lifeAnimation(player_unit__element, currentPlayerLife, newPlayerLife)
+  lifeAnimation(computer_unit__element, currentComputerLife, newComputerLife)
 }
 
 function createButtonUnit(unit) {
@@ -438,8 +441,9 @@ function createBattleUnit(unit) {
 
   img__element.src = img
 
-  battle_unit__element.dataset.life = 4
-   battle_unit__element.dataset.unit = value
+  battle_unit__element.dataset.life = initialLife
+
+  battle_unit__element.dataset.unit = value
 
   battle_unit__element.append(life__element, img__element)
 
