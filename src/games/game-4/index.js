@@ -296,14 +296,17 @@ function unitAnimation(element, side) {
 }
 
 function lifeAnimation(element, life, damage) {
-  let css = {
+  const lifePercentage = (100 * life) / 4
+  const damagePercentage = (100 * damage) / 4
+
+ let css = {
     life: {
-      width_1: (100 * life) / 4,
-      width_2: (100 * (life - damage)) / 4,
+      width_1: lifePercentage,
+      width_2: lifePercentage - damagePercentage,
     },
     damage: {
-      width_1: 100 - ((100 * life) / 4),
-      width_2: (100 * damage) / 4,
+      width_1: 100 - lifePercentage,
+      width_2: damagePercentage,
     }
   }
 
@@ -436,7 +439,7 @@ function createBattleUnit(unit) {
   img__element.src = img
 
   battle_unit__element.dataset.life = 4
-  battle_unit__element.dataset.unit = value
+   battle_unit__element.dataset.unit = value
 
   battle_unit__element.append(life__element, img__element)
 
