@@ -81,12 +81,12 @@ export function createGame4() {
   `
 
   const main__element =  section__element.querySelector('#main')
-  main__element.appendChild(createButton({ text: 'Começar', handleClick: handleStart }))
+  main__element.appendChild(createButton({ text: 'Começar', handleClick: selectionScreen }))
 
   return section__element
 }
 
-function handleStart() {
+function selectionScreen() {
   const archers__element = document.createElement('div')
   archers__element.className = 'archers'
   const archer_title__element = document.createElement('span')
@@ -127,7 +127,7 @@ function handleStart() {
   const selected_units__element = document.createElement('div')
   selected_units__element.id = 'selected-units'
 
-  const start_battle__element = createButton({ text: 'Batalhar', handleClick: handleBattle })
+  const start_battle__element = createButton({ text: 'Batalhar', handleClick: battleScreen })
   start_battle__element.disabled = true
   start_battle__element.id = 'start-battle-button'
 
@@ -167,7 +167,7 @@ function handleAddUnit(unit) {
   }  
 }
 
-function handleBattle() {
+function battleScreen() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
   const player_units__element = document.createElement('div')
@@ -216,9 +216,32 @@ function handleBattle() {
 
     const main__element = document.getElementById('main')
     main__element.innerHTML = ''
-    main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: handleStart }))
+    main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
     
+    battle(
+      player_unit_1__element, computer_unit_1__element,
+      player_unit_2__element, computer_unit_2__element,
+      player_unit_3__element, computer_unit_3__element,
+    )
+
     setTimeout(() => {
+      battle(
+        player_unit_1__element, computer_unit_1__element,
+        player_unit_2__element, computer_unit_2__element,
+        player_unit_3__element, computer_unit_3__element,
+      )
+    }, 5000)
+  }
+}
+
+function battle(
+  player_unit_1__element, computer_unit_1__element,
+  player_unit_2__element, computer_unit_2__element,
+  player_unit_3__element, computer_unit_3__element,
+) {
+
+  setInterval(() => {
+   setTimeout(() => {
       unitAnimation(player_unit_1__element, 'left').play()
       unitAnimation(computer_unit_1__element, 'right').play()
 
@@ -244,7 +267,8 @@ function handleBattle() {
         combat(player_unit_3__element, computer_unit_3__element)
       }, 500)
     }, 3000)
-  }
+  }, 6000); 
+
 }
 
 function handleRemoveUnit(id) {
@@ -354,14 +378,14 @@ function combat(player_unit__element, computer_unit__element) {
   let newComputerLife = 0
 
   if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
-    newPlayerLife = currentPlayerLife - weakDamage
-    newComputerLife = currentComputerLife - strongDamage
+    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
+    newComputerLife = Math.max(0, currentComputerLife - strongDamage)
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
-    newPlayerLife = currentPlayerLife - strongDamage
-    newComputerLife = currentComputerLife - weakDamage
+    newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
+    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
   } else {
-    newPlayerLife = currentPlayerLife - weakDamage
-    newComputerLife = currentComputerLife - weakDamage
+    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
+    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
   }
 
   player_unit__element.dataset.life = newPlayerLife
