@@ -218,57 +218,21 @@ function battleScreen() {
     main__element.innerHTML = ''
     main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
     
-    battle(
-      player_unit_1__element, computer_unit_1__element,
-      player_unit_2__element, computer_unit_2__element,
-      player_unit_3__element, computer_unit_3__element,
-    )
-
-    setTimeout(() => {
-      battle(
-        player_unit_1__element, computer_unit_1__element,
-        player_unit_2__element, computer_unit_2__element,
-        player_unit_3__element, computer_unit_3__element,
-      )
-    }, 5000)
+    battle(player_unit_1__element, computer_unit_1__element, player_unit_2__element, computer_unit_2__element, player_unit_3__element, computer_unit_3__element) 
   }
 }
 
-function battle(
+async function battle(
   player_unit_1__element, computer_unit_1__element,
   player_unit_2__element, computer_unit_2__element,
   player_unit_3__element, computer_unit_3__element,
 ) {
 
-  setInterval(() => {
-   setTimeout(() => {
-      unitAnimation(player_unit_1__element, 'left').play()
-      unitAnimation(computer_unit_1__element, 'right').play()
-
-      setTimeout(() => {
-         combat(player_unit_1__element, computer_unit_1__element)
-      }, 500)
-    }, 1000)
-  
-    setTimeout(() => {
-      unitAnimation(player_unit_2__element, 'left').play()
-      unitAnimation(computer_unit_2__element, 'right').play()
-
-      setTimeout(() => {
-        combat(player_unit_2__element, computer_unit_2__element)
-      }, 500)
-    }, 2000)
-
-    setTimeout(() => {
-      unitAnimation(player_unit_3__element, 'left').play()
-      unitAnimation(computer_unit_3__element, 'right').play()
-
-      setTimeout(() => {
-        combat(player_unit_3__element, computer_unit_3__element)
-      }, 500)
-    }, 3000)
-  }, 6000); 
-
+  unitAnimation(player_unit_1__element, computer_unit_1__element).then(() => {
+    unitAnimation(player_unit_2__element, computer_unit_2__element).then(() => {
+      unitAnimation(player_unit_3__element, computer_unit_3__element)
+    })
+  })
 }
 
 function handleRemoveUnit(id) {
@@ -281,50 +245,50 @@ function handleRemoveUnit(id) {
   }
 }
 
-function unitAnimation(element, side) {
-  const css = (() => { 
-    switch (side) {
-      case 'left':
-        return { 
-          translate: '2.5rem',
-          rotate_1: '10deg',
-          rotate_2: '-10deg',
-        }
-    
-      case 'right':
-        return { 
-          translate: '-2.5rem',
-          rotate_1: '-10deg',
-          rotate_2: '10deg',
-        }
-      default:
-        return { 
-          translate: '0',
-          rotate_1: '0',
-          rotate_2: '0',
-        }
-    }
-  })()
-
-  const keyframe = new KeyframeEffect(
-    element,
+function unitAnimation(player_unit__element, computer_unit__element) {
+  const playerKeyframe = new KeyframeEffect(
+    player_unit__element,
     [ 
       { transform: 'translateX(0)' },
       { filter: 'blur(5px)' },
-      { transform: `translateX(${css.translate})` },
+      { transform: `translateX(2.5rem)` },
       { transform: 'translateX(0)' },
       { filter: 'blur(0)' },
       { filter: 'contrast(50%)' },
-      { transform: `rotate(${css.rotate_1})` },
+      { transform: `rotate(10deg)` },
       { transform: 'rotate(0deg)' },
-      { transform: `rotate(${css.rotate_2})`}, 
+      { transform: `rotate(-10deg)`}, 
       { transform: 'rotate(0deg)' },
       { filter: 'contrast(100%)' },
     ],
     { duration: 500 } 
   )
 
-  return new Animation(keyframe)
+  const computerKeyframe =  new KeyframeEffect(
+    computer_unit__element,
+    [ 
+      { transform: 'translateX(0)' },
+      { filter: 'blur(5px)' },
+      { transform: `translateX(-2.5rem)` },
+      { transform: 'translateX(0)' },
+      { filter: 'blur(0)' },
+      { filter: 'contrast(50%)' },
+      { transform: `rotate(-10deg)` },
+      { transform: 'rotate(0deg)' },
+      { transform: `rotate(10deg)`}, 
+      { transform: 'rotate(0deg)' },
+      { filter: 'contrast(100%)' },
+    ],
+    { duration: 500 } 
+  )
+
+  const playerAnimation = new Animation(playerKeyframe)
+  const computerAnimation = new Animation(computerKeyframe)
+
+  playerAnimation.play()
+  computerAnimation.play()
+
+  return Promise.all([playerAnimation.finished, computerAnimation.finished ])
 }
 
 function calcPercent(value) {
