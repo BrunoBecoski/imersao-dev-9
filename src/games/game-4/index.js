@@ -218,7 +218,29 @@ function battleScreen() {
     main__element.innerHTML = ''
     main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
     
-    battle(player_unit_1__element, computer_unit_1__element, player_unit_2__element, computer_unit_2__element, player_unit_3__element, computer_unit_3__element) 
+    battle(
+      player_unit_1__element, computer_unit_1__element,
+      player_unit_2__element, computer_unit_2__element,
+      player_unit_3__element, computer_unit_3__element
+    ).then(() => {
+      battle(
+        player_unit_1__element, computer_unit_1__element,
+        player_unit_2__element, computer_unit_2__element,
+        player_unit_3__element, computer_unit_3__element
+      ).then(() => {
+        battle(
+          player_unit_1__element, computer_unit_1__element,
+          player_unit_2__element, computer_unit_2__element,
+          player_unit_3__element, computer_unit_3__element
+        ).then(() => {
+          battle(
+            player_unit_1__element, computer_unit_1__element,
+            player_unit_2__element, computer_unit_2__element,
+            player_unit_3__element, computer_unit_3__element
+          )
+        })
+      })
+    })
   }
 }
 
@@ -227,12 +249,14 @@ async function battle(
   player_unit_2__element, computer_unit_2__element,
   player_unit_3__element, computer_unit_3__element,
 ) {
+  await unitAnimation(player_unit_1__element, computer_unit_1__element)
+  await lifeDamage(player_unit_1__element, computer_unit_1__element)
 
-  unitAnimation(player_unit_1__element, computer_unit_1__element).then(() => {
-    unitAnimation(player_unit_2__element, computer_unit_2__element).then(() => {
-      unitAnimation(player_unit_3__element, computer_unit_3__element)
-    })
-  })
+  await unitAnimation(player_unit_2__element, computer_unit_2__element)
+  await lifeDamage(player_unit_2__element, computer_unit_2__element)
+
+  await unitAnimation(player_unit_3__element, computer_unit_3__element)
+  await lifeDamage(player_unit_3__element, computer_unit_3__element)
 }
 
 function handleRemoveUnit(id) {
@@ -300,11 +324,11 @@ function lifeAnimation(element, currentLife, newLife) {
   const newPercentage = calcPercent(newLife)
 
   let css = {
-    current: {
+    green: {
       width_1: currentPercentage + '%',
       width_2: newPercentage + '%',
     },
-    new: {
+    red: {
       width_1: 100 - currentPercentage + '%',
       width_2: 100 - newPercentage + '%',
     }
@@ -312,26 +336,34 @@ function lifeAnimation(element, currentLife, newLife) {
 
   const life__element = element.querySelector('#life')
 
-  new Animation( new KeyframeEffect(
+  const span1Keyframe = new KeyframeEffect(
     life__element.firstChild,
     [ 
-      { width: css.current.width_1 },
-      { width: css.current.width_2 },
+      { width: css.green.width_1 },
+      { width: css.green.width_2 },
     ],
     { duration: 500 } 
-  )).play()
+  )
 
-  new Animation( new KeyframeEffect(
+  const span2Keyframe = new KeyframeEffect(
     life__element.lastChild,
     [ 
-      { width: css.new.width_1 },
-      { width: css.new.width_2 },
+      { width: css.red.width_1 },
+      { width: css.red.width_2 },
     ],
     { duration: 500 } 
-  )).play()
+  )
+
+  const span1Animation = new Animation(span1Keyframe)
+  const span2Animation = new Animation(span2Keyframe)
+
+  span1Animation.play()
+  span2Animation.play()
+
+  return Promise.all([span1Animation.finished, span2Animation.finished ])
 }
 
-function combat(player_unit__element, computer_unit__element) {
+async function lifeDamage(player_unit__element, computer_unit__element) {
   const playerUnit = units.get(player_unit__element.dataset.unit)
   const currentPlayerLife = Number(player_unit__element.dataset.life)
 
@@ -351,12 +383,12 @@ function combat(player_unit__element, computer_unit__element) {
     newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
   }
-
+ 
+  await lifeAnimation(player_unit__element, currentPlayerLife, newPlayerLife)
   player_unit__element.dataset.life = newPlayerLife
-  computer_unit__element.dataset.life = newComputerLife
 
-  lifeAnimation(player_unit__element, currentPlayerLife, newPlayerLife)
-  lifeAnimation(computer_unit__element, currentComputerLife, newComputerLife)
+  await lifeAnimation(computer_unit__element, currentComputerLife, newComputerLife)
+  computer_unit__element.dataset.life = newComputerLife
 }
 
 function createButtonUnit(unit) {
@@ -420,19 +452,15 @@ function createBattleUnit(unit) {
   const battle_unit__element = document.createElement('div')
   const img__element = document.createElement('img')
   const life__element = document.createElement('div')
-
-  life__element.append(document.createElement('span'), document.createElement('span'))
-
+  
   life__element.id = 'life'
   life__element.className = 'unit-life'
   battle_unit__element.className = 'battle-unit'
-
   img__element.src = img
-
   battle_unit__element.dataset.life = initialLife
-
   battle_unit__element.dataset.unit = value
-
+  
+  life__element.append(document.createElement('span'), document.createElement('span'))
   battle_unit__element.append(life__element, img__element)
 
   return battle_unit__element
