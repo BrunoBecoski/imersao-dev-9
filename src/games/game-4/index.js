@@ -182,47 +182,69 @@ async function battleScreen() {
   const computer_unit_2 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
   const computer_unit_3 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
 
-  if (player_unit_1 && player_unit_2 && player_unit_3) {
 
-    const player_unit_1__element = createBattleUnit(player_unit_1.value)
-    const player_unit_2__element = createBattleUnit(player_unit_2.value)
-    const player_unit_3__element = createBattleUnit(player_unit_3.value)
+  const player_unit_1__element = createBattleUnit(player_unit_1.value)
+  const player_unit_2__element = createBattleUnit(player_unit_2.value)
+  const player_unit_3__element = createBattleUnit(player_unit_3.value)
 
-    player_units__element.append(
-      player_unit_1__element,
-      player_unit_2__element,
-      player_unit_3__element,
-    )
+  player_units__element.append(
+    player_unit_1__element,
+    player_unit_2__element,
+    player_unit_3__element,
+  )
 
-    const computer_unit_1__element =  createBattleUnit(computer_unit_1.value)
-    const computer_unit_2__element =  createBattleUnit(computer_unit_2.value)
-    const computer_unit_3__element =  createBattleUnit(computer_unit_3.value)
+  const computer_unit_1__element =  createBattleUnit(computer_unit_1.value)
+  const computer_unit_2__element =  createBattleUnit(computer_unit_2.value)
+  const computer_unit_3__element =  createBattleUnit(computer_unit_3.value)
 
-    computer_units__element.append(
-      computer_unit_1__element,
-      computer_unit_2__element,
-      computer_unit_3__element,
-    )
+  computer_units__element.append(
+    computer_unit_1__element,
+    computer_unit_2__element,
+    computer_unit_3__element,
+  )
 
-    const battle__element = document.createElement('div')
-    battle__element.className = 'battle'
-    battle__element.append(
-      player_units__element,
-      computer_units__element,
-    )
+  const battle__element = document.createElement('div')
+  battle__element.className = 'battle'
+  battle__element.append(
+    player_units__element,
+    computer_units__element,
+  )
 
-    const title__element = document.getElementById('title')
-    title__element.innerText = 'Batalha'
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Batalha'
 
-    const main__element = document.getElementById('main')
-    main__element.innerHTML = ''
-    main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
-    
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
+  
 
+  await playCombat()
+  
+  async function playCombat() {
+    let loop = true
 
-    await combat(player_unit_1__element, computer_unit_1__element)
-    await combat(player_unit_2__element, computer_unit_2__element)
-    await combat(player_unit_3__element, computer_unit_3__element)
+    do {
+      const playerUnitLife1 = Number(player_unit_1__element.dataset.life)
+      const computerUnitLife1 = Number(computer_unit_1__element.dataset.life)
+      
+      const playerUnitLife2 = Number(player_unit_2__element.dataset.life)
+      const computerUnitLife2 = Number(computer_unit_2__element.dataset.life)
+      
+      const playerUnitLife3 = Number(player_unit_3__element.dataset.life)
+      const computerUnitLife3 = Number(computer_unit_3__element.dataset.life)
+      
+      if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
+        await combat(player_unit_1__element, computer_unit_1__element)
+      } else
+      if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
+        await combat(player_unit_2__element, computer_unit_2__element)
+      } else
+      if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
+        await combat(player_unit_3__element, computer_unit_3__element)
+      } else {
+        loop = false
+      }
+    } while (loop)
   }
 }
 
@@ -236,7 +258,22 @@ function handleRemoveUnit(id) {
   }
 }
 
-function unitAnimation(player_unit__element, computer_unit__element) {
+function calcPercent(value) {
+  return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
+}
+
+async function unitAnimation(
+  player_unit__element, playerCurrentLife, playerNewLife,
+  computer_unit__element, computerCurrentLife, computerNewLife, 
+) {
+  const playerCurrentPercentage  = calcPercent(playerCurrentLife)
+  const playerNewPercentage = calcPercent(playerNewLife)
+  const computerCurrentPercentage  = calcPercent(computerCurrentLife)
+  const computerNewPercentage = calcPercent(computerNewLife)
+
+  const player_unit_life__element = player_unit__element.querySelector('#life')
+  const computer_unit_life__element = computer_unit__element.querySelector('#life')
+
   const playerKeyframe = new KeyframeEffect(
     player_unit__element,
     [ 
@@ -273,108 +310,69 @@ function unitAnimation(player_unit__element, computer_unit__element) {
     { duration: 500 } 
   )
 
-  const playerAnimation = new Animation(playerKeyframe)
-  const computerAnimation = new Animation(computerKeyframe)
-
-  playerAnimation.play()
-  computerAnimation.play()
-
-  return Promise.all([playerAnimation.finished, computerAnimation.finished ])
-}
-
-function calcPercent(value) {
-  return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
-}
-
-function lifeAnimation(
-  player__element, playerCurrentLife, playerNewLife,
-  computer__element, computerCurrentLife, computerNewLife, 
-) {
-
-  const playerCurrentPercentage  = calcPercent(playerCurrentLife)
-  const playerNewPercentage = calcPercent(playerNewLife)
-
-  const computerCurrentPercentage  = calcPercent(computerCurrentLife)
-  const computerNewPercentage = calcPercent(computerNewLife)
-
-
-  let playerCss = {
-    green: {
-      width_1: playerCurrentPercentage + '%',
-      width_2: playerNewPercentage + '%',
-    },
-    red: {
-      width_1: 100 - playerCurrentPercentage + '%',
-      width_2: 100 - playerNewPercentage + '%',
-    }
-  }
-
-   let computerCss = {
-    green: {
-      width_1: computerCurrentPercentage + '%',
-      width_2: computerNewPercentage + '%',
-    },
-    red: {
-      width_1: 100 - computerCurrentPercentage + '%',
-      width_2: 100 - computerNewPercentage + '%',
-    }
-  }
-
-  const player_life__element = player__element.querySelector('#life')
-  const computer_life__element = computer__element.querySelector('#life')
-
   const playerSpan1Keyframe = new KeyframeEffect(
-    player_life__element.firstChild,
+    player_unit_life__element.firstChild,
     [ 
-      { width: playerCss.green.width_1 },
-      { width: playerCss.green.width_2 },
+      { width: playerCurrentPercentage + '%' },
+      { width: playerNewPercentage + '%' },
     ],
     { duration: 500 } 
   )
 
   const playerSpan2Keyframe = new KeyframeEffect(
-    player_life__element.lastChild,
+    player_unit_life__element.lastChild,
     [ 
-      { width: playerCss.red.width_1 },
-      { width: playerCss.red.width_2 },
+      { width: 100 - playerCurrentPercentage + '%' },
+      { width: 100 - playerNewPercentage + '%' },
     ],
     { duration: 500 } 
   )
 
   const computerSpan1Keyframe = new KeyframeEffect(
-    computer_life__element.firstChild,
+    computer_unit_life__element.firstChild,
     [ 
-      { width: computerCss.green.width_1 },
-      { width: computerCss.green.width_2 },
+      { width: computerCurrentPercentage + '%' },
+      { width: computerNewPercentage + '%' },
     ],
     { duration: 500 } 
   )
 
   const computerSpan2Keyframe = new KeyframeEffect(
-    computer_life__element.lastChild,
+    computer_unit_life__element.lastChild,
     [ 
-      { width: computerCss.red.width_1 },
-      { width: computerCss.red.width_2 },
+      { width: 100 - computerCurrentPercentage + '%' },
+      { width: 100 - computerNewPercentage + '%' },
     ],
     { duration: 500 } 
   )
 
+  const playerAnimation = new Animation(playerKeyframe)
+  const computerAnimation = new Animation(computerKeyframe)
   const playerSpan1Animation = new Animation(playerSpan1Keyframe)
   const playerSpan2Animation = new Animation(playerSpan2Keyframe)
   const computerSpan1Animation = new Animation(computerSpan1Keyframe)
   const computerSpan2Animation = new Animation(computerSpan2Keyframe)
 
+  playerAnimation.play()
+  computerAnimation.play()
+  
+  await playerAnimation.finished
   playerSpan1Animation.play()
   playerSpan2Animation.play()
+  
+
+  await computerAnimation.finished
   computerSpan1Animation.play()
   computerSpan2Animation.play()
 
-  return Promise.all([ 
+  return Promise.all([
+    playerAnimation.finished,
+    computerAnimation.finished,
     playerSpan1Animation.finished,
     playerSpan2Animation.finished,
     computerSpan1Animation.finished,
     computerSpan2Animation.finished,
-   ])
+  ])
 }
 
 async function combat(player_unit__element, computer_unit__element) {
@@ -403,14 +401,12 @@ async function combat(player_unit__element, computer_unit__element) {
   }
 
   if (newPlayerLife >= 0 && newComputerLife >= 0) {
-    await unitAnimation(player_unit__element, computer_unit__element)
-    await lifeAnimation(
+    await unitAnimation(
       player_unit__element, currentPlayerLife, newPlayerLife,
       computer_unit__element, currentComputerLife, newComputerLife,
     )
 
     player_unit__element.dataset.life = newPlayerLife
-  
     computer_unit__element.dataset.life = newComputerLife
   }
 }
