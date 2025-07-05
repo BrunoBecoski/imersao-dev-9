@@ -167,60 +167,84 @@ function handleAddUnit(unit) {
   }  
 }
 
-async function battleScreen() {
-  const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
-
+function renderBattleUnits(battleUnits) {
   const player_units__element = document.createElement('div')
   const computer_units__element = document.createElement('div')
-  computer_units__element.className = 'computer-units'
 
-  const player_unit_1 = units.get(slots__elements[0].dataset.unit)
-  const player_unit_2 = units.get(slots__elements[1].dataset.unit)
-  const player_unit_3 = units.get(slots__elements[2].dataset.unit)
-
-  const computer_unit_1 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
-  const computer_unit_2 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
-  const computer_unit_3 = Array.from(units.entries())[Math.floor(Math.random() * 6)][1]
-
-
-  const player_unit_1__element = createBattleUnit(player_unit_1.value)
-  const player_unit_2__element = createBattleUnit(player_unit_2.value)
-  const player_unit_3__element = createBattleUnit(player_unit_3.value)
+  const playerUnits = battleUnits.player
+  const computerUnits = battleUnits.computer
 
   player_units__element.append(
-    player_unit_1__element,
-    player_unit_2__element,
-    player_unit_3__element,
+    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
   )
-
-  const computer_unit_1__element =  createBattleUnit(computer_unit_1.value)
-  const computer_unit_2__element =  createBattleUnit(computer_unit_2.value)
-  const computer_unit_3__element =  createBattleUnit(computer_unit_3.value)
 
   computer_units__element.append(
-    computer_unit_1__element,
-    computer_unit_2__element,
-    computer_unit_3__element,
+    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
   )
 
-  const battle__element = document.createElement('div')
-  battle__element.className = 'battle'
-  battle__element.append(
+  const battle_units__element = document.createElement('div')
+  battle_units__element.className = 'battle'
+  battle_units__element.append(
     player_units__element,
     computer_units__element,
   )
+
+  return battle_units__element
+}
+
+async function battleScreen() {
+  const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
+
+  const battleUnits = {
+    player: [{ 
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: slots__elements[0].dataset.unit,
+    }, {
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: slots__elements[1].dataset.unit,
+    }, {
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: slots__elements[2].dataset.unit,
+    }],
+    computer: [{
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+    }, {
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+    }, {
+      id: Math.floor(Math.random() * new Date().getTime()),
+      life: initialLife,
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+    }],
+  }
+
+
+  const battle_units__element = renderBattleUnits(battleUnits)
 
   const title__element = document.getElementById('title')
   title__element.innerText = 'Batalha'
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(battle__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
+  main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
   
-
   await playCombat()
-  
+
   async function playCombat() {
+    const player_unit_1__element = document.getElementById(battleUnits.player[0].id)
+    const player_unit_2__element = document.getElementById(battleUnits.player[1].id)
+    const player_unit_3__element = document.getElementById(battleUnits.player[2].id)
+
+    const computer_unit_1__element = document.getElementById(battleUnits.computer[0].id)
+    const computer_unit_2__element = document.getElementById(battleUnits.computer[1].id)
+    const computer_unit_3__element = document.getElementById(battleUnits.computer[2].id)
+
     let loop = true
 
     do {
@@ -466,7 +490,7 @@ function handleMouseOut(value) {
   weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
 }
 
-function createBattleUnit(unit) {
+function createBattleUnit(id, life, unit) {
   const { value, img } = units.get(unit)
 
   const battle_unit__element = document.createElement('div')
@@ -475,9 +499,10 @@ function createBattleUnit(unit) {
   
   life__element.id = 'life'
   life__element.className = 'unit-life'
+  battle_unit__element.id = id
   battle_unit__element.className = 'battle-unit'
   img__element.src = img
-  battle_unit__element.dataset.life = initialLife
+  battle_unit__element.dataset.life = life
   battle_unit__element.dataset.unit = value
   
   life__element.append(document.createElement('span'), document.createElement('span'))
