@@ -169,31 +169,6 @@ function handleAddUnit(unit) {
   }  
 }
 
-function renderBattleUnits() {
-  const player_units__element = document.createElement('div')
-  const computer_units__element = document.createElement('div')
-
-  const playerUnits = battleUnits.player
-  const computerUnits = battleUnits.computer
-
-  player_units__element.append(
-    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
-  )
-
-  computer_units__element.append(
-    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
-  )
-
-  const battle_units__element = document.createElement('div')
-  battle_units__element.className = 'battle'
-  battle_units__element.append(
-    player_units__element,
-    computer_units__element,
-  )
-
-  return battle_units__element
-}
-
 async function battleScreen() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
@@ -214,7 +189,7 @@ async function battleScreen() {
     computer: [{
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-            unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
@@ -233,44 +208,17 @@ async function battleScreen() {
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
+  main__element.append(battle_units__element)
+
+  let loop = true
   
-  await playCombat()
-
-  const initialValue = 0;
-
-  const playerLife = battleUnits.player.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.life,
-    initialValue,
-  );
-
-  const computerLife = battleUnits.computer.reduce(
-    (accumulator, unit) => accumulator + unit.life,
-    initialValue,
-  )
-
-  if (playerLife === 0 && computerLife === 0) {
-    console.log('EMPATE')
-  } else if (playerLife >= 1 && computerLife == 0) {
-    console.log('VENCEU')
-  } else if (playerLife === 0 && computerLife >= 1) {
-    console.log('PERDEU')
-  } else {
-    console.log('PROXIMA RODADA')
-
-    battleUnits.player.sort((a, b) => b.life - a.life)
-    battleUnits.computer.sort((a, b) => b.life - a.life)
-
-    const battle_units__element = renderBattleUnits()
-    main__element.innerHTML = ''
-    main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
-
-    await playCombat()
+  do {
+    const initialValue = 0
 
     const playerLife = battleUnits.player.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.life,
+      (accumulator, unit) => accumulator + unit.life,
       initialValue,
-    );
+    )
 
     const computerLife = battleUnits.computer.reduce(
       (accumulator, unit) => accumulator + unit.life,
@@ -278,42 +226,50 @@ async function battleScreen() {
     )
 
     if (playerLife === 0 && computerLife === 0) {
-      console.log('EMPATE')
-    } else if (playerLife >= 1 && computerLife == 0) {
-      console.log('VENCEU')
-    } else if (playerLife === 0 && computerLife >= 1) {
-      console.log('PERDEU')
-    } else {
-      console.log('PROXIMA RODADA')
+      const title__element = document.getElementById('title')
+      const h1__element = document.createElement('h1')
+      
+      title__element.innerText = 'Resultado'
+      h1__element.innerText = 'EMPATE'
+      h1__element.className = 'result'
 
+      main__element.innerHTML = ''
+      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
+
+      loop = false
+    } else if (playerLife >= 1 && computerLife === 0) {
+      const title__element = document.getElementById('title')
+      const h1__element = document.createElement('h1')
+      
+      title__element.innerText = 'Resultado'
+      h1__element.innerText = 'GANHOU'
+      h1__element.className = 'result'
+
+      main__element.innerHTML = ''
+      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
+      loop = false
+    } else if (computerLife >= 1 && playerLife === 0) {
+      const title__element = document.getElementById('title')
+      const h1__element = document.createElement('h1')
+
+      title__element.innerText = 'Resultado'
+      h1__element.innerText = 'PERDEU'
+      h1__element.className = 'result'
+
+      main__element.innerHTML = ''
+      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
+      loop = false
+    } else {
       battleUnits.player.sort((a, b) => b.life - a.life)
       battleUnits.computer.sort((a, b) => b.life - a.life)
-
+      
       const battle_units__element = renderBattleUnits()
       main__element.innerHTML = ''
-      main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
-
+      main__element.append(battle_units__element)
+      
       await playCombat()
-
-      const playerLife = battleUnits.player.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.life,
-        initialValue,
-      );
-
-      const computerLife = battleUnits.computer.reduce(
-        (accumulator, unit) => accumulator + unit.life,
-        initialValue,
-      )
-
-      if (playerLife === 0 && computerLife === 0) {
-        console.log('EMPATE')
-      } else if (playerLife >= 1 && computerLife == 0) {
-        console.log('VENCEU')
-      } else if (playerLife === 0 && computerLife >= 1) {
-        console.log('PERDEU')
-      }
     }
-  }
+  } while (loop)
 }
 
 async function playCombat() {
@@ -380,6 +336,31 @@ async function combat(playerUnitId, computerUnitId) {
 
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
+}
+
+function renderBattleUnits() {
+  const player_units__element = document.createElement('div')
+  const computer_units__element = document.createElement('div')
+
+  const playerUnits = battleUnits.player
+  const computerUnits = battleUnits.computer
+
+  player_units__element.append(
+    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
+  )
+
+  computer_units__element.append(
+    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
+  )
+
+  const battle_units__element = document.createElement('div')
+  battle_units__element.className = 'battle'
+  battle_units__element.append(
+    player_units__element,
+    computer_units__element,
+  )
+
+  return battle_units__element
 }
 
 function handleRemoveUnit(id) {

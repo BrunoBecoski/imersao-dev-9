@@ -111,6 +111,12 @@
   position: relative;
 }
 
+#game-4 .result {
+  font-size: 4rem;
+  color: #FFFB47;
+  margin-block: 4rem;
+}
+
 #game-4 .select-unit {
   display: flex;
   flex-direction: column;
@@ -156,7 +162,6 @@
   left: -5px;
   bottom: -5px;
   right: -5px;
-  
 }
 
 #game-4 .selected-unit:hover {
