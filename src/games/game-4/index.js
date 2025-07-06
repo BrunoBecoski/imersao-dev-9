@@ -13,6 +13,8 @@ const initialLife = 4
 const weakDamage = 1
 const strongDamage = 2
 
+let battleUnits = {}
+
 const units = new Map([
   ['arbalester', {
     name: 'Arbalesteiro',
@@ -167,7 +169,7 @@ function handleAddUnit(unit) {
   }  
 }
 
-function renderBattleUnits(battleUnits) {
+function renderBattleUnits() {
   const player_units__element = document.createElement('div')
   const computer_units__element = document.createElement('div')
 
@@ -195,11 +197,11 @@ function renderBattleUnits(battleUnits) {
 async function battleScreen() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
-  const battleUnits = {
+  battleUnits = {
     player: [{ 
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: slots__elements[0].dataset.unit,
+      unit: slots__elements[0].dataset.unit
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
@@ -207,25 +209,24 @@ async function battleScreen() {
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: slots__elements[2].dataset.unit,
+      unit:slots__elements[2].dataset.unit,
     }],
     computer: [{
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+            unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
     }],
   }
 
-
-  const battle_units__element = renderBattleUnits(battleUnits)
+  const battle_units__element = renderBattleUnits()
 
   const title__element = document.getElementById('title')
   title__element.innerText = 'Batalha'
@@ -236,40 +237,149 @@ async function battleScreen() {
   
   await playCombat()
 
-  async function playCombat() {
-    const player_unit_1__element = document.getElementById(battleUnits.player[0].id)
-    const player_unit_2__element = document.getElementById(battleUnits.player[1].id)
-    const player_unit_3__element = document.getElementById(battleUnits.player[2].id)
+  const initialValue = 0;
 
-    const computer_unit_1__element = document.getElementById(battleUnits.computer[0].id)
-    const computer_unit_2__element = document.getElementById(battleUnits.computer[1].id)
-    const computer_unit_3__element = document.getElementById(battleUnits.computer[2].id)
+  const playerLife = battleUnits.player.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.life,
+    initialValue,
+  );
 
-    let loop = true
+  const computerLife = battleUnits.computer.reduce(
+    (accumulator, unit) => accumulator + unit.life,
+    initialValue,
+  )
 
-    do {
-      const playerUnitLife1 = Number(player_unit_1__element.dataset.life)
-      const computerUnitLife1 = Number(computer_unit_1__element.dataset.life)
-      
-      const playerUnitLife2 = Number(player_unit_2__element.dataset.life)
-      const computerUnitLife2 = Number(computer_unit_2__element.dataset.life)
-      
-      const playerUnitLife3 = Number(player_unit_3__element.dataset.life)
-      const computerUnitLife3 = Number(computer_unit_3__element.dataset.life)
-      
-      if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
-        await combat(player_unit_1__element, computer_unit_1__element)
-      } else
-      if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
-        await combat(player_unit_2__element, computer_unit_2__element)
-      } else
-      if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
-        await combat(player_unit_3__element, computer_unit_3__element)
-      } else {
-        loop = false
+  if (playerLife === 0 && computerLife === 0) {
+    console.log('EMPATE')
+  } else if (playerLife >= 1 && computerLife == 0) {
+    console.log('VENCEU')
+  } else if (playerLife === 0 && computerLife >= 1) {
+    console.log('PERDEU')
+  } else {
+    console.log('PROXIMA RODADA')
+
+    battleUnits.player.sort((a, b) => b.life - a.life)
+    battleUnits.computer.sort((a, b) => b.life - a.life)
+
+    const battle_units__element = renderBattleUnits()
+    main__element.innerHTML = ''
+    main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
+
+    await playCombat()
+
+    const playerLife = battleUnits.player.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.life,
+      initialValue,
+    );
+
+    const computerLife = battleUnits.computer.reduce(
+      (accumulator, unit) => accumulator + unit.life,
+      initialValue,
+    )
+
+    if (playerLife === 0 && computerLife === 0) {
+      console.log('EMPATE')
+    } else if (playerLife >= 1 && computerLife == 0) {
+      console.log('VENCEU')
+    } else if (playerLife === 0 && computerLife >= 1) {
+      console.log('PERDEU')
+    } else {
+      console.log('PROXIMA RODADA')
+
+      battleUnits.player.sort((a, b) => b.life - a.life)
+      battleUnits.computer.sort((a, b) => b.life - a.life)
+
+      const battle_units__element = renderBattleUnits()
+      main__element.innerHTML = ''
+      main__element.append(battle_units__element, createButton({ text: 'Recomeçar', handleClick: selectionScreen }))
+
+      await playCombat()
+
+      const playerLife = battleUnits.player.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.life,
+        initialValue,
+      );
+
+      const computerLife = battleUnits.computer.reduce(
+        (accumulator, unit) => accumulator + unit.life,
+        initialValue,
+      )
+
+      if (playerLife === 0 && computerLife === 0) {
+        console.log('EMPATE')
+      } else if (playerLife >= 1 && computerLife == 0) {
+        console.log('VENCEU')
+      } else if (playerLife === 0 && computerLife >= 1) {
+        console.log('PERDEU')
       }
-    } while (loop)
+    }
   }
+}
+
+async function playCombat() {
+  let loop = true
+  
+  do {
+    const playerUnitLife1 = battleUnits.player[0].life
+    const playerUnitLife2 = battleUnits.player[1].life
+    const playerUnitLife3 = battleUnits.player[2].life
+    
+    const computerUnitLife1 = battleUnits.computer[0].life
+    const computerUnitLife2 = battleUnits.computer[1].life
+    const computerUnitLife3 = battleUnits.computer[2].life
+
+    if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
+      await combat(battleUnits.player[0].id, battleUnits.computer[0].id)
+    } else
+    if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
+      await combat(battleUnits.player[1].id, battleUnits.computer[1].id)
+    } else
+    if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
+      await combat(battleUnits.player[2].id, battleUnits.computer[2].id)
+    } else {
+      loop = false
+    }
+  } while (loop)
+}
+
+async function combat(playerUnitId, computerUnitId) {
+  const player_unit__element = document.getElementById(playerUnitId)
+  const computer_unit__element = document.getElementById(computerUnitId)
+
+  const playerUnit = units.get(player_unit__element.dataset.unit)
+  const currentPlayerLife = Number(player_unit__element.dataset.life)
+
+  const computerUnit = units.get(computer_unit__element.dataset.unit)
+  const currentComputerLife = Number(computer_unit__element.dataset.life)
+
+  let newPlayerLife = 0
+  let newComputerLife = 0
+
+  if (currentPlayerLife === 0 || currentComputerLife === 0) {
+    return
+  }
+
+  if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
+    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
+    newComputerLife = Math.max(0, currentComputerLife - strongDamage)
+  } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
+    newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
+    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
+  } else {
+    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
+    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
+  }
+
+  await unitAnimation(
+    player_unit__element, currentPlayerLife, newPlayerLife,
+    computer_unit__element, currentComputerLife, newComputerLife,
+  )
+
+  battleUnits.player.find((unit) => unit.id === playerUnitId).life = newPlayerLife
+  battleUnits.computer.find((unit) => unit.id === computerUnitId).life = newComputerLife
+
+  player_unit__element.dataset.life = newPlayerLife
+  computer_unit__element.dataset.life = newComputerLife
 }
 
 function handleRemoveUnit(id) {
@@ -383,7 +493,6 @@ async function unitAnimation(
   await playerAnimation.finished
   playerSpan1Animation.play()
   playerSpan2Animation.play()
-  
 
   await computerAnimation.finished
   computerSpan1Animation.play()
@@ -397,42 +506,6 @@ async function unitAnimation(
     computerSpan1Animation.finished,
     computerSpan2Animation.finished,
   ])
-}
-
-async function combat(player_unit__element, computer_unit__element) {
-  const playerUnit = units.get(player_unit__element.dataset.unit)
-  const currentPlayerLife = Number(player_unit__element.dataset.life)
-
-  const computerUnit = units.get(computer_unit__element.dataset.unit)
-  const currentComputerLife = Number(computer_unit__element.dataset.life)
-
-  let newPlayerLife = 0
-  let newComputerLife = 0
-
-  if (currentPlayerLife === 0 || currentComputerLife === 0) {
-    return
-  }
-
-  if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
-    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
-    newComputerLife = Math.max(0, currentComputerLife - strongDamage)
-  } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
-    newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
-    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
-  } else {
-    newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
-    newComputerLife = Math.max(0, currentComputerLife - weakDamage)
-  }
-
-  if (newPlayerLife >= 0 && newComputerLife >= 0) {
-    await unitAnimation(
-      player_unit__element, currentPlayerLife, newPlayerLife,
-      computer_unit__element, currentComputerLife, newComputerLife,
-    )
-
-    player_unit__element.dataset.life = newPlayerLife
-    computer_unit__element.dataset.life = newComputerLife
-  }
 }
 
 function createButtonUnit(unit) {
