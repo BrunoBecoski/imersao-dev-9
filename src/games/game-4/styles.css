@@ -111,10 +111,41 @@
   position: relative;
 }
 
-#game-4 .result {
+#game-4 .result-title {
   font-size: 4rem;
   color: #FFFB47;
   margin-block: 4rem;
+}
+
+#game-4 .result-units {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  font-size: 4rem;
+  margin-block: 4rem;
+}
+
+#game-4 .result-winning-units {
+  display: flex;
+  gap: 1rem;
+}
+
+#game-4 .result-losing-units {
+  display: flex;
+  gap: 1rem;
+  filter: grayscale(1)
+}
+
+#game-4 .result-draws-units {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  filter: grayscale(.5)
+}
+
+#game-4 .result-draws-units > div {
+  display: flex;
+  gap: 1rem;
 }
 
 #game-4 .select-unit {
@@ -139,7 +170,6 @@
 #game-4 .select-unit:hover {
   border-color: #FFFB47;
 }
-
 
 #game-4 .select-unit span {
   font-size: 1rem;

@@ -226,38 +226,16 @@ async function battleScreen() {
     )
 
     if (playerLife === 0 && computerLife === 0) {
-      const title__element = document.getElementById('title')
-      const h1__element = document.createElement('h1')
-      
-      title__element.innerText = 'Resultado'
-      h1__element.innerText = 'EMPATE'
-      h1__element.className = 'result'
-
-      main__element.innerHTML = ''
-      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
+      renderResult({ value: 'draw', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
 
       loop = false
     } else if (playerLife >= 1 && computerLife === 0) {
-      const title__element = document.getElementById('title')
-      const h1__element = document.createElement('h1')
-      
-      title__element.innerText = 'Resultado'
-      h1__element.innerText = 'GANHOU'
-      h1__element.className = 'result'
+      renderResult({ value: 'won', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
 
-      main__element.innerHTML = ''
-      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
       loop = false
     } else if (computerLife >= 1 && playerLife === 0) {
-      const title__element = document.getElementById('title')
-      const h1__element = document.createElement('h1')
+      renderResult({ value: 'lose', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
 
-      title__element.innerText = 'Resultado'
-      h1__element.innerText = 'PERDEU'
-      h1__element.className = 'result'
-
-      main__element.innerHTML = ''
-      main__element.append(h1__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
       loop = false
     } else {
       battleUnits.player.sort((a, b) => b.life - a.life)
@@ -270,6 +248,97 @@ async function battleScreen() {
       await playCombat()
     }
   } while (loop)
+}
+
+function renderResult({ value, playerUnits, computerUnits }) {
+
+  let obj = {
+    title: '',
+    winningUnits: [],
+    losingUnits: [],
+    drawsUnits: [],
+  }
+
+  switch (value) {
+    case 'draw':
+      obj = {
+        title: 'EMPATE',
+      }
+      break;
+
+    case 'won':
+      obj = {
+        title: 'VENCEU',
+        winningUnits: playerUnits,
+        losingUnits: computerUnits,
+      }
+      break;
+
+    case 'lose':
+      obj = {
+        title: 'PERDEU',
+        winningUnits: computerUnits,
+        losingUnits: playerUnits,
+      }
+  
+    default:
+      break;
+  }
+
+  const main__element = document.getElementById('main')
+  const title__element = document.getElementById('title')
+  const h1__element = document.createElement('h1')
+  
+  title__element.innerText = 'Resultado'
+  h1__element.innerText = obj.title
+  h1__element.className = 'result-title'
+
+  const winning_units__element = document.createElement('div')
+  winning_units__element.className = 'result-winning-units'
+
+  const losing_units__element = document.createElement('div')
+  losing_units__element.className = 'result-losing-units'
+
+  const draws_units__element = document.createElement('div')
+  draws_units__element.className = 'result-draws-units'
+
+  const result_units__element = document.createElement('div')
+  result_units__element.className = 'result-units'
+
+
+  if (value === 'draw') {
+    const player_units__element = document.createElement('div')
+    player_units__element.append(
+      ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit))),
+    )
+    const computer_units__element = document.createElement('div')
+     computer_units__element.append(
+      ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit))),
+    )
+    draws_units__element.append(
+      player_units__element,
+      computer_units__element,
+    )
+
+    result_units__element.append(
+      draws_units__element,
+    )
+  } else {
+    winning_units__element.append(
+      ...Array.from(obj.winningUnits.map(({ unit }) => createResultUnit(unit)))
+    )
+
+    losing_units__element.append(
+      ...Array.from(obj.losingUnits.map(({ unit }) => createResultUnit(unit)))
+    )
+
+    result_units__element.append(
+      winning_units__element, losing_units__element,
+    )
+  }
+
+  main__element.innerHTML = ''
+  main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
 }
 
 async function playCombat() {
@@ -341,6 +410,8 @@ async function combat(playerUnitId, computerUnitId) {
 function renderBattleUnits() {
   const player_units__element = document.createElement('div')
   const computer_units__element = document.createElement('div')
+  player_units__element.className = 'player-units'
+  computer_units__element.className = 'computer-units'
 
   const playerUnits = battleUnits.player
   const computerUnits = battleUnits.computer
@@ -564,6 +635,17 @@ function createBattleUnit(id, life, unit) {
 
   return battle_unit__element
 }
+
+function createResultUnit(unit) {
+  const { img } = units.get(unit)
+
+  const img__element = document.createElement('img')
+  
+  img__element.src = img
+
+  return img__element
+}
+
 
 
 
