@@ -1,113 +1,200 @@
+import { createButton } from '../../components/button';
 import './styles.css';
 
 export function createGame5() {
   const section__element = document.createElement('section')
-  
-  section__element.innerHTML = `
-    <div class="container">
-      <div class="content">
-        <button id="start">Começar</button>
-        <div class="titulo">
-          <h2>Perguntas Finais</h2>
-        </div>
-        
-        <body>
-          <div class="conteudo-jogo">
-            <section class="questionario">
-              <div class="conteudo">
-                <span class="progresso"></span>
-                <span class="pergunta"></span>
-                <div class="respostas"></div>
-              </div>
 
-              <div class="fim">
-                <span></span>
-              </div>
-            </section>
-          </div>
-        </body>
+  section__element.innerHTML = `
+    <div id="game-5">
+      <div class="header">
+        <h2 id="title">Perguntas</h2>
       </div>
+
+      <div id="main"></div>
     </div>
   `
 
-  section__element.querySelector('button').onclick = () => handlePlay()
+  const main__element = section__element.querySelector('#main')
+  main__element.appendChild(createButton({ text: 'Começar', handleClick: handleStart }))
 
   return section__element
 }
 
-function handlePlay() {
+function handleStart() {
+  const progress__element = document.createElement('span')
+  progress__element.id = 'progress'
 
+  progress__element.innerText = `1/${questions.length}`
 
-  const questions = [
-    { 
-      "question": "Qual o principal Pokémon do Ash?",
-      "answers": [
-        { "option": "Pikachu", "correct": true },
-        { "option": "Bulbassauro", "correct": false },
-        { "option": "Squirtle", "correct": false },
-      ]
-    },
-    { 
-      "question": "Qual é o nome da equipe de vilões mais famosa da série Pokémon?",
-      "answers": [
-        { "option": "Equipe Rocket", "correct": true },
-        { "option": "Equipe Aqua", "correct": false },
-        { "option": "Equipe Magma", "correct": false },
-      ]
-    }
-  ]
+  const question__element = document.createElement('h3')
+  question__element.id = 'question'
+  
+  const options__element = document.createElement('div')
+  options__element.id = 'options'
+  
+  const question = questions[Math.floor(Math.random() * 4)]
+  
+  
+  question__element.innerText = question.question
 
-  const questionElement = document.querySelector('.pergunta')
-  const answerElement = document.querySelector('.respostas')
-  const progressElement = document.querySelector('.progresso')
-  const finalText = document.querySelector('.fim span')
-  const content = document.querySelector('.conteudo')
-  const finalContent = document.querySelector('.fim')
-
-  content.style.display = 'flex'
-  finalContent.style.display = 'none'
-
-  let currentIndex = 0
-  let hits = 0
-
-  function loadQuestion() {
-    progressElement.innerHTML = `${currentIndex + 1}/${questions.length}`
-    const currentQuestion = questions[currentIndex]
-    questionElement.innerHTML = currentQuestion.question
-
-    answerElement.innerHTML = ''
-
-
-    for (let i = 0; i < currentQuestion.answers.length; i++) {
-      const answer = currentQuestion.answers[i]
-      const button = document.createElement('button')
-
-      button.classList.add('botao-resposta')
-      button.innerText = answer.option
-      button.onclick = function () {
-
-        if (answer.correct) {
-          hits++
-        }
-
-        currentIndex++
-
-        if (currentIndex < questions.length) {
-          loadQuestion()
-        } else {
-          endGame()
-        }
-      }
-
-      answerElement.appendChild(button)
-    }
-  }
-
-  function endGame() {
-    finalText.innerHTML = `Você acertou ${hits} de ${questions.length}`
-    content.style.display = 'none'
-    finalContent.style.display = 'flex'
-  }
-
-  loadQuestion()
+  options__element.append(
+    ...Array.from(
+      question.answers.map(({ option, correct }) => createButton({ 
+        text: option,
+        handleClick: () => correct ? console.log('ACERTOU') : console.log('ERROU')
+      }))
+    )
+  )
+  
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.append(progress__element, question__element, options__element)
 }
+
+const questions = [
+  {
+    question: "Em que ano foi lançado o Age of Empires II?",
+    answers: [
+      { option: "1997", correct: false },
+      { option: "1998", correct: false },
+      { option: "1999", correct: true },
+    ]
+  }, {
+    question: "Que quem a história do tutorial?",
+    answers: [
+      { option: "William Wallace", correct: true },
+      { option: "Joana D'Arc", correct: false },
+      { option: "Gengis Khan", correct: false },
+    ],
+  },{
+    question: "Qual edifício a relíquia é guarnecida?",
+    answers: [
+      { option: "Castelo", correct: false },
+      { option: "Monastério", correct: true },
+      { option: "Universidade", correct: false },
+    ],
+  },{
+    question: "Qual recurso é gerado pela relíquia?",
+    answers: [
+      { option: "Ouro", correct: true },
+      { option: "Comida", correct: false },
+      { option: "Madeira", correct: false },
+    ],
+  }
+]
+
+
+
+
+
+// export function createGame5() {
+//   const section__element = document.createElement('section')
+  
+//   section__element.innerHTML = `
+//     <div class="container">
+//       <div class="content">
+//         <button id="start">Começar</button>
+//         <div class="titulo">
+//           <h2>Perguntas Finais</h2>
+//         </div>
+        
+//         <body>
+//           <div class="conteudo-jogo">
+//             <section class="questionario">
+//               <div class="conteudo">
+//                 <span class="progresso"></span>
+//                 <span class="pergunta"></span>
+//                 <div class="respostas"></div>
+//               </div>
+
+//               <div class="fim">
+//                 <span></span>
+//               </div>
+//             </section>
+//           </div>
+//         </body>
+//       </div>
+//     </div>
+//   `
+
+//   section__element.querySelector('button').onclick = () => handlePlay()
+
+//   return section__element
+// }
+
+// function handlePlay() {
+
+
+//   const questions = [
+//     { 
+//       "question": "Qual o principal Pokémon do Ash?",
+//       "answers": [
+//         { "option": "Pikachu", "correct": true },
+//         { "option": "Bulbassauro", "correct": false },
+//         { "option": "Squirtle", "correct": false },
+//       ]
+//     },
+//     { 
+//       "question": "Qual é o nome da equipe de vilões mais famosa da série Pokémon?",
+//       "answers": [
+//         { "option": "Equipe Rocket", "correct": true },
+//         { "option": "Equipe Aqua", "correct": false },
+//         { "option": "Equipe Magma", "correct": false },
+//       ]
+//     }
+//   ]
+
+//   const questionElement = document.querySelector('.pergunta')
+//   const answerElement = document.querySelector('.respostas')
+//   const progressElement = document.querySelector('.progresso')
+//   const finalText = document.querySelector('.fim span')
+//   const content = document.querySelector('.conteudo')
+//   const finalContent = document.querySelector('.fim')
+
+//   content.style.display = 'flex'
+//   finalContent.style.display = 'none'
+
+//   let currentIndex = 0
+//   let hits = 0
+
+//   function loadQuestion() {
+//     progressElement.innerHTML = `${currentIndex + 1}/${questions.length}`
+//     const currentQuestion = questions[currentIndex]
+//     questionElement.innerHTML = currentQuestion.question
+
+//     answerElement.innerHTML = ''
+
+
+//     for (let i = 0; i < currentQuestion.answers.length; i++) {
+//       const answer = currentQuestion.answers[i]
+//       const button = document.createElement('button')
+
+//       button.classList.add('botao-resposta')
+//       button.innerText = answer.option
+//       button.onclick = function () {
+
+//         if (answer.correct) {
+//           hits++
+//         }
+
+//         currentIndex++
+
+//         if (currentIndex < questions.length) {
+//           loadQuestion()
+//         } else {
+//           endGame()
+//         }
+//       }
+
+//       answerElement.appendChild(button)
+//     }
+//   }
+
+//   function endGame() {
+//     finalText.innerHTML = `Você acertou ${hits} de ${questions.length}`
+//     content.style.display = 'none'
+//     finalContent.style.display = 'flex'
+//   }
+
+//   loadQuestion()
+// }

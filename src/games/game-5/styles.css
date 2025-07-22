@@ -1,4 +1,41 @@
-.questionario {
+#game-5 #title {
+  color: #FFFFFF;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#game-5 #main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#game-5 #progress {
+  color: #FFFFFF;
+  font-size: 2rem;
+}
+
+#game-5 #question {
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 1.8rem;
+  margin-block: 2rem;
+}
+
+
+#game-5 #options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+
+
+
+/* .questionario {
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
@@ -60,4 +97,4 @@
   text-align: center;
   font-weight: 600;
   color: white;
-}
+} */
