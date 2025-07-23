@@ -5,6 +5,18 @@
   font-family: serif;
 }
 
+:root {
+  --white: #CED0D6;
+  --blue: #3E59F8;
+  --red: #EB0000;
+  --green: #00FE00;
+  --yellow: #FFFF01;
+  --cyan: #00FFFF;
+  --purple: #BD2BBB;
+  --gray: #797979;
+  --orange: #F99200;
+}
+
 #root {
   display: flex;
 }

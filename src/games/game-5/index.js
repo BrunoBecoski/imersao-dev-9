@@ -29,7 +29,7 @@ function handleStart() {
   const question__element = document.createElement('h3')
   question__element.id = 'question'
   
-  const options__element = document.createElement('div')
+  const options__element = document.createElement('ol')
   options__element.id = 'options'
   
   const question = questions[Math.floor(Math.random() * 4)]
@@ -37,18 +37,30 @@ function handleStart() {
   
   question__element.innerText = question.question
 
-  options__element.append(
-    ...Array.from(
-      question.answers.map(({ option, correct }) => createButton({ 
-        text: option,
-        handleClick: () => correct ? console.log('ACERTOU') : console.log('ERROU')
-      }))
-    )
-  )
+  options__element.append(...Array.from(createOptions(question.answers)))
   
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, question__element, options__element)
+}
+
+function createOptions(answers) {
+  return answers.map((answer) => createOption(answer))
+}
+
+function createOption(answer) {
+  const { option, correct } = answer
+
+  const li__element = document.createElement('li')
+  const button__element = document.createElement('button')
+
+  button__element.innerText = option
+  button__element.className = 'option'
+  button__element.addEventListener('click', () => correct ? console.log('ACERTOU') : console.log('ERROU'))
+
+  li__element.append(button__element)
+
+  return li__element
 }
 
 const questions = [
