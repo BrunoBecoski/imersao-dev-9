@@ -33,8 +33,7 @@ function handleStart() {
   options__element.id = 'options'
   
   const question = questions[Math.floor(Math.random() * 4)]
-  
-  
+    
   question__element.innerText = question.question
 
   options__element.append(...Array.from(createOptions(question.answers)))
@@ -45,7 +44,9 @@ function handleStart() {
 }
 
 function createOptions(answers) {
-  return answers.map((answer) => createOption(answer))
+  const shuffledArray = randomArray(answers.length, 3)
+
+  return shuffledArray.map((position) => createOption(answers[position]))
 }
 
 function createOption(answer) {
@@ -61,6 +62,26 @@ function createOption(answer) {
   li__element.append(button__element)
 
   return li__element
+}
+
+function randomArray(arraySize, quantity) {
+  let array = []
+  let shuffledArray = []
+  let index
+
+  for (let i = 0; i < quantity; i++) {
+    array = [...array, i]
+  }
+  
+  while (quantity) {
+    index = Math.floor(Math.random() * arraySize--);
+
+    shuffledArray.push(array.splice(index, 1)[0]);
+
+    quantity--
+  }
+
+  return shuffledArray
 }
 
 const questions = [
