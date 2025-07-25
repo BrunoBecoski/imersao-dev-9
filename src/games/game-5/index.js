@@ -44,9 +44,13 @@ function handleStart() {
 }
 
 function createOptions(answers) {
-  const shuffledArray = randomArray(answers.length, 3)
+  const correctAnswer = answers.splice(answers.find(answer => answer.correct === true), 1)
+  const shuffledArray = randomArray(answers, 2)
+  const correctAnswerPosition = Math.floor(Math.random() * 3)
 
-  return shuffledArray.map((position) => createOption(answers[position]))
+  shuffledArray.splice(correctAnswerPosition, 0, ...correctAnswer)
+
+  return shuffledArray.map((answer) => createOption(answer)) 
 }
 
 function createOption(answer) {
@@ -64,17 +68,13 @@ function createOption(answer) {
   return li__element
 }
 
-function randomArray(arraySize, quantity) {
-  let array = []
+function randomArray(array, quantity) {
   let shuffledArray = []
+  let length = array.length
   let index
-
-  for (let i = 0; i < quantity; i++) {
-    array = [...array, i]
-  }
   
   while (quantity) {
-    index = Math.floor(Math.random() * arraySize--);
+    index = Math.floor(Math.random() * length--);
 
     shuffledArray.push(array.splice(index, 1)[0]);
 
@@ -88,9 +88,11 @@ const questions = [
   {
     question: "Em que ano foi lançado o Age of Empires II?",
     answers: [
+      { option: "1996", correct: false },
       { option: "1997", correct: false },
       { option: "1998", correct: false },
       { option: "1999", correct: true },
+      { option: "2000", correct: false },
     ]
   }, {
     question: "Que quem a história do tutorial?",
@@ -98,6 +100,8 @@ const questions = [
       { option: "William Wallace", correct: true },
       { option: "Joana D'Arc", correct: false },
       { option: "Gengis Khan", correct: false },
+      { option: "Saladino", correct: false },
+      { option: "Barbarossa", correct: false },
     ],
   },{
     question: "Qual edifício a relíquia é guarnecida?",
@@ -105,13 +109,25 @@ const questions = [
       { option: "Castelo", correct: false },
       { option: "Monastério", correct: true },
       { option: "Universidade", correct: false },
+      { option: "Centro da Cidade", correct: false },
+      { option: "Maravilha", correct: false },
     ],
   },{
-    question: "Qual recurso é gerado pela relíquia?",
+    question: "O que é gerado pela relíquia guarnecida?",
     answers: [
       { option: "Ouro", correct: true },
       { option: "Comida", correct: false },
       { option: "Madeira", correct: false },
+      { option: "Pedra", correct: false },
+      { option: "Pontos", correct: false },
+    ],
+  question: "Qual é o edifico que produz aldeãos?",
+    answers: [
+      { option: "Casa", correct: false },
+      { option: "Mercado", correct: false },
+      { option: "Universidade", correct: false },
+      { option: "Centro da Cidade", correct: true },
+      { option: "Monastério", correct: false },
     ],
   }
 ]
