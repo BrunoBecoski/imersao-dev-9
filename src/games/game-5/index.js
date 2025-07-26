@@ -24,7 +24,7 @@ function handleStart() {
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
 
-  progress__element.innerText = `1/${questions.length}`
+  progress__element.innerText = "1/5"
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
@@ -32,12 +32,14 @@ function handleStart() {
   const options__element = document.createElement('ol')
   options__element.id = 'options'
   
+  const questions = JSON.parse(QUESTIONS_JSON)
+
   const question = questions[Math.floor(Math.random() * 4)]
     
   question__element.innerText = question.question
 
   options__element.append(...Array.from(createOptions(question.answers)))
-  
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, question__element, options__element)
@@ -84,53 +86,54 @@ function randomArray(array, quantity) {
   return shuffledArray
 }
 
-const questions = [
+const QUESTIONS_JSON = `[
   {
-    question: "Em que ano foi lançado o Age of Empires II?",
-    answers: [
-      { option: "1996", correct: false },
-      { option: "1997", correct: false },
-      { option: "1998", correct: false },
-      { option: "1999", correct: true },
-      { option: "2000", correct: false },
+    "question": "Em que ano foi lançado o Age of Empires II?",
+    "answers": [
+      { "option": "1996", "correct": false },
+      { "option": "1997", "correct": false },
+      { "option": "1998", "correct": false },
+      { "option": "1999", "correct": true },
+      { "option": "2000", "correct": false }
     ]
   }, {
-    question: "Que quem a história do tutorial?",
-    answers: [
-      { option: "William Wallace", correct: true },
-      { option: "Joana D'Arc", correct: false },
-      { option: "Gengis Khan", correct: false },
-      { option: "Saladino", correct: false },
-      { option: "Barbarossa", correct: false },
-    ],
+    "question": "Que quem a história do tutorial?",
+    "answers": [
+      { "option": "William Wallace", "correct": true },
+      { "option": "Joana D'Arc", "correct": false },
+      { "option": "Gengis Khan", "correct": false },
+      { "option": "Saladino", "correct": false },
+      { "option": "Barbarossa", "correct": false }
+    ]
   },{
-    question: "Qual edifício a relíquia é guarnecida?",
-    answers: [
-      { option: "Castelo", correct: false },
-      { option: "Monastério", correct: true },
-      { option: "Universidade", correct: false },
-      { option: "Centro da Cidade", correct: false },
-      { option: "Maravilha", correct: false },
-    ],
+    "question": "Qual edifício a relíquia é guarnecida?",
+    "answers": [
+      { "option": "Castelo", "correct": false },
+      { "option": "Monastério", "correct": true },
+      { "option": "Universidade", "correct": false },
+      { "option": "Centro da Cidade", "correct": false },
+      { "option": "Maravilha", "correct": false }
+    ]
   },{
-    question: "O que é gerado pela relíquia guarnecida?",
-    answers: [
-      { option: "Ouro", correct: true },
-      { option: "Comida", correct: false },
-      { option: "Madeira", correct: false },
-      { option: "Pedra", correct: false },
-      { option: "Pontos", correct: false },
-    ],
-  question: "Qual é o edifico que produz aldeãos?",
-    answers: [
-      { option: "Casa", correct: false },
-      { option: "Mercado", correct: false },
-      { option: "Universidade", correct: false },
-      { option: "Centro da Cidade", correct: true },
-      { option: "Monastério", correct: false },
-    ],
+    "question": "O que é gerado pela relíquia guarnecida?",
+    "answers": [
+      { "option": "Ouro", "correct": true },
+      { "option": "Comida", "correct": false },
+      { "option": "Madeira", "correct": false },
+      { "option": "Pedra", "correct": false },
+      { "option": "Pontos", "correct": false }
+    ]
+  }, {
+  "question": "Qual é o edifico que produz aldeãos?",
+    "answers": [
+      { "option": "Casa", "correct": false },
+      { "option": "Mercado", "correct": false },
+      { "option": "Universidade", "correct": false },
+      { "option": "Centro da Cidade", "correct": true },
+      { "option": "Monastério", "correct": false }
+    ]
   }
-]
+]`
 
 
 
