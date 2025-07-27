@@ -20,37 +20,52 @@ export function createGame5() {
   return section__element
 }
 
-function handleStart() {
+async function handleStart() {
+  const questionsArray = JSON.parse(QUESTIONS_JSON)
+  let questionsSelected = []
+
+  for (let index = 0; index < 5; index++) {
+    questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])
+    await createQuestion(questionsSelected)
+  }
+}
+
+async function createQuestion(questionsSelected) {
+  const currentQuestion = questionsSelected[questionsSelected.length - 1]
+
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
 
-  progress__element.innerText = "1/5"
+  progress__element.innerText = `${questionsSelected.length}/5`
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
   
   const options__element = document.createElement('ol')
   options__element.id = 'options'
-  
-  const questions = JSON.parse(QUESTIONS_JSON)
 
-  const question = questions[Math.floor(Math.random() * 4)]
-    
-  question__element.innerText = question.question
+  question__element.innerText = currentQuestion.question
 
-  options__element.append(...Array.from(createOptions(question.answers)))
+  options__element.append(...Array.from(createOptions(currentQuestion.answers)))
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, question__element, options__element)
+
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, 1500)
+  })
 }
 
+
 function createOptions(answers) {
-  const correctAnswer = answers.splice(answers.find(answer => answer.correct === true), 1)
+  const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
   const shuffledArray = randomArray(answers, 2)
   const correctAnswerPosition = Math.floor(Math.random() * 3)
 
-  shuffledArray.splice(correctAnswerPosition, 0, ...correctAnswer)
+  shuffledArray.splice(correctAnswerPosition, 0, correctAnswer)
 
   return shuffledArray.map((answer) => createOption(answer)) 
 }
