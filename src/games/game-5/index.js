@@ -23,11 +23,14 @@ export function createGame5() {
 async function handleStart() {
   const questionsArray = JSON.parse(QUESTIONS_JSON)
   let questionsSelected = []
-
+  
   for (let index = 0; index < 5; index++) {
-    questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])
-    await createQuestion(questionsSelected)
+    questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])    
+    const response = await createQuestion(questionsSelected)
+    questionsSelected[index].response = Number(response)
   }
+
+  console.log(questionsSelected) 
 }
 
 async function createQuestion(questionsSelected) {
@@ -40,45 +43,50 @@ async function createQuestion(questionsSelected) {
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
-  
-  const options__element = document.createElement('ol')
-  options__element.id = 'options'
 
   question__element.innerText = currentQuestion.question
+  
+  const { answers, options__element} = createOptions(currentQuestion.answers)
 
-  options__element.append(...Array.from(createOptions(currentQuestion.answers)))
+  currentQuestion.answers = answers
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, question__element, options__element)
-
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve()
-    }, 1500)
+  
+  return new Promise(resolver => {
+    options__element.addEventListener('click', (event) => {
+      resolver(event.target.id)
+    })
   })
 }
 
-
 function createOptions(answers) {
   const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
-  const shuffledArray = randomArray(answers, 2)
+  answers = randomArray(answers, 2)
   const correctAnswerPosition = Math.floor(Math.random() * 3)
 
-  shuffledArray.splice(correctAnswerPosition, 0, correctAnswer)
+  answers.splice(correctAnswerPosition, 0, correctAnswer)
 
-  return shuffledArray.map((answer) => createOption(answer)) 
+  const options__element = document.createElement('ol')
+  options__element.id = 'options'
+  options__element.append(...Array.from(answers.map((answer, index) => createOption(answer, index)) ))
+
+  return {
+    answers,
+    options__element,
+  } 
 }
 
-function createOption(answer) {
-  const { option, correct } = answer
+function createOption(answer, index) {
+  const { option } = answer
 
   const li__element = document.createElement('li')
   const button__element = document.createElement('button')
 
   button__element.innerText = option
+  button__element.id = index
   button__element.className = 'option'
-  button__element.addEventListener('click', () => correct ? console.log('ACERTOU') : console.log('ERROU'))
 
   li__element.append(button__element)
 
