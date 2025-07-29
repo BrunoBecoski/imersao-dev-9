@@ -23,7 +23,7 @@ export function createGame5() {
 async function handleStart() {
   const questionsArray = JSON.parse(QUESTIONS_JSON)
   let questionsSelected = []
-  
+
   for (let index = 0; index < 5; index++) {
     questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])    
     const response = await createQuestion(questionsSelected)
@@ -45,7 +45,7 @@ async function createQuestion(questionsSelected) {
   question__element.id = 'question'
 
   question__element.innerText = currentQuestion.question
-  
+
   const { answers, options__element} = createOptions(currentQuestion.answers)
 
   currentQuestion.answers = answers
@@ -53,7 +53,7 @@ async function createQuestion(questionsSelected) {
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, question__element, options__element)
-  
+
   return new Promise(resolver => {
     options__element.addEventListener('click', (event) => {
       resolver(event.target.id)
@@ -97,7 +97,7 @@ function randomArray(array, quantity) {
   let shuffledArray = []
   let length = array.length
   let index
-  
+
   while (quantity) {
     index = Math.floor(Math.random() * length--);
 
@@ -154,6 +154,51 @@ const QUESTIONS_JSON = `[
       { "option": "Universidade", "correct": false },
       { "option": "Centro da Cidade", "correct": true },
       { "option": "Monastério", "correct": false }
+    ]
+  }, {
+  "question": "Qual é o edifico que produz a Unidade Única?",
+    "answers": [
+      { "option": "Campo de Arqueiros", "correct": false },
+      { "option": "Quartel", "correct": false },
+      { "option": "Estábulo", "correct": false },
+      { "option": "Oficina de Cerco", "correct": false },
+      { "option": "Castelo", "correct": true }
+    ]
+  }, {
+  "question": "Qual a pesquisa que revela todas as unidades e construções inimigas?",
+    "answers": [
+      { "option": "Espiões/Traição", "correct": true },
+      { "option": "Conscrição", "correct": false },
+      { "option": "Iluminação", "correct": false },
+      { "option": "Patrulha da Cidade", "correct": false },
+      { "option": "Finanças", "correct": false }
+    ]
+  }, {
+  "question": "Qual a edifico pesquisa as tecnologias que aprimorem a armadura e o ataque das unidades?",
+    "answers": [
+      { "option": "Quartel", "correct": false },
+      { "option": "Castelo", "correct": false },
+      { "option": "Estábulo", "correct": false },
+      { "option": "Ferraria", "correct": true },
+      { "option": "Universidade", "correct": false }
+    ]
+  }, {
+  "question": "Qual a edifico que precisa ser construído na terra e na aguá?",
+    "answers": [
+      { "option": "Moinho", "correct": false },
+      { "option": "Doca", "correct": true },
+      { "option": "Centro da Cidade", "correct": false },
+      { "option": "Fazenda", "correct": false },
+      { "option": "Ferraria", "correct": false }
+    ]
+  }, {
+  "question": "Qual a pesquisa faz as unidades treinarem mais rápido?",
+    "answers": [
+      { "option": "Sapadores", "correct": false },
+      { "option": "Tear", "correct": false },
+      { "option": "Linhagens", "correct": false },
+      { "option": "Escudeiros", "correct": false },
+      { "option": "Conscrição", "correct": true }
     ]
   }
 ]`
