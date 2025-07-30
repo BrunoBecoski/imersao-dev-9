@@ -26,11 +26,30 @@ async function handleStart() {
 
   for (let index = 0; index < 5; index++) {
     questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])    
-    const response = await createQuestion(questionsSelected)
+    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected)
+
+    await showOptionResponse(response, options__element, correctAnswerPosition)
+
     questionsSelected[index].response = Number(response)
   }
+}
 
-  console.log(questionsSelected) 
+function showOptionResponse(response, options__element, correctAnswerPosition) {
+  const button__element = options__element.querySelectorAll('button')[response]
+
+  if (Number(response) === Number(correctAnswerPosition)) {
+    const green = getComputedStyle(document.documentElement)
+      .getPropertyValue('--green')
+
+    button__element.style.backgroundColor = green
+  } else {
+    const red = getComputedStyle(document.documentElement)
+      .getPropertyValue('--red')
+
+    button__element.style.backgroundColor = red
+  }
+
+  return new Promise(resolve => setTimeout(resolve, 500));
 }
 
 async function createQuestion(questionsSelected) {
@@ -46,7 +65,7 @@ async function createQuestion(questionsSelected) {
 
   question__element.innerText = currentQuestion.question
 
-  const { answers, options__element} = createOptions(currentQuestion.answers)
+  const { answers, options__element, correctAnswerPosition } = createOptions(currentQuestion.answers)
 
   currentQuestion.answers = answers
 
@@ -56,7 +75,7 @@ async function createQuestion(questionsSelected) {
 
   return new Promise(resolver => {
     options__element.addEventListener('click', (event) => {
-      resolver(event.target.id)
+      resolver({ response: event.target.id, options__element, correctAnswerPosition })
     })
   })
 }
@@ -75,6 +94,7 @@ function createOptions(answers) {
   return {
     answers,
     options__element,
+    correctAnswerPosition,
   } 
 }
 
