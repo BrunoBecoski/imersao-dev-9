@@ -32,6 +32,8 @@ async function handleStart() {
 
     questionsSelected[index].response = Number(response)
   }
+
+  showResult(questionsSelected)
 }
 
 function showOptionResponse(response, options__element, correctAnswerPosition) {
@@ -50,6 +52,36 @@ function showOptionResponse(response, options__element, correctAnswerPosition) {
   }
 
   return new Promise(resolve => setTimeout(resolve, 500));
+}
+
+function showResult(questionsSelected) {
+  const initialValue = 0
+
+  const correctAnswers = questionsSelected.reduce(( accumulator, question) => {
+    const { response, answers } = question
+
+    const correct = answers.findIndex(answer => answer.correct == true)
+    
+    if (response === correct) {
+      accumulator++
+    } 
+
+    return accumulator
+  }, initialValue)
+
+  const div__element = document.createElement('div')
+  const span__element = document.createElement('span')
+
+  div__element.className = 'result'
+  span__element.innerText = `Você acertou ${correctAnswers} de 5`
+  div__element.appendChild(span__element)
+
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Resultado'
+
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.append(div__element, createButton({ text: 'Recomeçar', handleClick: handleStart }))
 }
 
 async function createQuestion(questionsSelected) {

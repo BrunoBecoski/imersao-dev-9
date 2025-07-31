@@ -24,7 +24,6 @@
   margin-block: 2rem;
 }
 
-
 #game-5 #options {
   display: flex;
   flex-direction: column;
@@ -33,7 +32,6 @@
   font-size: 2rem;
   font-weight: bold;
 }
-
 
 #game-5 .option {
   cursor: pointer;
@@ -49,6 +47,16 @@
   color: var(--gray);
   background: var(--yellow);
 }
+
+#game-5 .result {
+  color: white;
+  margin-bottom: 3rem;
+}
+
+#game-5 .result span {
+  font-size: 3rem;
+}
+
 
 
 
