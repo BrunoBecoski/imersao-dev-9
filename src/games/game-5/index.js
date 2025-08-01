@@ -41,13 +41,13 @@ function showOptionResponse(response, options__element, correctAnswerPosition) {
 
   if (Number(response) === Number(correctAnswerPosition)) {
     const green = getComputedStyle(document.documentElement)
-      .getPropertyValue('--green')
-
+    .getPropertyValue('--green')
+    
     button__element.style.backgroundColor = green
   } else {
     const red = getComputedStyle(document.documentElement)
-      .getPropertyValue('--red')
-
+    .getPropertyValue('--red')
+    
     button__element.style.backgroundColor = red
   }
 
@@ -79,9 +79,24 @@ function showResult(questionsSelected) {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Resultado'
 
+  const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected)})
+  const startButton__element = createButton({ text: 'Recomeçar', handleClick: handleStart })
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(div__element, createButton({ text: 'Recomeçar', handleClick: handleStart }))
+  main__element.append(div__element, showResponseButton__element, startButton__element)
+}
+
+function handleShowResponse(questionsSelected) {
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Respostas'
+
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = `
+    <pre>
+      ${JSON.stringify(questionsSelected, null, '  ')}
+    </pre>
+  `
 }
 
 async function createQuestion(questionsSelected) {
@@ -106,9 +121,11 @@ async function createQuestion(questionsSelected) {
   main__element.append(progress__element, question__element, options__element)
 
   return new Promise(resolver => {
-    options__element.addEventListener('click', (event) => {
-      resolver({ response: event.target.id, options__element, correctAnswerPosition })
-    })
+    [...options__element.querySelectorAll('button')].map(button =>
+      button.addEventListener('click', (event) => {
+        resolver({ response: event.target.id, options__element, correctAnswerPosition })
+      })
+    )
   })
 }
 
