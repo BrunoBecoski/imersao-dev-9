@@ -97,27 +97,66 @@ async function handleShowResponse(questionsSelected) {
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
   progress__element.innerText = `${index + 1}/${numberRounds}`
+  const options__element = document.createElement('ol')
+  options__element.id = 'options'
+
+  options__element.append(
+    ...Array.from(questionsSelected[index].answers.map((answer, i) => {
+      const button__element = document.createElement('button')
+      button__element.className = 'option'
+      button__element.innerText = answer.option
+      button__element.dataset.correct = i === questionsSelected[index].response
+
+      return button__element
+    }))
+  )
   
+
   const backButton__element = createButton({ text: 'Voltar', handleClick: () => {
     if (index > 0) {
       index--
       document.getElementById('question').innerText = questionsSelected[index].question
       document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
-    }
-  }})
+
+      document.getElementById('options').innerHTML = ``
+      document.getElementById('options').append(
+        ...Array.from(questionsSelected[index].answers.map((answer, i) => {
+          const button__element = document.createElement('button')
+          button__element.className = 'option'
+          button__element.innerText = answer.option
+          button__element.dataset.correct = i === questionsSelected[index].response
+          
+          return button__element
+        }))
+      )
+     }
+    }})
+
   const nextButton__element = createButton({ text: 'Próximo', handleClick: () => {
     if (index < (numberRounds - 1)) {
       index++
       document.getElementById('question').innerText = questionsSelected[index].question
       document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
     }
-  } })
+    
+    document.getElementById('options').innerHTML = ``
+    document.getElementById('options').append(
+    ...Array.from(questionsSelected[index].answers.map((answer, i) => {
+      const button__element = document.createElement('button')
+      button__element.className = 'option'
+      button__element.innerText = answer.option
+      button__element.dataset.correct = i === questionsSelected[index].response
+
+      return button__element
+    }))
+  )
+  }})
   
-  div__element.append(backButton__element, question__element, nextButton__element)
+  div__element.append(backButton__element, question__element, options__element, nextButton__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(progress__element, div__element)
+  main__element.append(progress__element, div__element, options__element)
 }
 
 async function createQuestion(questionsSelected) {
