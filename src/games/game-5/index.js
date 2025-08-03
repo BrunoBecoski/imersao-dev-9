@@ -1,6 +1,9 @@
 import { createButton } from '../../components/button';
 import './styles.css';
 
+const numberRounds = 5
+const numberOptions = 3
+
 export function createGame5() {
   const section__element = document.createElement('section')
 
@@ -24,7 +27,7 @@ async function handleStart() {
   const questionsArray = JSON.parse(QUESTIONS_JSON)
   let questionsSelected = []
 
-  for (let index = 0; index < 5; index++) {
+  for (let index = 0; index < numberRounds; index++) {
     questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])    
     const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected)
 
@@ -39,17 +42,7 @@ async function handleStart() {
 function showOptionResponse(response, options__element, correctAnswerPosition) {
   const button__element = options__element.querySelectorAll('button')[response]
 
-  if (Number(response) === Number(correctAnswerPosition)) {
-    const green = getComputedStyle(document.documentElement)
-    .getPropertyValue('--green')
-    
-    button__element.style.backgroundColor = green
-  } else {
-    const red = getComputedStyle(document.documentElement)
-    .getPropertyValue('--red')
-    
-    button__element.style.backgroundColor = red
-  }
+  button__element.dataset.correct = Number(response) === Number(correctAnswerPosition)
 
   return new Promise(resolve => setTimeout(resolve, 500));
 }
@@ -73,7 +66,7 @@ function showResult(questionsSelected) {
   const span__element = document.createElement('span')
 
   div__element.className = 'result'
-  span__element.innerText = `Você acertou ${correctAnswers} de 5`
+  span__element.innerText = `Você acertou ${correctAnswers} de ${numberRounds}`
   div__element.appendChild(span__element)
 
   const title__element = document.getElementById('title')
@@ -87,16 +80,44 @@ function showResult(questionsSelected) {
   main__element.append(div__element, showResponseButton__element, startButton__element)
 }
 
-function handleShowResponse(questionsSelected) {
+async function handleShowResponse(questionsSelected) {
+  let index = 0
+
   const title__element = document.getElementById('title')
+
   title__element.innerText = 'Respostas'
 
+  const div__element = document.createElement('div')
+  div__element.className = 'response'
+
+  const question__element = document.createElement('h3')
+  question__element.id = 'question'
+  question__element.innerText = questionsSelected[index].question
+
+  const progress__element = document.createElement('span')
+  progress__element.id = 'progress'
+  progress__element.innerText = `${index + 1}/${numberRounds}`
+  
+  const backButton__element = createButton({ text: 'Voltar', handleClick: () => {
+    if (index > 0) {
+      index--
+      document.getElementById('question').innerText = questionsSelected[index].question
+      document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
+    }
+  }})
+  const nextButton__element = createButton({ text: 'Próximo', handleClick: () => {
+    if (index < (numberRounds - 1)) {
+      index++
+      document.getElementById('question').innerText = questionsSelected[index].question
+      document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
+    }
+  } })
+  
+  div__element.append(backButton__element, question__element, nextButton__element)
+
   const main__element = document.getElementById('main')
-  main__element.innerHTML = `
-    <pre>
-      ${JSON.stringify(questionsSelected, null, '  ')}
-    </pre>
-  `
+  main__element.innerHTML = ''
+  main__element.append(progress__element, div__element)
 }
 
 async function createQuestion(questionsSelected) {
@@ -105,7 +126,7 @@ async function createQuestion(questionsSelected) {
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
 
-  progress__element.innerText = `${questionsSelected.length}/5`
+  progress__element.innerText = `${questionsSelected.length}/${numberRounds}`
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
