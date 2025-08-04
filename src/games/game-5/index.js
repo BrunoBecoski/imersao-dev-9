@@ -105,7 +105,8 @@ async function handleShowResponse(questionsSelected) {
       const button__element = document.createElement('button')
       button__element.className = 'option'
       button__element.innerText = answer.option
-      button__element.dataset.correct = i === questionsSelected[index].response
+      button__element.dataset.correct = answer.correct
+      button__element.dataset.response = i === questionsSelected[index].response
 
       return button__element
     }))
@@ -124,7 +125,8 @@ async function handleShowResponse(questionsSelected) {
           const button__element = document.createElement('button')
           button__element.className = 'option'
           button__element.innerText = answer.option
-          button__element.dataset.correct = i === questionsSelected[index].response
+          button__element.dataset.correct = answer.correct
+          button__element.dataset.response = i === questionsSelected[index].response
           
           return button__element
         }))
@@ -145,7 +147,8 @@ async function handleShowResponse(questionsSelected) {
       const button__element = document.createElement('button')
       button__element.className = 'option'
       button__element.innerText = answer.option
-      button__element.dataset.correct = i === questionsSelected[index].response
+      button__element.dataset.correct = answer.correct
+      button__element.dataset.response = i === questionsSelected[index].response
 
       return button__element
     }))

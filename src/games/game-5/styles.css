@@ -51,6 +51,10 @@
   background: var(--red);
 }
 
+#game-5 .option[data-response=true] {
+  border: 1rem solid var(--blue);
+}
+
 #game-5 .option:hover {
   color: var(--gray);
   background: var(--yellow);
