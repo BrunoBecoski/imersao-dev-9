@@ -100,18 +100,7 @@ async function handleShowResponse(questionsSelected) {
   const options__element = document.createElement('ol')
   options__element.id = 'options'
 
-  options__element.append(
-    ...Array.from(questionsSelected[index].answers.map((answer, i) => {
-      const button__element = document.createElement('button')
-      button__element.className = 'option'
-      button__element.innerText = answer.option
-      button__element.dataset.correct = answer.correct
-      button__element.dataset.response = i === questionsSelected[index].response
-
-      return button__element
-    }))
-  )
-  
+  options__element.append(...Array.from(createOptionsResponse(questionsSelected[index])))
 
   const backButton__element = createButton({ text: 'Voltar', handleClick: () => {
     if (index > 0) {
@@ -121,15 +110,7 @@ async function handleShowResponse(questionsSelected) {
 
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
-        ...Array.from(questionsSelected[index].answers.map((answer, i) => {
-          const button__element = document.createElement('button')
-          button__element.className = 'option'
-          button__element.innerText = answer.option
-          button__element.dataset.correct = answer.correct
-          button__element.dataset.response = i === questionsSelected[index].response
-          
-          return button__element
-        }))
+        ...Array.from(createOptionsResponse(questionsSelected[index]))
       )
      }
     }})
@@ -143,16 +124,8 @@ async function handleShowResponse(questionsSelected) {
     
     document.getElementById('options').innerHTML = ``
     document.getElementById('options').append(
-    ...Array.from(questionsSelected[index].answers.map((answer, i) => {
-      const button__element = document.createElement('button')
-      button__element.className = 'option'
-      button__element.innerText = answer.option
-      button__element.dataset.correct = answer.correct
-      button__element.dataset.response = i === questionsSelected[index].response
-
-      return button__element
-    }))
-  )
+      ...Array.from(createOptionsResponse(questionsSelected[index]))
+    )
   }})
   
   div__element.append(backButton__element, question__element, options__element, nextButton__element)
@@ -160,6 +133,25 @@ async function handleShowResponse(questionsSelected) {
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(progress__element, div__element, options__element)
+}
+
+function createOptionsResponse(questionSelected) {
+  return questionSelected.answers.map((answer, i) => createOptionResponse(answer, i, questionSelected.response))
+}
+
+function createOptionResponse(answer, i, response) {
+  const li__element = document.createElement('li')
+
+  const button__element = document.createElement('button')
+  button__element.className = 'option'
+  button__element.innerText = answer.option
+  button__element.dataset.correct = answer.correct
+  button__element.dataset.response = i === response
+  button__element.disabled = true
+
+  li__element.appendChild(button__element)
+
+  return li__element
 }
 
 async function createQuestion(questionsSelected) {

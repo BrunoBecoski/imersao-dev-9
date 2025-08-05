@@ -52,10 +52,10 @@
 }
 
 #game-5 .option[data-response=true] {
-  border: 1rem solid var(--blue);
+  border: 1rem solid var(--yellow);
 }
 
-#game-5 .option:hover {
+#game-5 .option:not(:disabled):hover {
   color: var(--gray);
   background: var(--yellow);
 }
