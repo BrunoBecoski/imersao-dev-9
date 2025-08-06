@@ -128,30 +128,11 @@ async function handleShowResponse(questionsSelected) {
     )
   }})
   
-  div__element.append(backButton__element, question__element, options__element, nextButton__element)
+  div__element.append(backButton__element, progress__element, nextButton__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(progress__element, div__element, options__element)
-}
-
-function createOptionsResponse(questionSelected) {
-  return questionSelected.answers.map((answer, i) => createOptionResponse(answer, i, questionSelected.response))
-}
-
-function createOptionResponse(answer, i, response) {
-  const li__element = document.createElement('li')
-
-  const button__element = document.createElement('button')
-  button__element.className = 'option'
-  button__element.innerText = answer.option
-  button__element.dataset.correct = answer.correct
-  button__element.dataset.response = i === response
-  button__element.disabled = true
-
-  li__element.appendChild(button__element)
-
-  return li__element
+  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected) }), question__element, options__element)
 }
 
 async function createQuestion(questionsSelected) {
@@ -184,6 +165,10 @@ async function createQuestion(questionsSelected) {
   })
 }
 
+function createOptionsResponse(questionSelected) {
+  return questionSelected.answers.map((answer, index) => createOption(answer, index, questionSelected.response))
+}
+
 function createOptions(answers) {
   const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
   answers = randomArray(answers, 2)
@@ -202,15 +187,21 @@ function createOptions(answers) {
   } 
 }
 
-function createOption(answer, index) {
-  const { option } = answer
+function createOption(answer, index, response) {
+  const { option, correct } = answer
 
   const li__element = document.createElement('li')
   const button__element = document.createElement('button')
 
+  button__element.className = 'option'
   button__element.innerText = option
   button__element.id = index
-  button__element.className = 'option'
+
+  if (response != undefined) {
+    button__element.dataset.correct = correct
+    button__element.dataset.response = index === response
+    button__element.disabled = true
+  }
 
   li__element.append(button__element)
 

@@ -34,13 +34,16 @@
 }
 
 #game-5 .option {
-  cursor: pointer;
   border: none;
   padding: 1rem;
   font-size: 1.8rem;
   width: 100%;
   color: var(--white);
   background: var(--blue);
+}
+
+#game-5 .option:not(:disabled) {
+  cursor: pointer;
 }
 
 #game-5 .option[data-correct=true] {
