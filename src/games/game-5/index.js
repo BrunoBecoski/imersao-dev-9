@@ -24,12 +24,10 @@ export function createGame5() {
 }
 
 async function handleStart() {
-  const questionsArray = JSON.parse(QUESTIONS_JSON)
-  let questionsSelected = []
+  const questionsSelected = selectQuestions()
 
   for (let index = 0; index < numberRounds; index++) {
-    questionsSelected.push(questionsArray.splice(Math.floor(Math.random() * questionsArray.length), 1)[0])    
-    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected)
+    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected, index)
 
     await showOptionResponse(response, options__element, correctAnswerPosition)
 
@@ -135,13 +133,13 @@ async function handleShowResponse(questionsSelected) {
   main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected) }), question__element, options__element)
 }
 
-async function createQuestion(questionsSelected) {
-  const currentQuestion = questionsSelected[questionsSelected.length - 1]
+async function createQuestion(questionsSelected, index) {
+  const currentQuestion = questionsSelected[index]
 
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
 
-  progress__element.innerText = `${questionsSelected.length}/${numberRounds}`
+  progress__element.innerText = `${index + 1}/${numberRounds}`
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
@@ -170,12 +168,6 @@ function createOptionsResponse(questionSelected) {
 }
 
 function createOptions(answers) {
-  const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
-  answers = randomArray(answers, 2)
-  const correctAnswerPosition = Math.floor(Math.random() * 3)
-
-  answers.splice(correctAnswerPosition, 0, correctAnswer)
-
   const options__element = document.createElement('ol')
   options__element.id = 'options'
   options__element.append(...Array.from(answers.map((answer, index) => createOption(answer, index)) ))
@@ -183,7 +175,7 @@ function createOptions(answers) {
   return {
     answers,
     options__element,
-    correctAnswerPosition,
+    correctAnswerPosition: answers.findIndex((answer) => answer.correct === true),
   } 
 }
 
@@ -206,6 +198,29 @@ function createOption(answer, index, response) {
   li__element.append(button__element)
 
   return li__element
+}
+
+function selectQuestions() {
+  const questionsArray = JSON.parse(QUESTIONS_JSON)
+
+  const randomQuestions = randomArray(questionsArray, numberRounds)
+
+  const randomQuestionsAndAnswers = randomQuestions.map((questionAndAnswers) => {
+    const { question, answers } = questionAndAnswers
+
+    const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
+    const correctAnswerPosition = Math.floor(Math.random() * numberOptions)
+    const randomAnswers = randomArray(answers, numberOptions - 1)
+
+    randomAnswers.splice(correctAnswerPosition, 0, correctAnswer)
+
+    return {
+      question,
+      answers: randomAnswers,
+    }
+  })
+  
+  return randomQuestionsAndAnswers
 }
 
 function randomArray(array, quantity) {
