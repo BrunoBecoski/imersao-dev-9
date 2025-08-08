@@ -88,24 +88,17 @@ async function handleShowResponse(questionsSelected) {
   const div__element = document.createElement('div')
   div__element.className = 'response'
 
-  const question__element = document.createElement('h3')
-  question__element.id = 'question'
-  question__element.innerText = questionsSelected[index].question
-
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
   progress__element.innerText = `${index + 1}/${numberRounds}`
-  const options__element = document.createElement('ol')
-  options__element.id = 'options'
 
-  options__element.append(...Array.from(createOptionsResponse(questionsSelected[index])))
+  const questionAndOptions__element = createQuestionResponse(questionsSelected[index])
 
   const backButton__element = createButton({ text: 'Voltar', handleClick: () => {
     if (index > 0) {
       index--
       document.getElementById('question').innerText = questionsSelected[index].question
       document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
-
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
         ...Array.from(createOptionsResponse(questionsSelected[index]))
@@ -118,19 +111,34 @@ async function handleShowResponse(questionsSelected) {
       index++
       document.getElementById('question').innerText = questionsSelected[index].question
       document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
+      document.getElementById('options').innerHTML = ``
+      document.getElementById('options').append(
+        ...Array.from(createOptionsResponse(questionsSelected[index]))
+      )
     }
-    
-    document.getElementById('options').innerHTML = ``
-    document.getElementById('options').append(
-      ...Array.from(createOptionsResponse(questionsSelected[index]))
-    )
   }})
   
   div__element.append(backButton__element, progress__element, nextButton__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected) }), question__element, options__element)
+  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected) }), questionAndOptions__element)
+}
+
+function createQuestionResponse(questionSelected) {
+  const question__element = document.createElement('h3')
+  question__element.id = 'question'
+  question__element.innerText = questionSelected.question
+
+  const options__element = document.createElement('ol')
+  options__element.id = 'options'
+
+  options__element.append(...Array.from(createOptionsResponse(questionSelected)))
+
+  const questionAndOptions__element = document.createElement('div')
+  questionAndOptions__element.append(question__element, options__element)
+
+  return questionAndOptions__element 
 }
 
 async function createQuestion(questionsSelected, index) {
@@ -138,12 +146,10 @@ async function createQuestion(questionsSelected, index) {
 
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
-
   progress__element.innerText = `${index + 1}/${numberRounds}`
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
-
   question__element.innerText = currentQuestion.question
 
   const { answers, options__element, correctAnswerPosition } = createOptions(currentQuestion.answers)
