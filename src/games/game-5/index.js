@@ -18,12 +18,88 @@ export function createGame5() {
   `
 
   const main__element = section__element.querySelector('#main')
-  main__element.appendChild(createButton({ text: 'Começar', handleClick: handleStart }))
+  main__element.appendChild(createSelectDifficult())
 
   return section__element
 }
 
-async function handleStart() {
+function createSelectDifficult() {
+  let difficult = 'moderate'
+  
+  const container__element = document.createElement('div')
+  container__element.className = 'select-difficult'
+
+  const inputsAndLabels__element = document.createElement('div')
+  inputsAndLabels__element.className = 'inputs-labels'
+
+  const title__element = document.createElement('p')
+  title__element.className = 'title'
+  title__element.innerText = 'Selecione a dificuldade'
+
+  const div_1__element = document.createElement('div')
+  const input_1__element = document.createElement('input')
+  const label_1__element = document.createElement('label')
+
+  input_1__element.type = 'radio'
+  input_1__element.id = 'option_1'
+  input_1__element.name = 'difficult'
+  input_1__element.checked = difficult === 'standard'
+  input_1__element.value = 'standard'
+  input_1__element.addEventListener('click', () => difficult = 'standard')
+
+  label_1__element.htmlFor = 'option_1'
+  label_1__element.innerText = 'Padrão'
+
+  div_1__element.append(input_1__element, label_1__element)
+
+  const div_2__element = document.createElement('div')
+  const input_2__element = document.createElement('input')
+  const label_2__element = document.createElement('label')
+
+  input_2__element.type = 'radio'
+  input_2__element.id = 'option_2'
+  input_2__element.name = 'difficult'
+  input_2__element.checked = difficult === 'moderate'
+  input_2__element.value = 'moderate'
+  input_2__element.addEventListener('click', () => difficult = 'moderate')
+
+  label_2__element.htmlFor = 'option_2'
+  label_2__element.innerText = 'Moderado'
+
+  div_2__element.append(input_2__element, label_2__element)
+
+  const div_3__element = document.createElement('div')
+  const input_3__element = document.createElement('input')
+  const label_3__element = document.createElement('label')
+
+  input_3__element.type = 'radio'
+  input_3__element.id = 'option_3'
+  input_3__element.name = 'difficult'
+  input_3__element.checked = difficult === 'hard'
+  input_3__element.value = 'hard'
+  input_3__element.addEventListener('click', () => difficult = 'hard')
+
+  label_3__element.htmlFor = 'option_3'
+  label_3__element.innerText = 'Díficil'
+
+  div_3__element.append(input_3__element, label_3__element)
+
+  inputsAndLabels__element.append(
+    div_1__element,
+    div_2__element,
+    div_3__element,
+  )
+
+  container__element.append(
+    title__element,
+    inputsAndLabels__element,
+    createButton({ text: 'Começar', handleClick: () => handleStart(difficult) }),
+  )
+
+  return container__element
+}
+
+async function handleStart(difficult) {
   const questionsSelected = selectQuestions()
 
   for (let index = 0; index < numberRounds; index++) {
@@ -71,7 +147,11 @@ function showResult(questionsSelected) {
   title__element.innerText = 'Resultado'
 
   const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected)})
-  const startButton__element = createButton({ text: 'Recomeçar', handleClick: handleStart })
+  const startButton__element = createButton({ text: 'Recomeçar', handleClick: () => {
+    title__element.innerText = 'Perguntas'
+    main__element.innerHTML = ''
+    main__element.appendChild(createSelectDifficult())
+  } })
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
