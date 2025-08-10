@@ -1,8 +1,20 @@
 import { createButton } from '../../components/button';
 import './styles.css';
 
-const numberRounds = 5
-const numberOptions = 3
+const difficulties = {
+  standard: {
+    rounds: 3,
+    options: 2,
+  },
+  moderate: {
+    rounds: 5,
+    options: 3,
+  },
+  hard: {
+    rounds: 7,
+    options: 5,
+  }
+}
 
 export function createGame5() {
   const section__element = document.createElement('section')
@@ -100,17 +112,19 @@ function createSelectDifficult() {
 }
 
 async function handleStart(difficult) {
-  const questionsSelected = selectQuestions()
+  const { rounds } = difficulties[difficult]
 
-  for (let index = 0; index < numberRounds; index++) {
-    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected, index)
+  const questionsSelected = selectQuestions(difficult)
+
+  for (let index = 0; index < rounds; index++) {
+    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected, index, difficult)
 
     await showOptionResponse(response, options__element, correctAnswerPosition)
 
     questionsSelected[index].response = Number(response)
   }
 
-  showResult(questionsSelected)
+  showResult(questionsSelected, difficult)
 }
 
 function showOptionResponse(response, options__element, correctAnswerPosition) {
@@ -121,7 +135,9 @@ function showOptionResponse(response, options__element, correctAnswerPosition) {
   return new Promise(resolve => setTimeout(resolve, 500));
 }
 
-function showResult(questionsSelected) {
+function showResult(questionsSelected, difficult) {
+  const { rounds } = difficulties[difficult]
+
   const initialValue = 0
 
   const correctAnswers = questionsSelected.reduce(( accumulator, question) => {
@@ -140,13 +156,13 @@ function showResult(questionsSelected) {
   const span__element = document.createElement('span')
 
   div__element.className = 'result'
-  span__element.innerText = `Você acertou ${correctAnswers} de ${numberRounds}`
+  span__element.innerText = `Você acertou ${correctAnswers} de ${rounds}`
   div__element.appendChild(span__element)
 
   const title__element = document.getElementById('title')
   title__element.innerText = 'Resultado'
 
-  const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected)})
+  const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected, difficult)})
   const startButton__element = createButton({ text: 'Recomeçar', handleClick: () => {
     title__element.innerText = 'Perguntas'
     main__element.innerHTML = ''
@@ -158,7 +174,9 @@ function showResult(questionsSelected) {
   main__element.append(div__element, showResponseButton__element, startButton__element)
 }
 
-async function handleShowResponse(questionsSelected) {
+async function handleShowResponse(questionsSelected, difficult) {
+  const { rounds } = difficulties[difficult]
+
   let index = 0
 
   const title__element = document.getElementById('title')
@@ -170,7 +188,7 @@ async function handleShowResponse(questionsSelected) {
 
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
-  progress__element.innerText = `${index + 1}/${numberRounds}`
+  progress__element.innerText = `${index + 1}/${rounds}`
 
   const questionAndOptions__element = createQuestionResponse(questionsSelected[index])
 
@@ -178,7 +196,7 @@ async function handleShowResponse(questionsSelected) {
     if (index > 0) {
       index--
       document.getElementById('question').innerText = questionsSelected[index].question
-      document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
+      document.getElementById('progress').innerText = `${index + 1}/${rounds}`
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
         ...Array.from(createOptionsResponse(questionsSelected[index]))
@@ -187,10 +205,10 @@ async function handleShowResponse(questionsSelected) {
     }})
 
   const nextButton__element = createButton({ text: 'Próximo', handleClick: () => {
-    if (index < (numberRounds - 1)) {
+    if (index < (rounds - 1)) {
       index++
       document.getElementById('question').innerText = questionsSelected[index].question
-      document.getElementById('progress').innerText = `${index + 1}/${numberRounds}`
+      document.getElementById('progress').innerText = `${index + 1}/${rounds}`
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
         ...Array.from(createOptionsResponse(questionsSelected[index]))
@@ -202,7 +220,7 @@ async function handleShowResponse(questionsSelected) {
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected) }), questionAndOptions__element)
+  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected, difficult) }), questionAndOptions__element)
 }
 
 function createQuestionResponse(questionSelected) {
@@ -221,12 +239,14 @@ function createQuestionResponse(questionSelected) {
   return questionAndOptions__element 
 }
 
-async function createQuestion(questionsSelected, index) {
+async function createQuestion(questionsSelected, index, difficult) {
+  const { rounds } = difficulties[difficult]
+
   const currentQuestion = questionsSelected[index]
 
   const progress__element = document.createElement('span')
   progress__element.id = 'progress'
-  progress__element.innerText = `${index + 1}/${numberRounds}`
+  progress__element.innerText = `${index + 1}/${rounds}`
 
   const question__element = document.createElement('h3')
   question__element.id = 'question'
@@ -286,17 +306,19 @@ function createOption(answer, index, response) {
   return li__element
 }
 
-function selectQuestions() {
+function selectQuestions(difficult) {
+  const { rounds, options } = difficulties[difficult]
+
   const questionsArray = JSON.parse(QUESTIONS_JSON)
 
-  const randomQuestions = randomArray(questionsArray, numberRounds)
+  const randomQuestions = randomArray(questionsArray, rounds)
 
   const randomQuestionsAndAnswers = randomQuestions.map((questionAndAnswers) => {
     const { question, answers } = questionAndAnswers
 
     const correctAnswer = answers.splice(answers.findIndex(answer => answer.correct == true), 1)[0]
-    const correctAnswerPosition = Math.floor(Math.random() * numberOptions)
-    const randomAnswers = randomArray(answers, numberOptions - 1)
+    const correctAnswerPosition = Math.floor(Math.random() * options)
+    const randomAnswers = randomArray(answers, options - 1)
 
     randomAnswers.splice(correctAnswerPosition, 0, correctAnswer)
 
