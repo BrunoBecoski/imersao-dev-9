@@ -48,63 +48,61 @@ function createSelectDifficult() {
   title__element.className = 'title'
   title__element.innerText = 'Selecione a dificuldade'
 
-  const div_1__element = document.createElement('div')
-  const input_1__element = document.createElement('input')
-  const label_1__element = document.createElement('label')
+  const custom_range__element = createInputRadio('radio_4', 'Customizar', 'custom', difficult, () => difficult = 'custom')
 
-  input_1__element.type = 'radio'
-  input_1__element.id = 'option_1'
-  input_1__element.name = 'difficult'
-  input_1__element.checked = difficult === 'standard'
-  input_1__element.value = 'standard'
-  input_1__element.addEventListener('click', () => difficult = 'standard')
+  custom_range__element.addEventListener('click', () => {
+    const input_range_1__element = document.createElement('input')
+    const label_range_1__element = document.createElement('label')
+    const input_range_2__element = document.createElement('input')
+    const label_range_2__element = document.createElement('label')
 
-  label_1__element.htmlFor = 'option_1'
-  label_1__element.innerText = 'Padrão'
+    label_range_1__element.htmlFor = "range_1"
+    label_range_1__element.innerText = "Perguntas"
+    input_range_1__element.id = "range_1"
+    input_range_1__element.type = "range"
+    input_range_1__element.min = "1"
+    input_range_1__element.max = "10"
+    input_range_1__element.value = "5"
+    input_range_1__element.step= "1"
 
-  div_1__element.append(input_1__element, label_1__element)
+    label_range_2__element.htmlFor = "range_2"
+    label_range_2__element.innerText = "Opções"
+    input_range_2__element.id = "range_2"
+    input_range_2__element.type = "range"
+    input_range_2__element.min = "1"
+    input_range_2__element.max = "5"
+    input_range_2__element.value = "3"
+    input_range_2__element.step= "1"
 
-  const div_2__element = document.createElement('div')
-  const input_2__element = document.createElement('input')
-  const label_2__element = document.createElement('label')
+    const div_label_range_1__element = document.createElement('div')
+    const div_label_range_2__element = document.createElement('div')
 
-  input_2__element.type = 'radio'
-  input_2__element.id = 'option_2'
-  input_2__element.name = 'difficult'
-  input_2__element.checked = difficult === 'moderate'
-  input_2__element.value = 'moderate'
-  input_2__element.addEventListener('click', () => difficult = 'moderate')
+    div_label_range_1__element.append(
+      label_range_1__element,
+      input_range_1__element,
+    )
 
-  label_2__element.htmlFor = 'option_2'
-  label_2__element.innerText = 'Moderado'
-
-  div_2__element.append(input_2__element, label_2__element)
-
-  const div_3__element = document.createElement('div')
-  const input_3__element = document.createElement('input')
-  const label_3__element = document.createElement('label')
-
-  input_3__element.type = 'radio'
-  input_3__element.id = 'option_3'
-  input_3__element.name = 'difficult'
-  input_3__element.checked = difficult === 'hard'
-  input_3__element.value = 'hard'
-  input_3__element.addEventListener('click', () => difficult = 'hard')
-
-  label_3__element.htmlFor = 'option_3'
-  label_3__element.innerText = 'Díficil'
-
-  div_3__element.append(input_3__element, label_3__element)
+    const ranges__element = document.getElementById('ranges')
+    ranges__element.append(
+      div_label_range_1__element,
+      div_label_range_2__element,
+    )
+  })
 
   inputsAndLabels__element.append(
-    div_1__element,
-    div_2__element,
-    div_3__element,
+    createInputRadio('radio_1', 'Padrão', 'standard', difficult, () => difficult = 'standard'),
+    createInputRadio('radio_2', 'Moderado', 'moderate', difficult, () => difficult = 'moderate'),
+    createInputRadio('radio_3', 'Difícil', 'hard', difficult, () => difficult = 'hard'),
+    custom_range__element,
   )
 
+  const ranges__element = document.createElement('div')
+  ranges__element.id = "ranges"
+ 
   container__element.append(
     title__element,
     inputsAndLabels__element,
+    ranges__element,
     createButton({ text: 'Começar', handleClick: () => handleStart(difficult) }),
   )
 
@@ -329,6 +327,25 @@ function selectQuestions(difficult) {
   })
   
   return randomQuestionsAndAnswers
+}
+
+function createInputRadio(id, label, value, difficult, setDifficult) {
+  const div__element = document.createElement('div')
+  const input__element = document.createElement('input')
+  const label__element = document.createElement('label')
+
+  input__element.type = 'radio'
+  input__element.id = id
+  input__element.name = 'difficult'
+  input__element.checked = difficult === value
+  input__element.addEventListener('click', setDifficult)
+
+  label__element.htmlFor = id
+  label__element.innerText = label
+
+  div__element.append(input__element, label__element)
+
+  return div__element
 }
 
 function randomArray(array, quantity) {
