@@ -47,58 +47,17 @@ function createSelectDifficult() {
   const title__element = document.createElement('p')
   title__element.className = 'title'
   title__element.innerText = 'Selecione a dificuldade'
-
-  const custom_range__element = createInputRadio('radio_4', 'Customizar', 'custom', difficult, () => difficult = 'custom')
-
-  custom_range__element.addEventListener('click', () => {
-    const input_range_1__element = document.createElement('input')
-    const label_range_1__element = document.createElement('label')
-    const input_range_2__element = document.createElement('input')
-    const label_range_2__element = document.createElement('label')
-
-    label_range_1__element.htmlFor = "range_1"
-    label_range_1__element.innerText = "Perguntas"
-    input_range_1__element.id = "range_1"
-    input_range_1__element.type = "range"
-    input_range_1__element.min = "1"
-    input_range_1__element.max = "10"
-    input_range_1__element.value = "5"
-    input_range_1__element.step= "1"
-
-    label_range_2__element.htmlFor = "range_2"
-    label_range_2__element.innerText = "Opções"
-    input_range_2__element.id = "range_2"
-    input_range_2__element.type = "range"
-    input_range_2__element.min = "1"
-    input_range_2__element.max = "5"
-    input_range_2__element.value = "3"
-    input_range_2__element.step= "1"
-
-    const div_label_range_1__element = document.createElement('div')
-    const div_label_range_2__element = document.createElement('div')
-
-    div_label_range_1__element.append(
-      label_range_1__element,
-      input_range_1__element,
-    )
-
-    const ranges__element = document.getElementById('ranges')
-    ranges__element.append(
-      div_label_range_1__element,
-      div_label_range_2__element,
-    )
-  })
+    
+  const ranges__element = document.createElement('div')
+  ranges__element.id = 'ranges'
 
   inputsAndLabels__element.append(
-    createInputRadio('radio_1', 'Padrão', 'standard', difficult, () => difficult = 'standard'),
-    createInputRadio('radio_2', 'Moderado', 'moderate', difficult, () => difficult = 'moderate'),
-    createInputRadio('radio_3', 'Difícil', 'hard', difficult, () => difficult = 'hard'),
-    custom_range__element,
+    createInputRadio('radio-1', 'Padrão', 'standard', difficult, selectDifficult),
+    createInputRadio('radio-2', 'Moderado', 'moderate', difficult, selectDifficult),
+    createInputRadio('radio-3', 'Difícil', 'hard', difficult, selectDifficult),
+    createInputRadio('radio-4', 'Customizar', 'custom', difficult, selectDifficult),
   )
 
-  const ranges__element = document.createElement('div')
-  ranges__element.id = "ranges"
- 
   container__element.append(
     title__element,
     inputsAndLabels__element,
@@ -107,6 +66,23 @@ function createSelectDifficult() {
   )
 
   return container__element
+
+  function selectDifficult(value) {
+    if (difficult === value) {
+      return
+    }
+
+    difficult = value
+    
+    if (difficult == 'custom') {
+      ranges__element.append(
+        createInputRange('range-1', 'Perguntas', 10),
+        createInputRange('range-2', 'Opções', 5),
+      )
+    } else {
+      ranges__element.innerHTML = ''
+    }
+  }
 }
 
 async function handleStart(difficult) {
@@ -329,21 +305,53 @@ function selectQuestions(difficult) {
   return randomQuestionsAndAnswers
 }
 
-function createInputRadio(id, label, value, difficult, setDifficult) {
-  const div__element = document.createElement('div')
+function createInputRadio(id, label, value, difficult, selectDifficult) {
   const input__element = document.createElement('input')
   const label__element = document.createElement('label')
+  const div__element = document.createElement('div')
 
   input__element.type = 'radio'
   input__element.id = id
   input__element.name = 'difficult'
   input__element.checked = difficult === value
-  input__element.addEventListener('click', setDifficult)
+  input__element.addEventListener('click', () => selectDifficult(value))
 
   label__element.htmlFor = id
   label__element.innerText = label
 
   div__element.append(input__element, label__element)
+
+  return div__element
+}
+
+function createInputRange(id, label, max) {
+  const averageValue = Math.ceil(max / 2)
+  
+  const input__element = document.createElement('input')
+  const label__element = document.createElement('label')
+  const span__element = document.createElement('span')
+  const div__element = document.createElement('div')
+  
+  label__element.htmlFor = id
+  label__element.innerText = label
+
+  input__element.id = id
+  input__element.type = "range"
+  input__element.min = 1
+  input__element.max = max
+  input__element.value = averageValue
+  input__element.step = 1
+
+  span__element.id = 'value'
+  span__element.innerText = averageValue
+
+  input__element.addEventListener('input', (event) => span__element.innerText = event.target.value)
+
+  div__element.append(
+    label__element,
+    input__element,
+    span__element,
+  )
 
   return div__element
 }
