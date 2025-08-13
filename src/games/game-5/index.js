@@ -13,6 +13,10 @@ const difficulties = {
   hard: {
     rounds: 7,
     options: 5,
+  },
+  custom: {
+    rounds: 5,
+    options: 3,
   }
 }
 
@@ -68,6 +72,9 @@ function createSelectDifficult() {
   return container__element
 
   function selectDifficult(value) {
+    difficulties.custom.rounds = 5
+    difficulties.custom.options = 3
+
     if (difficult === value) {
       return
     }
@@ -76,8 +83,8 @@ function createSelectDifficult() {
     
     if (difficult == 'custom') {
       ranges__element.append(
-        createInputRange('range-1', 'Perguntas', 10),
-        createInputRange('range-2', 'Opções', 5),
+        createInputRange('rounds', 'Perguntas', 10),
+        createInputRange('options', 'Opções', 5),
       )
     } else {
       ranges__element.innerHTML = ''
@@ -327,13 +334,16 @@ function createInputRadio(id, label, value, difficult, selectDifficult) {
 function createInputRange(id, label, max) {
   const averageValue = Math.ceil(max / 2)
   
-  const input__element = document.createElement('input')
   const label__element = document.createElement('label')
   const span__element = document.createElement('span')
+  const input__element = document.createElement('input')
   const div__element = document.createElement('div')
   
   label__element.htmlFor = id
   label__element.innerText = label
+
+  span__element.id = 'value'
+  span__element.innerText = averageValue
 
   input__element.id = id
   input__element.type = "range"
@@ -342,15 +352,18 @@ function createInputRange(id, label, max) {
   input__element.value = averageValue
   input__element.step = 1
 
-  span__element.id = 'value'
-  span__element.innerText = averageValue
+  input__element.addEventListener('input', (event) => {
+    const value = event.target.value
+    
+    span__element.innerText = value
+    difficulties.custom[id] = value
+  })
 
-  input__element.addEventListener('input', (event) => span__element.innerText = event.target.value)
-
+  div__element.className = 'input-range'
   div__element.append(
     label__element,
-    input__element,
     span__element,
+    input__element,
   )
 
   return div__element
