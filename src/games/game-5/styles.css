@@ -121,8 +121,10 @@
 }
 
 #game-5 .result {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
   color: white;
-  margin-bottom: 3rem;
 }
 
 #game-5 .result span {

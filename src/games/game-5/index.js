@@ -135,14 +135,6 @@ function showResult(questionsSelected, difficult) {
 
   const div__element = document.createElement('div')
   const span__element = document.createElement('span')
-
-  div__element.className = 'result'
-  span__element.innerText = `Você acertou ${correctAnswers} de ${rounds}`
-  div__element.appendChild(span__element)
-
-  const title__element = document.getElementById('title')
-  title__element.innerText = 'Resultado'
-
   const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected, difficult)})
   const startButton__element = createButton({ text: 'Recomeçar', handleClick: () => {
     title__element.innerText = 'Perguntas'
@@ -150,9 +142,18 @@ function showResult(questionsSelected, difficult) {
     main__element.appendChild(createSelectDifficult())
   } })
 
+
+  span__element.innerText = `Você acertou ${correctAnswers} de ${rounds}`
+
+  div__element.className = 'result'
+  div__element.append(span__element, showResponseButton__element, startButton__element)
+
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Resultado'
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(div__element, showResponseButton__element, startButton__element)
+  main__element.appendChild(div__element)
 }
 
 async function handleShowResponse(questionsSelected, difficult) {
@@ -443,7 +444,7 @@ const QUESTIONS_JSON = `[
   }, {
   "question": "Qual a pesquisa que revela todas as unidades e construções inimigas?",
     "answers": [
-      { "option": "Espiões/Traição", "correct": true },
+      { "option": "Espiões", "correct": true },
       { "option": "Conscrição", "correct": false },
       { "option": "Iluminação", "correct": false },
       { "option": "Patrulha da Cidade", "correct": false },
