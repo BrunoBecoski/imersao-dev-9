@@ -98,7 +98,7 @@ async function handleStart(difficult) {
   const questionsSelected = selectQuestions(difficult)
 
   for (let index = 0; index < rounds; index++) {
-    const {response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected, index, difficult)
+    const { response, options__element, correctAnswerPosition } = await createQuestion(questionsSelected, index, difficult)
 
     await showOptionResponse(response, options__element, correctAnswerPosition)
 
@@ -141,7 +141,6 @@ function showResult(questionsSelected, difficult) {
     main__element.innerHTML = ''
     main__element.appendChild(createSelectDifficult())
   } })
-
 
   span__element.innerText = `Você acertou ${correctAnswers} de ${rounds}`
 
@@ -216,6 +215,7 @@ function createQuestionResponse(questionSelected) {
   options__element.append(...Array.from(createOptionsResponse(questionSelected)))
 
   const questionAndOptions__element = document.createElement('div')
+  questionAndOptions__element.className = 'question-options'
   questionAndOptions__element.append(question__element, options__element)
 
   return questionAndOptions__element 
