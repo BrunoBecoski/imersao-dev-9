@@ -75,6 +75,11 @@
   width: 100%;
   color: var(--white);
   background: var(--blue);
+  transition: all .5s;
+}
+
+#game-5 .option:hover {
+  background: var(--yellow);
 }
 
 #game-5 .option:not(:disabled) {
@@ -91,11 +96,6 @@
 
 #game-5 .option[data-response=true] {
   border: 1rem solid var(--yellow);
-}
-
-#game-5 .option:not(:disabled):hover {
-  color: var(--gray);
-  background: var(--yellow);
 }
 
 #game-5 #ranges {
