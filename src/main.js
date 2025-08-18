@@ -4,6 +4,7 @@ import { createGame2 } from './games/game-2';
 import { createGame3 } from './games/game-3';
 import { createGame4 } from './games/game-4';
 import { createGame5 } from './games/game-5';
+
 import './style.css';
 
 const root_element = document.querySelector('#root')

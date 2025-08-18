@@ -1,14 +1,14 @@
 .button {
-  background: radial-gradient(circle,rgba(130, 5, 19, 1) 0%, rgba(94, 0, 9, 1) 100%);
+  background-color: var(--color-red-700);
 
-  border: 2px solid #ffa32f;
+  border: 2px solid var(--color-orange-500);
 
   padding: 10px 20px;
-  font-size: 1.2em;
-  color: #ffa32f;
+  font-size: var(--text-xl);
+  color: var(--color-orange-300);
   cursor: pointer;
   font-weight: bolder;
-  box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0px 0px 10px 5px var(--color-neutral-900);
 
   transition: all .2s;
 }

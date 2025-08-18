@@ -6,15 +6,67 @@
 }
 
 :root {
-  --white: #CED0D6;
-  --blue: #3E59F8;
-  --red: #EB0000;
-  --green: #00FE00;
-  --yellow: #FFFF01;
-  --cyan: #00FFFF;
-  --purple: #BD2BBB;
-  --gray: #797979;
-  --orange: #F99200;
+  --color-neutral-100: #FFFFFF;
+  --color-neutral-300: #BFBFBF;
+  --color-neutral-500: #808080;
+  --color-neutral-700: #404040;
+  --color-neutral-900: #000000;
+
+  --color-blue-100: #BFC8FD;
+  --color-blue-300: #7E90FA;
+  --color-blue-500: #3E59F8;
+  --color-blue-700: #293BA5;
+  --color-blue-900: #151E53;
+
+  --color-red-100: #F8AAAA;
+  --color-red-300: #F25555;
+  --color-red-500: #EB0000;
+  --color-red-700: #9D0000;
+  --color-red-900: #4E0000;
+
+  --color-green-100: #AAFFAA;
+  --color-green-300: #55FE55;
+  --color-green-500: #00FE00;
+  --color-green-700: #00A900;
+  --color-green-900: #005500;
+
+  --color-yellow-100: #FFFFAA;
+  --color-yellow-300: #FFFF56;
+  --color-yellow-500: #FFFF01;
+  --color-yellow-700: #AAAA01;
+  --color-yellow-900: #555500;
+
+  --color-cyan-100: #AAFFFF;
+  --color-cyan-300: #55FFFF;
+  --color-cyan-500: #00FFFF;
+  --color-cyan-700: #00AAAA;
+  --color-cyan-900: #005555;
+
+  --color-purple-100: #E9B8E8;
+  --color-purple-300: #D372D2;
+  --color-purple-500: #BD2BBB;
+  --color-purple-700: #7E1D7D;
+  --color-purple-900: #3F0E3E;
+
+  --color-orange-100: #FDDBAA;
+  --color-orange-300: #FBB655;
+  --color-orange-500: #F99200;
+  --color-orange-700: #A66100;
+  --color-orange-900: #533100;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem;
+  --text-8xl: 6rem;
+  --text-9xl: 8rem;
 }
 
 #root {
@@ -37,12 +89,12 @@ main {
 
 main h1{
   margin-top: 20%;
-  font-size: 5rem;
+  font-size: var(--text-8xl);
 
   text-align: center;
-  color: var(--red);
+  color: var(--color-red-500);
   font-weight: bold;
-  text-shadow: 5px 5px var(--yellow);
+  text-shadow: 5px 5px var(--color-yellow-500);
 }
 
 section {
@@ -50,7 +102,7 @@ section {
   align-items: center;
   justify-content: center;
   
-  border-left: 2px solid #FFA32F;
+  border-left: 2px solid var(--color-orange-500);
   height: 100%;
 
   backdrop-filter: blur(5px) brightness(50%);
