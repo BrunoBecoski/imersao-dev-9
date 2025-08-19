@@ -32,6 +32,7 @@
   flex-direction: column;
   gap: 1rem;
 }
+
 #game-5 .select-difficult .inputs-labels div {
   color: var(--color-neutral-100);
   display: flex;
@@ -43,7 +44,7 @@
   cursor: pointer;
 }
   
-  #game-5 .select-difficult .inputs-labels div input:checked ~ label {
+#game-5 .select-difficult .inputs-labels div input:checked ~ label {
   color: var(--color-blue-300)
 }
 
@@ -87,7 +88,8 @@
 }
 
 #game-5 .option[data-correct=true] {
-  background: var(--color-green-500);}
+  background: var(--color-green-500);
+}
 
 #game-5 .option[data-correct=false] {
   background: var(--color-red-500);
