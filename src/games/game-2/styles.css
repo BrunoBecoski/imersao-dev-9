@@ -1,12 +1,11 @@
 #game_2 {
-  color: #FFFFFF;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1rem;
-
-  width: 100%;
-  height: 100%;
+  
+  color: var(--color-neutral-100);
 }
 
 #game_2 .header {
@@ -14,13 +13,7 @@
 }
 
 #game_2 .header #title {
-  font-size: 2rem;
-}
-
-#game_2 .header #subtitle {
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: space-evenly;
+  font-size: var(--text-4xl);
 }
 
 #game_2 #main {
@@ -31,48 +24,110 @@
 
 #game_2 .chooseUnits {
   display: flex;
-  gap: 1rem;
-  padding-inline: 1rem;
-  padding-top: 5rem;
+  gap: var(--spacing-4);
+  padding-top: var(--spacing-20);
+  padding-inline: var(--spacing-4);
+}
+
+#game_2 .button-unit {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  width: fit-content;
+  align-items: center;
+  flex-direction: column;
+  
+  border: 5px solid transparent;
+  background-color: var(--color-blue-500);
+  
+  transition: all .5s;
+}
+
+#game_2 .button-unit:hover {
+  border-color: var(--color-yellow-500);
+}
+
+#game_2 .button-unit .name {
+  color: var(--color-neutral-100);
+  font-size: var(--text-3xl);
+  font-weight: bold;
+}
+
+#game_2 .button-unit img {
+  width: 100%;
+}
+
+#game_2 .button-unit.win {
+  border-color: var(--color-green-500);
+}
+
+#game_2 .button-unit.lose {
+  border-color: var(--color-red-500);
+}
+
+#game_2 .button-unit .info {
+  top: -1rem;
+  position: absolute;
+
+  transform: translateY(-100%); 
+}
+
+#game_2 .button-unit .info.win,
+#game_2 .button-unit .info.lose {
+  font-size: var(--text-4xl);
+  font-weight: bold;
+}
+
+#game_2 .button-unit .info.win {
+  color: var(--color-green-500);
+}
+
+#game_2 .button-unit .info.lose {
+  color: var(--color-red-500);
 }
 
 #game_2 .result {
   display: flex;
-  gap: 1rem;
-  flex-direction: column;
   align-items: center;
+  gap: var(--spacing-4);
+  flex-direction: column;
 }
 
 #game_2 #title-result {
-  color: #FFFB47;
-  font-size: 3rem;
+  font-size: var(--text-6xl);
+  margin-top: var(--spacing-4);
+  
+  color: var(--color-yellow-500);
   font-weight: bold;
 }
 
 #game_2 .result .units {
   display: flex;
+  gap: var(--spacing-16);
   justify-content: space-evenly;
-  gap: 4rem;
 }
 
 #game_2 .result .units .unit > span {
-  padding-bottom: 1rem;
+  padding-bottom: var(--spacing-4);
+
   font-style: italic;
 }
 
 #game_2 .result .units .unit {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  font-size: 2rem;
+  flex-direction: column;
+
+  font-size: var(--text-4xl);
 }
 
 #game_2 .result .units .unit > div {
-  background-color: #306B7F;
-  border: 5px solid #306B7F;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  
+  border: 5px solid var(--color-blue-500);
+  background-color: var(--color-blue-500);
 }
 
 #game_2 .result .units .unit div span {
@@ -81,61 +136,4 @@
 
 #game_2 .result .units .unit div img {
   width: 100%;
-}
-
-#game_2 .button-unit {
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  align-items: center;
-  background-color: #306B7F;
-  border: 5px solid transparent;
-  cursor: pointer;
-  position: relative;
-
-  transition: all .5s;
-}
-
-#game_2 .button-unit:hover {
-  border-color: #FFFB47;
-}
-
-#game_2 .button-unit .name {
-  color: #FFFFFF;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-#game_2 .button-unit img {
-  width: 100%;
-}
-
-#game_2 .button-unit.win {
-  border-color: #00FC42;
-}
-
-#game_2 .button-unit.lose {
-  border-color: #F41A28;
-}
-
-#game_2 .button-unit .info  {
-  font-size: 1.5rem;
-  position: absolute;
-  top: -1rem;
-
-  transform: translateY(-100%); 
-}
-
-#game_2 .button-unit .info.win,
-#game_2 .button-unit .info.lose {
-  font-weight: bold;
-  font-size: 2rem;
-}
-
-#game_2 .button-unit .info.win {
-  color: #00FC42;
-}
-
-#game_2 .button-unit .info.lose {
-  color: #F41A28;
 }
