@@ -1,22 +1,23 @@
 #game-5 #title {
-  color: #FFFFFF;
+  margin-bottom: var(--spacing-4);
+
+  color: var(--color-neutral-100);
   font-size: var(--text-5xl);
   text-align: center;
-  margin-bottom: 1rem;
 }
 
 #game-5 #main {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
 }
 
 #game-5 .select-difficult {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: var(--spacing-8);
+  flex-direction: column;
 }
 
 #game-5 .select-difficult .title {
@@ -26,17 +27,19 @@
 }
 
 #game-5 .select-difficult .inputs-labels {
-  font-size: var(--text-2xl);
-  font-weight: bold;
   display: flex;
+  gap: var(--spacing-4);
+
+  font-size: var(--text-2xl);
   flex-direction: column;
-  gap: 1rem;
+  font-weight: bold;
 }
 
 #game-5 .select-difficult .inputs-labels div {
-  color: var(--color-neutral-100);
   display: flex;
-  gap: .5rem;
+  gap: var(--spacing-2);
+
+  color: var(--color-neutral-100);
 }
 
 #game-5 .select-difficult .inputs-labels div input,
@@ -49,33 +52,37 @@
 }
 
 #game-5 #progress {
-  color: #FFFFFF;
+  color: var(--color-neutral-100);
   font-size: var(--text-3xl);
 }
 
 #game-5 #question {
-  text-align: center;
-  color: #FFFFFF;
+  margin-block: var(--spacing-8);
+
+  color: var(--color-neutral-100);
   font-size: var(--text-4xl);
-  margin-block: 2rem;
+  text-align: center;
 }
 
 #game-5 #options {
   display: flex;
+  gap: var(--spacing-4);
   flex-direction: column;
-  gap: 1rem;
+
   color: var(--color-neutral-100);
   font-size: var(--text-3xl);
   font-weight: bold;
 }
 
 #game-5 .option {
-  border: none;
-  padding: 1rem;
-  font-size: var(--text-3xl);
   width: 100%;
-  color: var(--color-neutral-100);
+  padding: var(--spacing-4);
+  
   background: var(--color-blue-500);
+  color: var(--color-neutral-100);
+  font-size: var(--text-3xl);
+  border: none;
+  
   transition: all .5s;
 }
 
@@ -96,19 +103,19 @@
 }
 
 #game-5 .option[data-response=true] {
-  border: 1rem solid var(--color-yellow-500);
+  border: 5px solid var(--color-yellow-500);
 }
 
 #game-5 #ranges {
   display: flex;
-  gap: 3rem;
+  gap: var(--spacing-12);
 }
 
 #game-5 .input-range {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: var(--spacing-4);
+  flex-direction: column;
 }
 
 #game-5 .input-range label {
@@ -124,24 +131,27 @@
 #game-5 .result {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  color: white;
+  gap: var(--spacing-12);
+
+  color: var(--color-yellow-500);
 }
 
 #game-5 .result span {
-font-size: var(--text-5xl);
+  font-size: var(--text-5xl);
 }
 
 #game-5 .response {
-  margin-inline: 2rem;
+  width: 100%;
   display: flex;
-  gap: 3rem;
+  padding: var(--spacing-8);
+  margin-block: var(--spacing-4);
+  justify-content: space-between;
 }
 
 #game-5 .question-options {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
 

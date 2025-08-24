@@ -136,7 +136,7 @@ function showResult(questionsSelected, difficult) {
   const div__element = document.createElement('div')
   const span__element = document.createElement('span')
   const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected, difficult)})
-  const startButton__element = createButton({ text: 'Recomeçar', handleClick: () => {
+  const startButton__element = createButton({ text: 'Jogar novamente', handleClick: () => {
     title__element.innerText = 'Perguntas'
     main__element.innerHTML = ''
     main__element.appendChild(createSelectDifficult())
