@@ -1,8 +1,8 @@
 #game_3 {
   display: flex;
+  gap: var(--spacing-8);
   flex-direction: column;
-  gap: 2rem;
-  padding-inline: 2rem;
+  padding-inline: var(--spacing-8);
 }
 
 #game_3 #header {
@@ -10,43 +10,45 @@
 }
 
 #game_3 #header h2 {
-  color: #FFFFFF;
-  font-size: 3rem;
+  color: var(--color-neutral-100);
+  font-size: var(--text-5xl);
 }
 
 #game_3 #main {
-  text-align: center;
   display: flex;
-  gap: 2rem;
+  text-align: center;
   align-items: center;
+  gap: var(--spacing-8);
   flex-direction: column;
 }
 
 #game_3 #main p {
-  color: #FFFFFF;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-4);
+
+  color: var(--color-neutral-100);
+  font-size: var(--spacing-8);
 }
 
 #game_3 .gates {
   display: flex;
-  gap: 2rem;
+  gap: var(--spacing-8);
 }
 
 #game_3 .button-gate {
   cursor: pointer;
-  border: 4px solid white;
   background: none;
+  border: 5px solid var(--color-neutral-100);
 }
 
 #game_3 .button-gate .button-img {
   width: 100%;
   height: 100%;
+
   filter: brightness(.8);
 }
 
 #game_3 .button-gate:hover {
-  border-color: #FFA32F;
+  border-color: var(--color-yellow-500);
 }
 #game_3 .button-gate:hover .button-img {
   filter: brightness(1.2);
