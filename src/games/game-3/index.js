@@ -7,6 +7,8 @@ import frontImg from '../../assets/game-3/front.png'
 
 import './styles.css'
 
+const rounds = 3
+
 export function createGame3() {
   const section__element = document.createElement('section')
 
@@ -28,32 +30,37 @@ export function createGame3() {
   return section__element
 }
 
-function handleStart() {
-  createGates({ handleClick: handleRound1, round: '1' })
-}
+async function handleStart() {
+  for (let index = 1; index <= rounds; index++) {
+    const correctResponse  = Math.floor(Math.random() * 3) + 1
 
-function handleRound1(value) {
-  if (Math.floor(Math.random() * 3) + 1) {
-   createGates({ handleClick: handleRound2, round: '2' })
-  } else {
-    lose()
+    const gates__element = createGates(index)
+    const response = await renderGates(gates__element)
+    
+    if (correctResponse != response) {
+      lose()
+      return 
+    }
+
+    if (index == 3 || correctResponse === response) {
+      win()
+      return
+    }
   }
 }
 
-function handleRound2(value) {
-  if (Math.floor(Math.random() * 3) + 1 === value) {
-    createGates({ handleClick: handleRound3, round: '3' })
-  } else {
-    lose()
-  }
-}
+async function renderGates(gates__element) {
+  const main__element = document.getElementById('main')
+  main__element.innerHTML = ''
+  main__element.appendChild(gates__element)
 
-function handleRound3(value) {
-  if (Math.floor(Math.random() * 3) + 1 === value) {
-    win()
-  } else {
-    lose()
-  }
+  return new Promise(resolver => {
+    [...gates__element.querySelectorAll('button')].map(button => 
+      button.addEventListener('click', () => {
+        resolver(button.id)
+      }) 
+    )
+  })
 }
 
 function win() {
@@ -76,7 +83,7 @@ function lose() {
   main__element.appendChild(createButton({ text: 'Jogar novamente', handleClick: handleStart }))
 }
 
-function createGates({ handleClick, round, img }) {
+function createGates(round) {
   const h2__element = document.querySelector('#header h2')
   h2__element.innerText = `${round}ª fase`
 
@@ -87,25 +94,23 @@ function createGates({ handleClick, round, img }) {
   gates__element.className = 'gates'
 
   gates__element.append(
-    createButtonGate({ img, handleClick: () => handleClick(1) }),
-    createButtonGate({ img, handleClick: () => handleClick(2) }), 
-    createButtonGate({ img, handleClick: () => handleClick(3) }),
+    createButtonGate(1),
+    createButtonGate(2),
+    createButtonGate(3),
   )
 
-  const main__element = document.getElementById('main')
-  main__element.innerHTML = ''
-  main__element.append(p__element, gates__element)
+  return gates__element
 }
 
-function createButtonGate({ handleClick }) {
+function createButtonGate(id) {
   const button__element = document.createElement('button')
   button__element.className = 'button-gate'
-  button__element.onclick = () => handleClick()
+  button__element.id = id
 
   button__element.innerHTML = `
-      <img id="back" src="${backImg}" />
-      <img id="gate" src="${gateImg}" />
-      <img id="front" src="${frontImg}" />
+    <img id="back" src="${backImg}" />
+    <img id="gate" src="${gateImg}" />
+    <img id="front" src="${frontImg}" />
   `
 
   return button__element
