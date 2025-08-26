@@ -1,8 +1,9 @@
 import { createButton } from '../../components/button'
 
-import gateCloseImg from '../../assets/game-3/gate_close.png'
-import gateOpenImg from '../../assets/game-3/gate_open.png'
 import relicImg from '../../assets/game-3/relic.png'
+import backImg from '../../assets/game-3/back.png'
+import gateImg from '../../assets/game-3/gate.png'
+import frontImg from '../../assets/game-3/front.png'
 
 import './styles.css'
 
@@ -14,7 +15,7 @@ export function createGame3() {
       <div id="header">
         <h2>Pra ganhar, é preciso coragem!<h2>
       </div>
-      
+            
       <div id="main">
         <p>Conseguira chegar até final</p>
       </div>
@@ -98,22 +99,14 @@ function createGates({ handleClick, round, img }) {
 
 function createButtonGate({ handleClick }) {
   const button__element = document.createElement('button')
-  const img__element = document.createElement('img')
-
   button__element.className = 'button-gate'
-  img__element.className = 'button-img'
-
   button__element.onclick = () => handleClick()
-  img__element.src = gateCloseImg
-  button__element.appendChild(img__element)
 
-  button__element.addEventListener('mouseover', () => {
-    img__element.src = gateOpenImg
-  })
-
-  button__element.addEventListener('mouseout', () => {
-    img__element.src = gateCloseImg
-  })
+  button__element.innerHTML = `
+      <img id="back" src="${backImg}" />
+      <img id="gate" src="${gateImg}" />
+      <img id="front" src="${frontImg}" />
+  `
 
   return button__element
 }

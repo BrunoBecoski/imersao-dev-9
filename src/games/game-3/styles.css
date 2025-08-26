@@ -29,6 +29,30 @@
   font-size: var(--spacing-8);
 }
 
+#game_3 .button-gate {
+  width: 256px;
+  height: 256px;
+  overflow: hidden;
+  position: relative;
+  
+  box-sizing: content-box;
+}
+
+#game_3 .button-gate img {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+#game_3 .button-gate #gate {
+  transition: all .5s;
+}
+
+#game_3 .button-gate:hover #gate {
+  bottom: 100px;
+}
+
 #game_3 .gates {
   display: flex;
   gap: var(--spacing-8);
@@ -40,16 +64,6 @@
   border: 5px solid var(--color-neutral-100);
 }
 
-#game_3 .button-gate .button-img {
-  width: 100%;
-  height: 100%;
-
-  filter: brightness(.8);
-}
-
 #game_3 .button-gate:hover {
   border-color: var(--color-yellow-500);
-}
-#game_3 .button-gate:hover .button-img {
-  filter: brightness(1.2);
 }
