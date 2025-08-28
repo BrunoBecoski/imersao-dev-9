@@ -36,7 +36,40 @@ async function handleStart() {
 
     const gates__element = createGates(index)
     const response = await renderGates(gates__element)
-    
+    const buttons__element = Array.from(gates__element.querySelectorAll('button'))
+    const response__element = buttons__element.splice(response - 1, 1)
+
+    const keyframe_1 = new KeyframeEffect(
+      buttons__element[0],
+      [ { opacity: 1 },{ opacity: 0 } ],
+      { duration: 500 }
+    )
+
+    const keyframe_2 = new KeyframeEffect(
+      buttons__element[1],
+      [ { opacity: 1 }, { opacity: 0 } ],
+      { duration: 500 }
+    )
+
+    const keyframe_3 = new KeyframeEffect(
+      response__element[0],
+      [ { transform: 'scale(1)' }, { transform: 'scale(2)' } ],
+      { duration: 500 }
+    )
+
+    const animation_1 = new Animation(keyframe_1)
+    const animation_2 = new Animation(keyframe_2)
+    const animation_3 = new Animation(keyframe_3)
+
+    animation_1.play()
+    animation_2.play()
+    animation_3.play()
+
+    await animation_1.finished
+    await animation_2.finished
+    await animation_3.finished
+
+
     if (correctResponse != response) {
       lose()
       return 
