@@ -1,6 +1,6 @@
 import { createButton } from '../../components/button'
+import { createRelic } from '../../components/relic' 
 
-import relicImg from '../../assets/game-3/relic.png'
 import backImg from '../../assets/game-3/back.png'
 import gateImg from '../../assets/game-3/gate.png'
 import frontImg from '../../assets/game-3/front.png'
@@ -69,7 +69,6 @@ async function handleStart() {
     await animation_2.finished
     await animation_3.finished
 
-
     if (correctResponse != response) {
       lose()
       return 
@@ -99,12 +98,10 @@ async function renderGates(gates__element) {
 function win() {
   const main__element = document.getElementById('main')
   const h2__element = document.querySelector('#header h2')
-  const img__element = document.createElement('img')
 
   h2__element.innerText = 'VENCEU'
-  img__element.src = relicImg
   main__element.innerHTML = ''
-  main__element.append(img__element, createButton({ text: 'Jogar novamente', handleClick: handleStart }))
+  main__element.append(createRelic(), createButton({ text: 'Jogar novamente', handleClick: handleStart }))
 }
 
 function lose() {

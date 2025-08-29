@@ -1,0 +1,20 @@
+.relic {
+  animation-duration: 3s;
+  animation-name: floating;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+  }
+  
+  25% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
