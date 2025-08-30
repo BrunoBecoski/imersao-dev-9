@@ -33,7 +33,7 @@ export function createGame3() {
 async function handleStart() {
   for (let index = 1; index <= rounds; index++) {
     const correctResponse  = Math.floor(Math.random() * 3) + 1
-
+    
     const gates__element = createGates(index)
     const response = await renderGates(gates__element)
     const buttons__element = Array.from(gates__element.querySelectorAll('button'))
