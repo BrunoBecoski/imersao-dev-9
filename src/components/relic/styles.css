@@ -1,8 +1,7 @@
 .relic {
-  position: relative;
-
   width: 500px;
   height: 500px;
+  position: relative;
 }
 
 .relic .image {
@@ -10,19 +9,18 @@
 }
 
 .relic .reflection {
-  filter: brightness(200%);
-
-  animation-duration: 2s;
+  filter: brightness(500%);
+  animation-duration: 1.5s;
   animation-name: reflection;
   animation-iteration-count: infinite;
 }
 
 @keyframes reflection {
   0% {
-    clip-path: polygon(0 100%, 100% 100%, 100% 110%, 0 110%);
-  }
+    clip-path: polygon(0% 110%, 100% 100%, 100% 110%, 0% 120%);
+  }  
 
   100% {
-    clip-path: polygon(0 -10%, 100% -10%, 100% 0%, 0% 0%);
+    clip-path: polygon(0% -10%, 100% -20%, 100% -10%, 0% 0%);
   }
 }
