@@ -2,7 +2,7 @@
   position: relative;
 
   animation-duration: 5s;
-  animation-name: bounce;
+  animation-name: floating;
   animation-iteration-count: infinite; 
 }
 
@@ -17,7 +17,7 @@
   animation-iteration-count: infinite;
 }
 
-@keyframes bounce {
+@keyframes floating {
   0% {
     transform: translateY(0%);
   }
