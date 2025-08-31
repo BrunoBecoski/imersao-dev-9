@@ -1,7 +1,9 @@
 .relic {
-  width: 500px;
-  height: 500px;
   position: relative;
+
+  animation-duration: 5s;
+  animation-name: bounce;
+  animation-iteration-count: infinite; 
 }
 
 .relic .image {
@@ -13,6 +15,16 @@
   animation-duration: 1.5s;
   animation-name: reflection;
   animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0%);
+  }
+
+  50% {
+    transform: translateY(10%);
+  }
 }
 
 @keyframes reflection {
