@@ -26,17 +26,12 @@ export function createNav(showGame) {
     document.createElement('li').innerHTML = 
     createButton({ text: 'Jogo 5', handleClick: () => showGame(5) })
 
-  const li_6__element = 
-    document.createElement('li').innerHTML = 
-    createButton({ text: 'SAIR', handleClick: () => showGame() })
-
   ul__element.append(
     li_1__element,
     li_2__element,
     li_3__element,
     li_4__element,
     li_5__element,
-    li_6__element,
   )
   
   const footer__element = document.createElement('footer')

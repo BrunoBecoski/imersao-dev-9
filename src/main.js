@@ -12,7 +12,7 @@ const root_element = document.querySelector('#root')
 const nav__element = createNav(showGame)
 
 const main__element = document.createElement('main')
-main__element.innerHTML = `<h1 class="title">Jogos sobre<br/>Age of Empires II</h1>`
+main__element.innerHTML = `<h1 class="welcome">Jogos sobre<br/>Age of Empires II</h1>`
 
 root_element.append(nav__element, main__element)
 
