@@ -14,6 +14,7 @@ const weakDamage = 1
 const strongDamage = 2
 
 let battleUnits = {}
+let battles = []
 
 const units = new Map([
   ['arbalester', {
@@ -67,6 +68,7 @@ const units = new Map([
   }],
 ])
 
+
 export function createGame4() {
   const section__element = document.createElement('section')
   
@@ -76,9 +78,7 @@ export function createGame4() {
         <h2 id="title">Monte seu exército e ganhe</h2>
       </div>
 
-      <div id="main">
-
-      </div>
+      <div id="main"></div>
     </div>
   `
 
@@ -251,7 +251,6 @@ async function battleScreen() {
 }
 
 function renderResult({ value, playerUnits, computerUnits }) {
-
   let obj = {
     title: '',
     winningUnits: [],
@@ -337,6 +336,8 @@ function renderResult({ value, playerUnits, computerUnits }) {
     )
   }
 
+  battles.map(unit => console.log(`id: ${unit.id} life: ${unit.life}`))
+
   main__element.innerHTML = ''
   main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
 }
@@ -402,6 +403,14 @@ async function combat(playerUnitId, computerUnitId) {
 
   battleUnits.player.find((unit) => unit.id === playerUnitId).life = newPlayerLife
   battleUnits.computer.find((unit) => unit.id === computerUnitId).life = newComputerLife
+
+  battles.push({ 
+    id: playerUnitId,
+    life: newPlayerLife
+  }, {
+    id: computerUnitId,
+    life: newComputerLife
+  })
 
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
