@@ -14,7 +14,7 @@ const weakDamage = 1
 const strongDamage = 2
 
 let battleUnits = {}
-let battles = []
+let battlesRounds = []
 
 const units = new Map([
   ['arbalester', {
@@ -336,7 +336,7 @@ function renderResult({ value, playerUnits, computerUnits }) {
     )
   }
 
-  battles.map(unit => console.log(`id: ${unit.id} life: ${unit.life}`))
+  battlesRounds.map(({ player, computer }) => console.log(`Player: ${units.get(player.value).name} | Computador: ${units.get(computer.value).name}`))
 
   main__element.innerHTML = ''
   main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
@@ -381,6 +381,19 @@ async function combat(playerUnitId, computerUnitId) {
   let newPlayerLife = 0
   let newComputerLife = 0
 
+  let battleRoundUnits = {
+    player: {
+      value: playerUnit.value,
+      life: currentPlayerLife,
+      damage: 0,
+    },
+    computer: {
+      value: computerUnit.value,
+      life: currentComputerLife,
+      damage: 0,
+    }
+  }
+
   if (currentPlayerLife === 0 || currentComputerLife === 0) {
     return
   }
@@ -388,12 +401,22 @@ async function combat(playerUnitId, computerUnitId) {
   if (playerUnit.strong.includes(computerUnit.value) && computerUnit.weak.includes(playerUnit.value)) {
     newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
     newComputerLife = Math.max(0, currentComputerLife - strongDamage)
+
+    battleRoundUnits.player.damage = weakDamage
+    battleRoundUnits.computer.damage = strongDamage
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
     newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
+
+
+    battleRoundUnits.player.damage = strongDamage
+    battleRoundUnits.computer.damage = weakDamage
   } else {
     newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
+
+    battleRoundUnits.player.damage = weakDamage
+    battleRoundUnits.computer.damage = weakDamage
   }
 
   await unitAnimation(
@@ -404,13 +427,7 @@ async function combat(playerUnitId, computerUnitId) {
   battleUnits.player.find((unit) => unit.id === playerUnitId).life = newPlayerLife
   battleUnits.computer.find((unit) => unit.id === computerUnitId).life = newComputerLife
 
-  battles.push({ 
-    id: playerUnitId,
-    life: newPlayerLife
-  }, {
-    id: computerUnitId,
-    life: newComputerLife
-  })
+  battlesRounds.push(battleRoundUnits)
 
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
