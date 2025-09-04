@@ -336,10 +336,31 @@ function renderResult({ value, playerUnits, computerUnits }) {
     )
   }
 
-  battlesRounds.map(({ player, computer }) => console.log(`Player: ${units.get(player.value).name} | Computador: ${units.get(computer.value).name}`))
+  const rounds__element = battlesRounds.map(({ player, computer }) => {
+    const div__element = document.createElement('div')
+    const player__element = document.createElement('div')
+    const computer__element = document.createElement('div')
 
+    player__element.innerHTML = `
+      <strong>Player: ${units.get(player.value).name}</strong>
+      <img src=${units.get(player.value).img} />
+      <span>Vida: ${player.life}</span>
+      <span>Dano: ${player.damage}</span>
+    `
+    computer__element.innerHTML = `
+      <strong>Computador: ${units.get(computer.value).name}</strong>
+      <img src=${units.get(computer.value).img} />
+      <span>Vida: ${computer.life}</span>
+      <span>Dano: ${computer.damage}</span>
+    `
+
+    div__element.append(player__element, computer__element)
+    
+    return div__element
+  })
+  
   main__element.innerHTML = ''
-  main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }))
+  main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }), ...Array.from(rounds__element))
 }
 
 async function playCombat() {
