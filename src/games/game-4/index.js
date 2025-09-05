@@ -258,11 +258,17 @@ function renderResult({ value, playerUnits, computerUnits }) {
     drawsUnits: [],
   }
 
+  const winning_title__element = document.createElement('h2')
+  const losing_title__element = document.createElement('h2')
+
   switch (value) {
     case 'draw':
       obj = {
         title: 'EMPATE',
       }
+
+      winning_title__element.innerText = 'Jogador'
+      losing_title__element.innerText = 'Computador'
       break;
 
     case 'won':
@@ -271,6 +277,8 @@ function renderResult({ value, playerUnits, computerUnits }) {
         winningUnits: playerUnits,
         losingUnits: computerUnits,
       }
+      winning_title__element.innerText = 'Jogador'
+      losing_title__element.innerText = 'Computador'
       break;
 
     case 'lose':
@@ -279,7 +287,8 @@ function renderResult({ value, playerUnits, computerUnits }) {
         winningUnits: computerUnits,
         losingUnits: playerUnits,
       }
-  
+      winning_title__element.innerText = 'Computador'
+      losing_title__element.innerText = 'Jogador'
     default:
       break;
   }
@@ -304,18 +313,19 @@ function renderResult({ value, playerUnits, computerUnits }) {
   const result_units__element = document.createElement('div')
   result_units__element.className = 'result-units'
 
-
   if (value === 'draw') {
     const player_units__element = document.createElement('div')
     player_units__element.append(
       ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit))),
     )
     const computer_units__element = document.createElement('div')
-     computer_units__element.append(
+    computer_units__element.append(
       ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit))),
     )
     draws_units__element.append(
+      winning_title__element,
       player_units__element,
+      losing_title__element,
       computer_units__element,
     )
 
@@ -332,7 +342,10 @@ function renderResult({ value, playerUnits, computerUnits }) {
     )
 
     result_units__element.append(
-      winning_units__element, losing_units__element,
+      winning_title__element,
+      winning_units__element,
+      losing_title__element,
+      losing_units__element,
     )
   }
 
@@ -684,13 +697,19 @@ function createBattleUnit(id, life, unit) {
 }
 
 function createResultUnit(unit) {
-  const { img } = units.get(unit)
+  const { name, img } = units.get(unit)
 
+  const div__element = document.createElement('div')
+  const span__element = document.createElement('span')
   const img__element = document.createElement('img')
   
+  div__element.className = 'result-unit'
+  span__element.innerText = name
   img__element.src = img
 
-  return img__element
+  div__element.append(img__element, span__element)
+
+  return div__element
 }
 
 

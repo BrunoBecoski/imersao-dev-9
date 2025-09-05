@@ -115,30 +115,45 @@
 
 #game-4 .result-units {
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: var(--spacing-20);
+  gap: var(--spacing-8);
   margin-block: var(--spacing-16);
 
-  font-size: var(--spacing-16);
+  color: var(--color-neutral-100);
+  font-size: var(--text-4xl);
+  text-align: center;
 }
 
-#game-4 .result-winning-units {
+#game-4 .result-unit {
   display: flex;
-  gap: var(--spacing-4);
+  flex-direction: column;
+  padding: var(--spacing-4);
+
+  font-size: var(--text-3xl);
 }
 
-#game-4 .result-losing-units {
+#game-4 .result-unit span {
+  width: 100%;
+  
+  background-color: var(--color-blue-500);
+  color: var(--color-neutral-100);
+}
+
+#game-4 .result-winning-units,
+#game-4 .result-losing-units,
+#game-4 .result-draws-units  {
   display: flex;
-  gap: var(--spacing-4);
+}
+
+#game-4 .result-losing-units img {
+  display: flex;
+  flex-direction: column;
 
   filter: grayscale(1)
 }
 
-#game-4 .result-draws-units {
-  display: flex;
-  gap: var(--spacing-4);
-  flex-direction: column;
-
+#game-4 .result-draws-units img {
   filter: grayscale(.5);
 }
 
@@ -159,7 +174,6 @@
   background-color: var(--color-blue-500);
   
   transition: all .5s;
-
 }
 
 #game-4 .select-unit img {
