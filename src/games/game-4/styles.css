@@ -107,43 +107,64 @@
 }
 
 #game-4 .result-title {
-  margin-block: var(--spacing-16);
-
   color: var(--color-neutral-100);
   font-size: var(--text-7xl);
+  margin-bottom: var(--spacing-2);
 }
 
 #game-4 .result-units {
   display: flex;
   align-items: center;
-  flex-direction: column;
   gap: var(--spacing-8);
-  margin-block: var(--spacing-16);
+  flex-direction: column;
+  margin: var(--spacing-6) var(--spacing-16) ;
 
   color: var(--color-neutral-100);
-  font-size: var(--text-4xl);
-  text-align: center;
+  font-size: var(--text-xl);
 }
 
 #game-4 .result-unit {
   display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
   flex-direction: column;
-  padding: var(--spacing-4);
-
-  font-size: var(--text-3xl);
+  padding: var(--spacing-2);
 }
 
-#game-4 .result-unit span {
-  width: 100%;
-  
-  background-color: var(--color-blue-500);
-  color: var(--color-neutral-100);
+#game-4 .result-units img {
+  width: 100px;
+}
+
+#game-4 .result-winning-units div {
+  background-color: var(--color-green-900);
+}
+
+#game-4 .result-losing-units div {
+  background-color: var(--color-red-900);
+}
+
+ #game-4 .result-draws-units {
+  text-align: center;
+ }
+
+#game-4 .result-draws-units div {
+  display: flex;
+  text-align: center;
+  flex-direction: row;
+}
+
+#game-4 .result-draws-units div div {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-blue-900);
 }
 
 #game-4 .result-winning-units,
-#game-4 .result-losing-units,
-#game-4 .result-draws-units  {
+#game-4 .result-losing-units {
   display: flex;
+  flex-direction: row;
+  gap: var(--spacing-16);
 }
 
 #game-4 .result-losing-units img {

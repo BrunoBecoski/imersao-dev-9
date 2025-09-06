@@ -318,10 +318,12 @@ function renderResult({ value, playerUnits, computerUnits }) {
     player_units__element.append(
       ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit))),
     )
+
     const computer_units__element = document.createElement('div')
     computer_units__element.append(
       ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit))),
     )
+
     draws_units__element.append(
       winning_title__element,
       player_units__element,
@@ -348,7 +350,12 @@ function renderResult({ value, playerUnits, computerUnits }) {
       losing_units__element,
     )
   }
+  
+  main__element.innerHTML = ''
+  main__element.append(h1__element, createButton({ text: 'Ver relatório', handleClick: handleShowReport }), result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }), )
+}
 
+function handleShowReport() {
   const rounds__element = battlesRounds.map(({ player, computer }) => {
     const div__element = document.createElement('div')
     const player__element = document.createElement('div')
@@ -371,9 +378,13 @@ function renderResult({ value, playerUnits, computerUnits }) {
     
     return div__element
   })
-  
+
+  const title__element = document.getElementById('title')
+  title__element.innerText = 'Relatório'
+
+  const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(h1__element, result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }), ...Array.from(rounds__element))
+  main__element.append(createButton({ text: 'Ver resultado', handleClick: () => renderResult() }), ...Array.from(rounds__element))
 }
 
 async function playCombat() {
