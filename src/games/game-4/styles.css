@@ -107,81 +107,39 @@
   border: 5px solid var(--color-neutral-100);
 }
 
-#game-4 .result-title {
-  color: var(--color-neutral-100);
-  font-size: var(--text-7xl);
-  margin-bottom: var(--spacing-2);
-}
-
-#game-4 .result-units {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-8);
-  flex-direction: column;
-  margin: var(--spacing-6) var(--spacing-16) ;
-
-  color: var(--color-neutral-100);
-  font-size: var(--text-xl);
-}
-
 #game-4 .result-unit {
   display: flex;
   align-items: center;
   gap: var(--spacing-1);
   flex-direction: column;
   padding: var(--spacing-2);
-}
-
-#game-4 .result-units img {
-  width: 100px;
-}
-
-#game-4 .result-winning-units div {
-  background-color: var(--color-green-900);
-}
-
-#game-4 .result-losing-units div {
-  background-color: var(--color-red-900);
-}
-
- #game-4 .result-draws-units {
-  text-align: center;
- }
-
-#game-4 .result-draws-units div {
-  display: flex;
-  text-align: center;
-  flex-direction: row;
-}
-
-#game-4 .result-draws-units div div {
-  display: flex;
-  flex-direction: column;
-
+  
   background-color: var(--color-blue-900);
 }
 
-#game-4 .result-winning-units,
-#game-4 .result-losing-units {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacing-16);
+#game-4 .result-unit span {
+  color: var(--color-neutral-100);
+  font-size: var(--text-lg);
 }
 
-#game-4 .result-losing-units img {
-  display: flex;
-  flex-direction: column;
-
-  filter: grayscale(1)
+#game-4 .result-unit img {
+  width: 100px;
 }
 
-#game-4 .result-draws-units img {
+#game-4 .result-unit.won {
+  background-color: var(--color-green-900);
+}
+
+#game-4 .result-unit.lose {
+  background-color: var(--color-red-900);
+}
+
+#game-4 .result-unit.draw img {
   filter: grayscale(.5);
 }
 
-#game-4 .result-draws-units > div {
-  display: flex;
-  gap: var(--spacing-4);
+#game-4 .result-unit.lose img {
+  filter: grayscale(1);
 }
 
 #game-4 .select-unit {
@@ -222,7 +180,7 @@
   
   background-color: var(--color-green-500);
   cursor: pointer;
-  
+
   width: 100px;
   height: 100px;
 

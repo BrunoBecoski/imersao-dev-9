@@ -16,57 +16,6 @@ const strongDamage = 2
 let battleUnits = {}
 let battlesRounds = []
 
-const units = new Map([
-  ['arbalester', {
-    name: 'Arbalesteiro',
-    value: 'arbalester',
-    img: arbalesterIconImg,
-    type: 'archer',
-    strong: ['halberdier', 'champion'],
-    weak:  ['paladin', 'camel', 'skirmisher'],
-  }],
-  ['skirmisher', {
-    name: 'Escaramuçador',
-    value: 'skirmisher',
-    img: skirmisherIconImg,
-    type: 'archer',
-    strong: ['arbalester'],
-    weak: ['paladin', 'camel']
-  }],
-  ['halberdier', {
-    name: 'Alabardeiro',
-    value: 'halberdier',
-    img: halberdierIconImg,
-    type: 'infantry',
-    strong: ['paladin', 'camel'],
-    weak: ['arbalester', 'skirmisher', 'champion'],
-  }],
-  ['champion', {
-    name: 'Campeão',
-    value: 'champion',
-    img: championIconImg,
-    type: 'infantry',
-    strong: ['halberdier'],
-    weak: ['arbalester', 'skirmisher'],
-  }],
-  ['paladin', {
-    name: 'Paladino',
-    value: 'paladin',
-    img: paladinIconImg,
-    type: 'cavalry',
-    strong: ['arbalester', 'skirmisher'],
-    weak: ['halberdier', 'champion', 'camel'],
-
-  }],
-  ['camel', {
-    name: 'Cameleiro',
-    value: 'camel',
-    img: camelIconImg,
-    type: 'cavalry',
-    strong: ['paladin'],
-    weak: ['halberdier', 'champion'],
-  }],
-])
 
 
 export function createGame4() {
@@ -251,108 +200,84 @@ async function battleScreen() {
 }
 
 function renderResult({ value, playerUnits, computerUnits }) {
-  let obj = {
-    title: '',
-    winningUnits: [],
-    losingUnits: [],
-    drawsUnits: [],
-  }
+  const result_title__element = document.createElement('h1')
 
-  const winning_title__element = document.createElement('h2')
-  const losing_title__element = document.createElement('h2')
+  const top_div__element = document.createElement('div')
+  top_div__element.className = 'top'
+  const top_title__element = document.createElement('h2')
+  const top_units__element = document.createElement('div')
+  top_div__element.append(
+    top_title__element,
+    top_units__element
+  )
+
+  const bottom_div__element = document.createElement('div')
+  bottom_div__element.className = 'bottom'
+  const bottom_title__element = document.createElement('h2')
+  const bottom_units__element = document.createElement('div')
+  bottom_div__element.append(
+    bottom_title__element,
+    bottom_units__element
+  )
 
   switch (value) {
     case 'draw':
-      obj = {
-        title: 'EMPATE',
-      }
+      result_title__element.innerText = 'EMPATE',
 
-      winning_title__element.innerText = 'Jogador'
-      losing_title__element.innerText = 'Computador'
+      top_title__element.innerText = 'Jogador'
+      top_units__element.append(
+        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'draw'))),
+      )
+
+      bottom_title__element.innerText = 'Computador'
+      bottom_units__element.append(
+        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'draw'))),
+      )
+
       break;
 
     case 'won':
-      obj = {
-        title: 'VENCEU',
-        winningUnits: playerUnits,
-        losingUnits: computerUnits,
-      }
-      winning_title__element.innerText = 'Jogador'
-      losing_title__element.innerText = 'Computador'
+      result_title__element.innerText = 'VENCEU',
+
+      top_title__element.innerText = 'Jogador'
+      top_units__element.append(
+        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'won'))),
+      )
+
+      bottom_title__element.innerText = 'Computador'
+      bottom_units__element.append(
+        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'lose'))),
+      )
+
       break;
 
     case 'lose':
-      obj = {
-        title: 'PERDEU',
-        winningUnits: computerUnits,
-        losingUnits: playerUnits,
-      }
-      winning_title__element.innerText = 'Computador'
-      losing_title__element.innerText = 'Jogador'
+      result_title__element.innerText = 'PERDEU',
+
+      top_title__element.innerText = 'Computador'
+      top_units__element.append(
+        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'won'))),
+      )
+
+      bottom_title__element.innerText = 'Jogador'
+      bottom_units__element.append(
+        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'lose'))),
+      )
+
     default:
       break;
   }
-
-  const main__element = document.getElementById('main')
+ 
   const title__element = document.getElementById('title')
-  const h1__element = document.createElement('h1')
-  
   title__element.innerText = 'Resultado'
-  h1__element.innerText = obj.title
-  h1__element.className = 'result-title'
-
-  const winning_units__element = document.createElement('div')
-  winning_units__element.className = 'result-winning-units'
-
-  const losing_units__element = document.createElement('div')
-  losing_units__element.className = 'result-losing-units'
-
-  const draws_units__element = document.createElement('div')
-  draws_units__element.className = 'result-draws-units'
-
-  const result_units__element = document.createElement('div')
-  result_units__element.className = 'result-units'
-
-  if (value === 'draw') {
-    const player_units__element = document.createElement('div')
-    player_units__element.append(
-      ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit))),
-    )
-
-    const computer_units__element = document.createElement('div')
-    computer_units__element.append(
-      ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit))),
-    )
-
-    draws_units__element.append(
-      winning_title__element,
-      player_units__element,
-      losing_title__element,
-      computer_units__element,
-    )
-
-    result_units__element.append(
-      draws_units__element,
-    )
-  } else {
-    winning_units__element.append(
-      ...Array.from(obj.winningUnits.map(({ unit }) => createResultUnit(unit)))
-    )
-
-    losing_units__element.append(
-      ...Array.from(obj.losingUnits.map(({ unit }) => createResultUnit(unit)))
-    )
-
-    result_units__element.append(
-      winning_title__element,
-      winning_units__element,
-      losing_title__element,
-      losing_units__element,
-    )
-  }
   
+  const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(h1__element, createButton({ text: 'Ver relatório', handleClick: handleShowReport }), result_units__element, createButton({ text: 'Começar outra partida', handleClick: selectionScreen }), )
+  main__element.append(
+    result_title__element,
+    top_div__element,
+    bottom_div__element,
+  )
 }
 
 function handleShowReport() {
@@ -707,14 +632,14 @@ function createBattleUnit(id, life, unit) {
   return battle_unit__element
 }
 
-function createResultUnit(unit) {
+function createResultUnit(unit, result) {
   const { name, img } = units.get(unit)
 
   const div__element = document.createElement('div')
   const span__element = document.createElement('span')
   const img__element = document.createElement('img')
   
-  div__element.className = 'result-unit'
+  div__element.className = `result-unit ${result}`
   span__element.innerText = name
   img__element.src = img
 
@@ -722,6 +647,58 @@ function createResultUnit(unit) {
 
   return div__element
 }
+
+const units = new Map([
+  ['arbalester', {
+    name: 'Arbalesteiro',
+    value: 'arbalester',
+    img: arbalesterIconImg,
+    type: 'archer',
+    strong: ['halberdier', 'champion'],
+    weak:  ['paladin', 'camel', 'skirmisher'],
+  }],
+  ['skirmisher', {
+    name: 'Escaramuçador',
+    value: 'skirmisher',
+    img: skirmisherIconImg,
+    type: 'archer',
+    strong: ['arbalester'],
+    weak: ['paladin', 'camel']
+  }],
+  ['halberdier', {
+    name: 'Alabardeiro',
+    value: 'halberdier',
+    img: halberdierIconImg,
+    type: 'infantry',
+    strong: ['paladin', 'camel'],
+    weak: ['arbalester', 'skirmisher', 'champion'],
+  }],
+  ['champion', {
+    name: 'Campeão',
+    value: 'champion',
+    img: championIconImg,
+    type: 'infantry',
+    strong: ['halberdier'],
+    weak: ['arbalester', 'skirmisher'],
+  }],
+  ['paladin', {
+    name: 'Paladino',
+    value: 'paladin',
+    img: paladinIconImg,
+    type: 'cavalry',
+    strong: ['arbalester', 'skirmisher'],
+    weak: ['halberdier', 'champion', 'camel'],
+
+  }],
+  ['camel', {
+    name: 'Cameleiro',
+    value: 'camel',
+    img: camelIconImg,
+    type: 'cavalry',
+    strong: ['paladin'],
+    weak: ['halberdier', 'champion'],
+  }],
+])
 
 
 
