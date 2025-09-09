@@ -107,6 +107,33 @@
   border: 5px solid var(--color-neutral-100);
 }
 
+#game-4 .result-title {
+  color: var(--color-neutral-100);
+  font-size: var(--text-5xl);
+  font-weight: bold;
+}
+
+#game-4 .result-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+#game-4 .top-units > div,
+#game-4 .bottom-units > div {
+  display: flex;
+  gap: var(--spacing-10);
+  align-items: space-around;
+}
+
+#game-4 .top-units h2,
+#game-4 .bottom-units h2 {
+  margin-bottom: var(--spacing-4);
+  
+  color: var(--color-neutral-100);
+  text-align: center;
+}
+
 #game-4 .result-unit {
   display: flex;
   align-items: center;

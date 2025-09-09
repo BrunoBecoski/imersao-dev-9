@@ -16,8 +16,6 @@ const strongDamage = 2
 let battleUnits = {}
 let battlesRounds = []
 
-
-
 export function createGame4() {
   const section__element = document.createElement('section')
   
@@ -201,9 +199,10 @@ async function battleScreen() {
 
 function renderResult({ value, playerUnits, computerUnits }) {
   const result_title__element = document.createElement('h1')
+  result_title__element.className = 'result-title'
 
   const top_div__element = document.createElement('div')
-  top_div__element.className = 'top'
+  top_div__element.className = 'top-units'
   const top_title__element = document.createElement('h2')
   const top_units__element = document.createElement('div')
   top_div__element.append(
@@ -212,7 +211,7 @@ function renderResult({ value, playerUnits, computerUnits }) {
   )
 
   const bottom_div__element = document.createElement('div')
-  bottom_div__element.className = 'bottom'
+  bottom_div__element.className = 'bottom-units'
   const bottom_title__element = document.createElement('h2')
   const bottom_units__element = document.createElement('div')
   bottom_div__element.append(
@@ -271,10 +270,18 @@ function renderResult({ value, playerUnits, computerUnits }) {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Resultado'
   
+  const buttons__element = document.createElement('div')
+  buttons__element.className = 'result-buttons'
+  buttons__element.append(
+    createButton({ text: 'Ver relatório', handleClick: handleShowReport }),
+    createButton({ text: 'Jogar novamente', handleClick: selectionScreen })
+  )
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(
     result_title__element,
+    buttons__element,
     top_div__element,
     bottom_div__element,
   )
@@ -440,10 +447,6 @@ function handleRemoveUnit(id) {
   }
 }
 
-function calcPercent(value) {
-  return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
-}
-
 async function unitAnimation(
   player_unit__element, playerCurrentLife, playerNewLife,
   computer_unit__element, computerCurrentLife, computerNewLife, 
@@ -556,6 +559,20 @@ async function unitAnimation(
   ])
 }
 
+function handleMouseOver(value) {
+  const { strong, weak } = units.get(value)
+
+  strong.forEach(unit => document.getElementById(unit).classList.add('strong'))
+  weak.forEach(unit => document.getElementById(unit).classList.add('weak'))
+}
+
+function handleMouseOut(value) {
+  const { strong, weak } = units.get(value)
+
+  strong.forEach(unit => document.getElementById(unit).classList.remove('strong'))
+  weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
+}
+
 function createButtonUnit(unit) {
   const { value, img, name } = units.get(unit)
 
@@ -597,20 +614,6 @@ function createSelectedUnit(unit) {
   return button__element
 }
 
-function handleMouseOver(value) {
-  const { strong, weak } = units.get(value)
-
-  strong.forEach(unit => document.getElementById(unit).classList.add('strong'))
-  weak.forEach(unit => document.getElementById(unit).classList.add('weak'))
-}
-
-function handleMouseOut(value) {
-  const { strong, weak } = units.get(value)
-
-  strong.forEach(unit => document.getElementById(unit).classList.remove('strong'))
-  weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
-}
-
 function createBattleUnit(id, life, unit) {
   const { value, img } = units.get(unit)
 
@@ -646,6 +649,10 @@ function createResultUnit(unit, result) {
   div__element.append(img__element, span__element)
 
   return div__element
+}
+
+function calcPercent(value) {
+  return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
 }
 
 const units = new Map([
