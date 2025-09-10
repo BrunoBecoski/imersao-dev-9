@@ -13,6 +13,7 @@ const initialLife = 4
 const weakDamage = 1
 const strongDamage = 2
 
+let resultValue = ''
 let battleUnits = {}
 let battlesRounds = []
 
@@ -36,6 +37,10 @@ export function createGame4() {
 }
 
 function selectionScreen() {
+  resultValue = ''
+  battleUnits = {}
+  battlesRounds = []
+
   const archers__element = document.createElement('div')
   archers__element.className = 'archers'
   const archer_title__element = document.createElement('span')
@@ -173,15 +178,15 @@ async function battleScreen() {
     )
 
     if (playerLife === 0 && computerLife === 0) {
-      renderResult({ value: 'draw', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
+      resultValue = 'draw'
 
       loop = false
     } else if (playerLife >= 1 && computerLife === 0) {
-      renderResult({ value: 'won', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
+      resultValue = 'won'
 
       loop = false
     } else if (computerLife >= 1 && playerLife === 0) {
-      renderResult({ value: 'lose', playerUnits: battleUnits.player, computerUnits: battleUnits.computer })
+      resultValue = 'lose'
 
       loop = false
     } else {
@@ -195,9 +200,11 @@ async function battleScreen() {
       await playCombat()
     }
   } while (loop)
+
+  renderResult()
 }
 
-function renderResult({ value, playerUnits, computerUnits }) {
+function renderResult() {
   const result_title__element = document.createElement('h1')
   result_title__element.className = 'result-title'
 
@@ -219,18 +226,18 @@ function renderResult({ value, playerUnits, computerUnits }) {
     bottom_units__element
   )
 
-  switch (value) {
+  switch (resultValue) {
     case 'draw':
       result_title__element.innerText = 'EMPATE',
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'draw'))),
+        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'draw'))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'draw'))),
+        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'draw'))),
       )
 
       break;
@@ -240,12 +247,12 @@ function renderResult({ value, playerUnits, computerUnits }) {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'won'))),
+        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'won'))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'lose'))),
+        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'lose'))),
       )
 
       break;
@@ -255,12 +262,12 @@ function renderResult({ value, playerUnits, computerUnits }) {
 
       top_title__element.innerText = 'Computador'
       top_units__element.append(
-        ...Array.from(computerUnits.map(({ unit }) => createResultUnit(unit, 'won'))),
+        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'won'))),
       )
 
       bottom_title__element.innerText = 'Jogador'
       bottom_units__element.append(
-        ...Array.from(playerUnits.map(({ unit }) => createResultUnit(unit, 'lose'))),
+        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'lose'))),
       )
 
     default:
@@ -316,7 +323,7 @@ function handleShowReport() {
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(createButton({ text: 'Ver resultado', handleClick: () => renderResult() }), ...Array.from(rounds__element))
+  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResult }), ...Array.from(rounds__element))
 }
 
 async function playCombat() {
