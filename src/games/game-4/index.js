@@ -300,17 +300,17 @@ function handleShowReport() {
     const player__element = document.createElement('div')
     const computer__element = document.createElement('div')
 
+    div__element.className = 'report-round'
+
     player__element.innerHTML = `
-      <strong>Player: ${units.get(player.value).name}</strong>
-      <img src=${units.get(player.value).img} />
-      <span>Vida: ${player.life}</span>
-      <span>Dano: ${player.damage}</span>
+      <span class="report-damage">Dano: ${player.damage}</span>
+      <span class="report-life">Vida: ${player.life}</span>
+      <img class="report-image" src=${units.get(player.value).img} />
     `
     computer__element.innerHTML = `
-      <strong>Computador: ${units.get(computer.value).name}</strong>
-      <img src=${units.get(computer.value).img} />
-      <span>Vida: ${computer.life}</span>
-      <span>Dano: ${computer.damage}</span>
+      <img class="report-image" src=${units.get(computer.value).img} />
+      <span class="report-life">Vida: ${computer.life}</span>
+      <span class="report-damage">Dano: ${computer.damage}</span>
     `
 
     div__element.append(player__element, computer__element)
@@ -321,9 +321,17 @@ function handleShowReport() {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Relatório'
 
+  const units_report__element = document.createElement('div')
+  units_report__element.className = 'report-units'
+  units_report__element.append(...Array.from(rounds__element))
+
+  const titles__element = document.createElement('div')
+  titles__element.className = 'report-titles'
+  titles__element.innerHTML = `<strong>Jogador</strong> <strong>Computador</strong>`
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResult }), ...Array.from(rounds__element))
+  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResult }), titles__element, units_report__element)
 }
 
 async function playCombat() {
