@@ -297,23 +297,24 @@ function renderResult() {
 function handleShowReport() {
   const rounds__element = battlesRounds.map(({ player, computer }) => {
     const div__element = document.createElement('div')
-    const player__element = document.createElement('div')
-    const computer__element = document.createElement('div')
+    const unit_player__element = document.createElement('div')
+    const unit_computer__element = document.createElement('div')
 
     div__element.className = 'report-round'
 
-    player__element.innerHTML = `
-      <span class="report-damage">Dano: ${player.damage}</span>
-      <span class="report-life">Vida: ${player.life}</span>
+    unit_player__element.className = 'report-unit'
+    unit_player__element.innerHTML = `
+      <span class="report-name">${units.get(player.value).name}</span>
       <img class="report-image" src=${units.get(player.value).img} />
     `
-    computer__element.innerHTML = `
+
+    unit_computer__element.className = 'report-unit'
+    unit_computer__element.innerHTML = `
+      <span class="report-name">${units.get(computer.value).name}</span>
       <img class="report-image" src=${units.get(computer.value).img} />
-      <span class="report-life">Vida: ${computer.life}</span>
-      <span class="report-damage">Dano: ${computer.damage}</span>
     `
 
-    div__element.append(player__element, computer__element)
+    div__element.append(unit_player__element, unit_computer__element)
     
     return div__element
   })

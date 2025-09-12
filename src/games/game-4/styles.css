@@ -169,14 +169,11 @@
   filter: grayscale(1);
 }
 
-#game-4 .report-round {
-  display: flex;
-}
-
 #game-4 .report-titles {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  gap: var(--spacing-10);
 
   color: var(--color-neutral-100);
   font-size: var(--text-4xl);
@@ -184,10 +181,29 @@
 
 #game-4 .report-units {
   height: 50vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
   overflow-y: scroll;
 }
 
-#game-4 .report-round img {
+#game-4 .report-unit {
+  display: flex;
+  flex-direction: column;
+}
+
+#game-4 .report-round {
+  display: flex;
+  align-items: space-around;
+  gap: var(--spacing-10);
+}
+#game-4 .report-name {
+  background-color: var(--color-blue-500);
+  color: var(--color-neutral-100);
+  text-align: center;
+}
+
+#game-4 .report-unit img {
   width: 100px;
   border-bottom: 5px solid var(--color-green-500);
 }
