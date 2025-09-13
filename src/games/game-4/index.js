@@ -302,16 +302,19 @@ function handleShowReport() {
 
     div__element.className = 'report-round'
 
+    unit_player__element.dataset.life = player.life
     unit_player__element.className = 'report-unit'
     unit_player__element.innerHTML = `
-      <span class="report-name">${units.get(player.value).name}</span>
-      <img class="report-image" src=${units.get(player.value).img} />
+      <strong>${units.get(player.value).name}</strong>
+      <img src=${units.get(player.value).img} />
+      <div><span></span><span></span></div>
     `
-
+    unit_computer__element.dataset.life = computer.life
     unit_computer__element.className = 'report-unit'
     unit_computer__element.innerHTML = `
-      <span class="report-name">${units.get(computer.value).name}</span>
-      <img class="report-image" src=${units.get(computer.value).img} />
+      <strong>${units.get(computer.value).name}</strong>
+      <img src=${units.get(computer.value).img} />
+      <div><span></span><span></span></div>
     `
 
     div__element.append(unit_player__element, unit_computer__element)
@@ -400,7 +403,6 @@ async function combat(playerUnitId, computerUnitId) {
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
     newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
-
 
     battleRoundUnits.player.damage = strongDamage
     battleRoundUnits.computer.damage = weakDamage

@@ -172,8 +172,8 @@
 #game-4 .report-titles {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
   gap: var(--spacing-10);
+  justify-content: space-evenly;
 
   color: var(--color-neutral-100);
   font-size: var(--text-4xl);
@@ -182,9 +182,9 @@
 #game-4 .report-units {
   height: 50vh;
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-5);
   overflow-y: scroll;
+  gap: var(--spacing-5);
+  flex-direction: column;
 }
 
 #game-4 .report-unit {
@@ -194,26 +194,28 @@
 
 #game-4 .report-round {
   display: flex;
-  align-items: space-around;
   gap: var(--spacing-10);
+  align-items: space-around;
 }
-#game-4 .report-name {
+
+#game-4 .report-unit strong {
   background-color: var(--color-blue-500);
   color: var(--color-neutral-100);
   text-align: center;
+  padding-block: var(--spacing-1);
 }
 
 #game-4 .report-unit img {
-  width: 100px;
-  border-bottom: 5px solid var(--color-green-500);
+  width: 150px;
 }
+
 
 #game-4 .select-unit {
   display: flex;
-  gap: var(--spacing-1);
   cursor: pointer;
   width: fit-content;
   align-items: center;
+  gap: var(--spacing-1);
   flex-direction: column;
   border: 5px solid transparent;
   
@@ -236,6 +238,31 @@
   font-size: var(--text-base);
   font-weight: bold;
 }
+
+#game-4 .report-unit div {
+  display: flex;
+  height: var(--spacing-5);
+}
+
+#game-4 .report-unit div span:first-child {
+  background-color: var(--color-green-500);
+}
+
+#game-4 .report-unit div span:last-child {
+  background-color: var(--color-red-500);
+}
+
+.report-unit[data-life="0"] div span:first-child { width: 0% }
+.report-unit[data-life="1"] div span:first-child { width: 25% }
+.report-unit[data-life="2"] div span:first-child { width: 50% }
+.report-unit[data-life="3"] div span:first-child { width: 75% }
+.report-unit[data-life="4"] div span:first-child { width: 100% }
+
+.report-unit[data-life="0"] div span:last-child { width: 100% }
+.report-unit[data-life="1"] div span:last-child { width: 75% }
+.report-unit[data-life="2"] div span:last-child { width: 50% }
+.report-unit[data-life="3"] div span:last-child { width: 25% }
+.report-unit[data-life="4"] div span:last-child { width: 0% }
 
 #game-4 .selected-unit {
   display: flex;
