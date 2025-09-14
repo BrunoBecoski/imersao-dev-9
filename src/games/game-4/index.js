@@ -106,13 +106,13 @@ function handleAddUnit(unit) {
 
   if (slot_1__element.hasChildNodes() === false) {
     slot_1__element.dataset.unit = unit
-    slot_1__element.appendChild(createSelectedUnit(unit))
+    slot_1__element.appendChild(createSelectedUnit(unit, 1))
   } else if (slot_2__element.hasChildNodes() === false) {
     slot_2__element.dataset.unit = unit
-    slot_2__element.appendChild(createSelectedUnit(unit))
+    slot_2__element.appendChild(createSelectedUnit(unit, 2))
   } else if (slot_3__element.hasChildNodes() === false) {
     slot_3__element.dataset.unit = unit
-    slot_3__element.appendChild(createSelectedUnit(unit))
+    slot_3__element.appendChild(createSelectedUnit(unit, 3))
   }
 
   if (slot_1__element.hasChildNodes() && slot_2__element.hasChildNodes() && slot_3__element.hasChildNodes()) {
@@ -128,28 +128,34 @@ async function battleScreen() {
     player: [{ 
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: slots__elements[0].dataset.unit
+      unit: slots__elements[0].dataset.unit,
+      index: 1,
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
       unit: slots__elements[1].dataset.unit,
+      index: 2, 
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
       unit:slots__elements[2].dataset.unit,
+      index: 3,
     }],
     computer: [{
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+      index: 1,
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+      index: 2,
     }, {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
-      unit: Array.from(units)[Math.floor(Math.random() * 6)][0]
+      unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
+      index: 3,
     }],
   }
 
@@ -232,12 +238,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'draw'))),
+        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'draw'))),
+        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
       )
 
       break;
@@ -247,12 +253,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'won'))),
+        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'won', index))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'lose'))),
+        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
       )
 
       break;
@@ -262,12 +268,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Computador'
       top_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit }) => createResultUnit(unit, 'won'))),
+        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'won', index))),
       )
 
       bottom_title__element.innerText = 'Jogador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit }) => createResultUnit(unit, 'lose'))),
+        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
       )
 
     default:
@@ -308,10 +314,10 @@ function handleShowReport() {
       <strong>${units.get(player.value).name}</strong>
       <img src=${units.get(player.value).img} />
       <div><span></span><span></span></div>
-    `
-    unit_computer__element.dataset.life = computer.life
-    unit_computer__element.className = 'report-unit'
-    unit_computer__element.innerHTML = `
+      `
+      unit_computer__element.dataset.life = computer.life
+      unit_computer__element.className = 'report-unit'
+      unit_computer__element.innerHTML = `
       <strong>${units.get(computer.value).name}</strong>
       <img src=${units.get(computer.value).img} />
       <div><span></span><span></span></div>
@@ -438,11 +444,11 @@ function renderBattleUnits() {
   const computerUnits = battleUnits.computer
 
   player_units__element.append(
-    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
+    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit)))
   )
 
   computer_units__element.append(
-    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit.id, unit.life, unit.unit)))
+    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit)))
   )
 
   const battle_units__element = document.createElement('div')
@@ -612,12 +618,13 @@ function createButtonUnit(unit) {
   return button__element
 }
 
-function createSelectedUnit(unit) {
+function createSelectedUnit(unit, index) {
   const { name, img } = units.get(unit)
 
   const button__element = document.createElement('button')
   const img__element = document.createElement('img')
   const span__element = document.createElement('span')
+  const i__element = document.createElement('i')
 
   const id = new Date().getTime()
   
@@ -626,18 +633,21 @@ function createSelectedUnit(unit) {
   button__element.onclick = () => handleRemoveUnit(id)
   img__element.src = img
   span__element.innerText = name
+  i__element.innerText = index
 
-  button__element.append(img__element, span__element)
+  button__element.append(img__element, span__element, i__element)
 
   return button__element
 }
 
-function createBattleUnit(id, life, unit) {
+function createBattleUnit(battleUnit) {
+  const { id, life, unit, index } = battleUnit
   const { value, img } = units.get(unit)
 
   const battle_unit__element = document.createElement('div')
   const img__element = document.createElement('img')
   const life__element = document.createElement('div')
+  const i__element = document.createElement('i')
   
   life__element.id = 'life'
   life__element.className = 'unit-life'
@@ -646,25 +656,28 @@ function createBattleUnit(id, life, unit) {
   img__element.src = img
   battle_unit__element.dataset.life = life
   battle_unit__element.dataset.unit = value
+  i__element.innerText = index
   
   life__element.append(document.createElement('span'), document.createElement('span'))
-  battle_unit__element.append(life__element, img__element)
+  battle_unit__element.append(life__element, img__element, i__element)
 
   return battle_unit__element
 }
 
-function createResultUnit(unit, result) {
+function createResultUnit(unit, result, index) {
   const { name, img } = units.get(unit)
 
   const div__element = document.createElement('div')
   const span__element = document.createElement('span')
   const img__element = document.createElement('img')
+  const i__element = document.createElement('i')
   
   div__element.className = `result-unit ${result}`
   span__element.innerText = name
   img__element.src = img
+  i__element.innerText = index
 
-  div__element.append(img__element, span__element)
+  div__element.append(img__element, span__element, i__element)
 
   return div__element
 }
