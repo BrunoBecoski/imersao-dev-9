@@ -311,13 +311,15 @@ function handleShowReport() {
     unit_player__element.dataset.life = player.life
     unit_player__element.className = 'report-unit'
     unit_player__element.innerHTML = `
+      <i>${player.index}</i>
       <strong>${units.get(player.value).name}</strong>
       <img src=${units.get(player.value).img} />
       <div><span></span><span></span></div>
       `
-      unit_computer__element.dataset.life = computer.life
-      unit_computer__element.className = 'report-unit'
-      unit_computer__element.innerHTML = `
+    unit_computer__element.dataset.life = computer.life
+    unit_computer__element.className = 'report-unit'
+    unit_computer__element.innerHTML = `
+      <i>${computer.index}</i>
       <strong>${units.get(computer.value).name}</strong>
       <img src=${units.get(computer.value).img} />
       <div><span></span><span></span></div>
@@ -357,22 +359,22 @@ async function playCombat() {
     const computerUnitLife3 = battleUnits.computer[2].life
 
     if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
-      await combat(battleUnits.player[0].id, battleUnits.computer[0].id)
+      await combat(battleUnits.player[0], battleUnits.computer[0])
     } else
     if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
-      await combat(battleUnits.player[1].id, battleUnits.computer[1].id)
+      await combat(battleUnits.player[1], battleUnits.computer[1])
     } else
     if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
-      await combat(battleUnits.player[2].id, battleUnits.computer[2].id)
+      await combat(battleUnits.player[2], battleUnits.computer[2])
     } else {
       loop = false
     }
   } while (loop)
 }
 
-async function combat(playerUnitId, computerUnitId) {
-  const player_unit__element = document.getElementById(playerUnitId)
-  const computer_unit__element = document.getElementById(computerUnitId)
+async function combat(playerInfo, computerInfo) {
+  const player_unit__element = document.getElementById(playerInfo.id)
+  const computer_unit__element = document.getElementById(computerInfo.id)
 
   const playerUnit = units.get(player_unit__element.dataset.unit)
   const currentPlayerLife = Number(player_unit__element.dataset.life)
@@ -388,11 +390,13 @@ async function combat(playerUnitId, computerUnitId) {
       value: playerUnit.value,
       life: currentPlayerLife,
       damage: 0,
+      index: playerInfo.index,
     },
     computer: {
       value: computerUnit.value,
       life: currentComputerLife,
       damage: 0,
+      index: computerInfo.index,
     }
   }
 
@@ -425,8 +429,8 @@ async function combat(playerUnitId, computerUnitId) {
     computer_unit__element, currentComputerLife, newComputerLife,
   )
 
-  battleUnits.player.find((unit) => unit.id === playerUnitId).life = newPlayerLife
-  battleUnits.computer.find((unit) => unit.id === computerUnitId).life = newComputerLife
+  battleUnits.player.find((unit) => unit.id === playerInfo.id).life = newPlayerLife
+  battleUnits.computer.find((unit) => unit.id === computerInfo.id).life = newComputerLife
 
   battlesRounds.push(battleRoundUnits)
 

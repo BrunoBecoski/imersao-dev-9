@@ -213,6 +213,13 @@
   align-items: space-around;
 }
 
+#game-4 .report-unit  i {
+  color: var(--color-neutral-100);
+  font-size: var(--text-2xl);
+  text-align: center;
+  font-weight: bold;
+}
+
 #game-4 .report-unit strong {
   background-color: var(--color-blue-500);
   color: var(--color-neutral-100);
@@ -223,7 +230,6 @@
 #game-4 .report-unit img {
   width: 150px;
 }
-
 
 #game-4 .select-unit {
   display: flex;
