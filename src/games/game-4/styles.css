@@ -214,6 +214,11 @@
   gap: var(--spacing-2);
 }
 
+#game-4 .report-unit {
+  color: var(--color-neutral-100);
+  font-size: var(--text-2xl);
+}
+
 #game-4 .report-unit-live {
   display: flex;
   flex-direction: column;

@@ -301,7 +301,9 @@ function renderResult() {
 }
 
 function handleShowReport() {
-  const rounds__element = battlesRounds.map(({ player, computer }) => {
+  const rounds__element = document.createElement('div')
+  
+  battlesRounds.map(({ player, computer }) => {
     const div__element = document.createElement('div')
     const unit_player__element = document.createElement('div')
     const unit_computer__element = document.createElement('div')
@@ -311,6 +313,8 @@ function handleShowReport() {
     unit_player__element.dataset.life = player.life
     unit_player__element.className = 'report-unit'
     unit_player__element.innerHTML = `
+      <h3>Rodada: ${player.round}</h3>
+
       <div class="report-unit-live">
         <i>${player.index}</i>
         <strong>${units.get(player.value).name}</strong>
@@ -352,11 +356,13 @@ function handleShowReport() {
         <img src=${units.get(computer.value).img} />
         <div><span></span><span></span></div>
       </div>
+
+      <h3>Rodada: ${computer.round}</h3>
     `
         
     div__element.append(unit_player__element, unit_computer__element)
     
-    return div__element
+    rounds__element.appendChild(div__element)
   })
 
   const title__element = document.getElementById('title')
@@ -364,7 +370,7 @@ function handleShowReport() {
 
   const units_report__element = document.createElement('div')
   units_report__element.className = 'report-units'
-  units_report__element.append(...Array.from(rounds__element))
+  units_report__element.appendChild(rounds__element)
 
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
@@ -377,8 +383,10 @@ function handleShowReport() {
 
 async function playCombat() {
   let loop = true
-  
+  let round = 0
+
   do {
+    round++
     const playerUnitLife1 = battleUnits.player[0].life
     const playerUnitLife2 = battleUnits.player[1].life
     const playerUnitLife3 = battleUnits.player[2].life
@@ -388,20 +396,20 @@ async function playCombat() {
     const computerUnitLife3 = battleUnits.computer[2].life
 
     if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
-      await combat(battleUnits.player[0], battleUnits.computer[0])
+      await combat(battleUnits.player[0], battleUnits.computer[0], round)
     } else
     if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
-      await combat(battleUnits.player[1], battleUnits.computer[1])
+      await combat(battleUnits.player[1], battleUnits.computer[1], round)
     } else
     if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
-      await combat(battleUnits.player[2], battleUnits.computer[2])
+      await combat(battleUnits.player[2], battleUnits.computer[2], round)
     } else {
       loop = false
     }
   } while (loop)
 }
  
-async function combat(playerInfo, computerInfo) {
+async function combat(playerInfo, computerInfo, round) {
   const player_unit__element = document.getElementById(playerInfo.id)
   const computer_unit__element = document.getElementById(computerInfo.id)
 
@@ -416,12 +424,16 @@ async function combat(playerInfo, computerInfo) {
 
   let battleRoundUnits = {
     player: {
+      round,
+      id: playerUnit.id,
       value: playerUnit.value,
       life: currentPlayerLife,
       damage: 0,
       index: playerInfo.index,
     },
     computer: {
+      round,
+      id: computerInfo.id,
       value: computerUnit.value,
       life: currentComputerLife,
       damage: 0,
