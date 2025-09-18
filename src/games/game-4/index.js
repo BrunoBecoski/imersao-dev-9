@@ -14,8 +14,10 @@ const weakDamage = 1
 const strongDamage = 2
 
 let resultValue = ''
-let battleUnits = {}
 let battlesRounds = []
+
+const [playerUnits, setPlayerUnits] = createState('teste')
+const [computerUnits, setComputerUnits] = createState([])
 
 export function createGame4() {
   const section__element = document.createElement('section')
@@ -38,8 +40,10 @@ export function createGame4() {
 
 function selectionScreen() {
   resultValue = ''
-  battleUnits = {}
   battlesRounds = []
+
+  setPlayerUnits([])
+  setComputerUnits([])
 
   const archers__element = document.createElement('div')
   archers__element.className = 'archers'
@@ -124,8 +128,8 @@ function handleAddUnit(unit) {
 async function battleScreen() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
-  battleUnits = {
-    player: [{ 
+  setPlayerUnits([
+    { 
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
       unit: slots__elements[0].dataset.unit,
@@ -140,8 +144,11 @@ async function battleScreen() {
       life: initialLife,
       unit:slots__elements[2].dataset.unit,
       index: 3,
-    }],
-    computer: [{
+    }
+  ])
+
+  setComputerUnits([
+    {
       id: Math.floor(Math.random() * new Date().getTime()),
       life: initialLife,
       unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
@@ -156,8 +163,8 @@ async function battleScreen() {
       life: initialLife,
       unit: Array.from(units)[Math.floor(Math.random() * 6)][0],
       index: 3,
-    }],
-  }
+    }
+  ])
 
   const battle_units__element = renderBattleUnits()
 
@@ -173,12 +180,12 @@ async function battleScreen() {
   do {
     const initialValue = 0
 
-    const playerLife = battleUnits.player.reduce(
+    const playerLife = playerUnits().reduce(
       (accumulator, unit) => accumulator + unit.life,
       initialValue,
     )
 
-    const computerLife = battleUnits.computer.reduce(
+    const computerLife = computerUnits().reduce(
       (accumulator, unit) => accumulator + unit.life,
       initialValue,
     )
@@ -196,8 +203,8 @@ async function battleScreen() {
 
       loop = false
     } else {
-      battleUnits.player.sort((a, b) => b.life - a.life)
-      battleUnits.computer.sort((a, b) => b.life - a.life)
+      playerUnits().sort((a, b) => b.life - a.life)
+      computerUnits().sort((a, b) => b.life - a.life)
       
       const battle_units__element = renderBattleUnits()
       main__element.innerHTML = ''
@@ -238,12 +245,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
+        ...Array.from(computerUnits().computer.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
       )
 
       break;
@@ -253,12 +260,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'won', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'won', index))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
       )
 
       break;
@@ -268,12 +275,12 @@ function renderResult() {
 
       top_title__element.innerText = 'Computador'
       top_units__element.append(
-        ...Array.from(battleUnits.computer.map(({ unit, index }) => createResultUnit(unit, 'won', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'won', index))),
       )
 
       bottom_title__element.innerText = 'Jogador'
       bottom_units__element.append(
-        ...Array.from(battleUnits.player.map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
       )
 
     default:
@@ -387,22 +394,22 @@ async function playCombat() {
 
   do {
     round++
-    const playerUnitLife1 = battleUnits.player[0].life
-    const playerUnitLife2 = battleUnits.player[1].life
-    const playerUnitLife3 = battleUnits.player[2].life
+    const playerUnitLife1 = playerUnits()[0].life
+    const playerUnitLife2 = playerUnits()[1].life
+    const playerUnitLife3 = playerUnits()[2].life
     
-    const computerUnitLife1 = battleUnits.computer[0].life
-    const computerUnitLife2 = battleUnits.computer[1].life
-    const computerUnitLife3 = battleUnits.computer[2].life
+    const computerUnitLife1 = computerUnits()[0].life
+    const computerUnitLife2 = computerUnits()[1].life
+    const computerUnitLife3 = computerUnits()[2].life
 
     if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
-      await combat(battleUnits.player[0], battleUnits.computer[0], round)
+      await combat(playerUnits()[0], computerUnits()[0], round)
     } else
     if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
-      await combat(battleUnits.player[1], battleUnits.computer[1], round)
+      await combat(playerUnits()[1], computerUnits()[1], round)
     } else
     if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
-      await combat(battleUnits.player[2], battleUnits.computer[2], round)
+      await combat(playerUnits()[2], computerUnits()[2], round)
     } else {
       loop = false
     }
@@ -470,8 +477,8 @@ async function combat(playerInfo, computerInfo, round) {
     computer_unit__element, currentComputerLife, newComputerLife,
   )
 
-  battleUnits.player.find((unit) => unit.id === playerInfo.id).life = newPlayerLife
-  battleUnits.computer.find((unit) => unit.id === computerInfo.id).life = newComputerLife
+  playerUnits().find((unit) => unit.id === playerInfo.id).life = newPlayerLife
+  computerUnits().find((unit) => unit.id === computerInfo.id).life = newComputerLife
 
   battlesRounds.push(battleRoundUnits)
 
@@ -485,15 +492,12 @@ function renderBattleUnits() {
   player_units__element.className = 'player-units'
   computer_units__element.className = 'computer-units'
 
-  const playerUnits = battleUnits.player
-  const computerUnits = battleUnits.computer
-
   player_units__element.append(
-    ...Array.from(playerUnits.map((unit) => createBattleUnit(unit)))
+    ...Array.from(playerUnits().map((unit) => createBattleUnit(unit)))
   )
 
   computer_units__element.append(
-    ...Array.from(computerUnits.map((unit) => createBattleUnit(unit)))
+    ...Array.from(computerUnits().map((unit) => createBattleUnit(unit)))
   )
 
   const battle_units__element = document.createElement('div')
@@ -729,6 +733,20 @@ function createResultUnit(unit, result, index) {
 
 function calcPercent(value) {
   return Math.floor(Math.min(100, Math.max(0, ((100 * value) / initialLife))))
+}
+
+function createState(initialValue) {
+  let value = initialValue
+
+  function get() {
+    return value
+  }
+
+  function set(newValue) {  
+    value = newValue
+  }
+
+  return [get, set]
 }
 
 const units = new Map([
