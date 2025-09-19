@@ -13,11 +13,10 @@ const initialLife = 4
 const weakDamage = 1
 const strongDamage = 2
 
-let resultValue = ''
-let battlesRounds = []
-
-const [playerUnits, setPlayerUnits] = createState('teste')
+const [playerUnits, setPlayerUnits] = createState([])
 const [computerUnits, setComputerUnits] = createState([])
+const [battlesRounds, setBattlesRounds] = createState([])
+const [resultValue, setResultValue] = createState('')
 
 export function createGame4() {
   const section__element = document.createElement('section')
@@ -39,9 +38,8 @@ export function createGame4() {
 }
 
 function selectionScreen() {
-  resultValue = ''
-  battlesRounds = []
-
+  setResultValue('')
+  setBattlesRounds([])
   setPlayerUnits([])
   setComputerUnits([])
 
@@ -191,15 +189,15 @@ async function battleScreen() {
     )
 
     if (playerLife === 0 && computerLife === 0) {
-      resultValue = 'draw'
+      setResultValue('draw')
 
       loop = false
     } else if (playerLife >= 1 && computerLife === 0) {
-      resultValue = 'won'
+      setResultValue('won')
 
       loop = false
     } else if (computerLife >= 1 && playerLife === 0) {
-      resultValue = 'lose'
+      setResultValue('lose')
 
       loop = false
     } else {
@@ -239,7 +237,7 @@ function renderResult() {
     bottom_units__element
   )
 
-  switch (resultValue) {
+  switch (resultValue()) {
     case 'draw':
       result_title__element.innerText = 'EMPATE',
 
@@ -310,7 +308,7 @@ function renderResult() {
 function handleShowReport() {
   const rounds__element = document.createElement('div')
   
-  battlesRounds.map(({ player, computer }) => {
+  battlesRounds().map(({ player, computer }) => {
     const div__element = document.createElement('div')
     const unit_player__element = document.createElement('div')
     const unit_computer__element = document.createElement('div')
@@ -480,7 +478,7 @@ async function combat(playerInfo, computerInfo, round) {
   playerUnits().find((unit) => unit.id === playerInfo.id).life = newPlayerLife
   computerUnits().find((unit) => unit.id === computerInfo.id).life = newComputerLife
 
-  battlesRounds.push(battleRoundUnits)
+  setBattlesRounds([...battlesRounds(), battleRoundUnits])
 
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
