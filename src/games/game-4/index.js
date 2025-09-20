@@ -9,7 +9,7 @@ import camelIconImg from '../../assets/game-4/camel_icon.png'
 
 import './styles.css'
 
-const initialLife = 4
+const initialLife = 2
 const weakDamage = 1
 const strongDamage = 2
 
@@ -32,12 +32,12 @@ export function createGame4() {
   `
 
   const main__element =  section__element.querySelector('#main')
-  main__element.appendChild(createButton({ text: 'Começar', handleClick: selectionScreen }))
+  main__element.appendChild(createButton({ text: 'Começar', handleClick: renderSelectionScreen }))
 
   return section__element
 }
 
-function selectionScreen() {
+function renderSelectionScreen() {
   setResultValue('')
   setBattlesRounds([])
   setPlayerUnits([])
@@ -83,7 +83,7 @@ function selectionScreen() {
   const selected_units__element = document.createElement('div')
   selected_units__element.id = 'selected-units'
 
-  const start_battle__element = createButton({ text: 'Batalhar', handleClick: battleScreen })
+  const start_battle__element = createButton({ text: 'Batalhar', handleClick: renderBattleScreen })
   start_battle__element.disabled = true
   start_battle__element.id = 'start-battle-button'
 
@@ -123,7 +123,7 @@ function handleAddUnit(unit) {
   }  
 }
 
-async function battleScreen() {
+async function renderBattleScreen() {
   const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
 
   setPlayerUnits([
@@ -212,10 +212,10 @@ async function battleScreen() {
     }
   } while (loop)
 
-  renderResult()
+  renderResultScreen()
 }
 
-function renderResult() {
+function renderResultScreen() {
   const result_title__element = document.createElement('h1')
   result_title__element.className = 'result-title'
 
@@ -248,7 +248,7 @@ function renderResult() {
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(computerUnits().computer.map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
       )
 
       break;
@@ -291,8 +291,8 @@ function renderResult() {
   const buttons__element = document.createElement('div')
   buttons__element.className = 'result-buttons'
   buttons__element.append(
-    createButton({ text: 'Ver relatório', handleClick: handleShowReport }),
-    createButton({ text: 'Jogar novamente', handleClick: selectionScreen })
+    createButton({ text: 'Ver relatório', handleClick: renderReportScreen }),
+    createButton({ text: 'Jogar novamente', handleClick: renderSelectionScreen })
   )
 
   const main__element = document.getElementById('main')
@@ -305,7 +305,7 @@ function renderResult() {
   )
 }
 
-function handleShowReport() {
+function renderReportScreen() {
   const rounds__element = document.createElement('div')
   
   battlesRounds().map(({ player, computer }) => {
@@ -318,8 +318,6 @@ function handleShowReport() {
     unit_player__element.dataset.life = player.life
     unit_player__element.className = 'report-unit'
     unit_player__element.innerHTML = `
-      <h3>Rodada: ${player.round}</h3>
-
       <div class="report-unit-live">
         <i>${player.index}</i>
         <strong>${units.get(player.value).name}</strong>
@@ -361,8 +359,6 @@ function handleShowReport() {
         <img src=${units.get(computer.value).img} />
         <div><span></span><span></span></div>
       </div>
-
-      <h3>Rodada: ${computer.round}</h3>
     `
         
     div__element.append(unit_player__element, unit_computer__element)
@@ -383,15 +379,13 @@ function handleShowReport() {
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResult }), titles__element, units_report__element)
+  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResultScreen }), titles__element, units_report__element)
 }
 
 async function playCombat() {
   let loop = true
-  let round = 0
 
   do {
-    round++
     const playerUnitLife1 = playerUnits()[0].life
     const playerUnitLife2 = playerUnits()[1].life
     const playerUnitLife3 = playerUnits()[2].life
@@ -401,20 +395,20 @@ async function playCombat() {
     const computerUnitLife3 = computerUnits()[2].life
 
     if (playerUnitLife1 >= 1 && computerUnitLife1 >= 1) {
-      await combat(playerUnits()[0], computerUnits()[0], round)
+      await combat(playerUnits()[0], computerUnits()[0])
     } else
     if (playerUnitLife2 >= 1 && computerUnitLife2 >= 1) {
-      await combat(playerUnits()[1], computerUnits()[1], round)
+      await combat(playerUnits()[1], computerUnits()[1])
     } else
     if (playerUnitLife3 >= 1 && computerUnitLife3 >= 1) {
-      await combat(playerUnits()[2], computerUnits()[2], round)
+      await combat(playerUnits()[2], computerUnits()[2])
     } else {
       loop = false
     }
   } while (loop)
 }
  
-async function combat(playerInfo, computerInfo, round) {
+async function combat(playerInfo, computerInfo) {
   const player_unit__element = document.getElementById(playerInfo.id)
   const computer_unit__element = document.getElementById(computerInfo.id)
 
@@ -429,7 +423,6 @@ async function combat(playerInfo, computerInfo, round) {
 
   let battleRoundUnits = {
     player: {
-      round,
       id: playerUnit.id,
       value: playerUnit.value,
       life: currentPlayerLife,
@@ -437,7 +430,6 @@ async function combat(playerInfo, computerInfo, round) {
       index: playerInfo.index,
     },
     computer: {
-      round,
       id: computerInfo.id,
       value: computerUnit.value,
       life: currentComputerLife,

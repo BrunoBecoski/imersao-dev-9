@@ -84,16 +84,12 @@
 }
 
 .battle-unit[data-life="0"] .unit-life span:first-child { width: 0% }
-.battle-unit[data-life="1"] .unit-life span:first-child { width: 25% }
-.battle-unit[data-life="2"] .unit-life span:first-child { width: 50% }
-.battle-unit[data-life="3"] .unit-life span:first-child { width: 75% }
-.battle-unit[data-life="4"] .unit-life span:first-child { width: 100% }
+.battle-unit[data-life="1"] .unit-life span:first-child { width: 50% }
+.battle-unit[data-life="2"] .unit-life span:first-child { width: 100% }
 
 .battle-unit[data-life="0"] .unit-life span:last-child { width: 100% }
-.battle-unit[data-life="1"] .unit-life span:last-child { width: 75% }
-.battle-unit[data-life="2"] .unit-life span:last-child { width: 50% }
-.battle-unit[data-life="3"] .unit-life span:last-child { width: 25% }
-.battle-unit[data-life="4"] .unit-life span:last-child { width: 0% }
+.battle-unit[data-life="1"] .unit-life span:last-child { width: 50% }
+.battle-unit[data-life="2"] .unit-life span:last-child { width: 0% }
 
 #game-4 #selected-units {
   display: flex;
@@ -214,11 +210,6 @@
   gap: var(--spacing-2);
 }
 
-#game-4 .report-unit {
-  color: var(--color-neutral-100);
-  font-size: var(--text-2xl);
-}
-
 #game-4 .report-unit-live {
   display: flex;
   flex-direction: column;
@@ -258,16 +249,12 @@
 }
 
 .report-unit[data-life="0"] .report-unit-live span:first-child { width: 0% }
-.report-unit[data-life="1"] .report-unit-live span:first-child { width: 25% }
-.report-unit[data-life="2"] .report-unit-live span:first-child { width: 50% }
-.report-unit[data-life="3"] .report-unit-live span:first-child { width: 75% }
-.report-unit[data-life="4"] .report-unit-live span:first-child { width: 100% }
+.report-unit[data-life="1"] .report-unit-live span:first-child { width: 50% }
+.report-unit[data-life="2"] .report-unit-live span:first-child { width: 100% }
 
 .report-unit[data-life="0"] .report-unit-live span:last-child { width: 100% }
-.report-unit[data-life="1"] .report-unit-live span:last-child { width: 75% }
-.report-unit[data-life="2"] .report-unit-live span:last-child { width: 50% }
-.report-unit[data-life="3"] .report-unit-live span:last-child { width: 25% }
-.report-unit[data-life="4"] .report-unit-live span:last-child { width: 0% }
+.report-unit[data-life="1"] .report-unit-live span:last-child { width: 50% }
+.report-unit[data-life="0"] .report-unit-live span:last-child { width: 0% }
 
 #game-4 .report-unit-damage {
   height: 100%;
@@ -279,7 +266,7 @@
   font-size: var(--text-2xl);
 }
 
-#game-4 .report-unit-damage div{
+#game-4 .report-unit-damage div {
   display: flex;
   align-items: center;
   flex-direction: column;
