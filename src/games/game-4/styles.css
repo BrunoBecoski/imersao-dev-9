@@ -206,24 +206,18 @@
 
 #game-4 .report-unit {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-#game-4 .report-unit-live {
-  display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-#game-4 .report-unit-live  i {
+#game-4 .report-unit i {
   color: var(--color-neutral-100);
   font-size: var(--text-2xl);
   text-align: center;
   font-weight: bold;
 }
 
-#game-4 .report-unit-live strong {
+#game-4 .report-unit strong {
   padding-block: var(--spacing-1);
 
   background-color: var(--color-blue-500);
@@ -231,46 +225,30 @@
   text-align: center;
 }
 
-#game-4 .report-unit-live img {
+#game-4 .report-unit img {
   width: 150px;
 }
 
-#game-4 .report-unit-live div {
+#game-4 .report-unit div {
   display: flex;
   height: var(--spacing-5);
 }
 
-#game-4 .report-unit-live span:first-child {
+#game-4 .report-unit div span:first-child {
   background-color: var(--color-green-500);
 }
 
-#game-4 .report-unit-live span:last-child {
+#game-4 .report-unit div span:last-child {
   background-color: var(--color-red-500);
 }
 
-.report-unit[data-life="0"] .report-unit-live span:first-child { width: 0% }
-.report-unit[data-life="1"] .report-unit-live span:first-child { width: 50% }
-.report-unit[data-life="2"] .report-unit-live span:first-child { width: 100% }
+.report-unit[data-life="0"] div span:first-child { width: 0% }
+.report-unit[data-life="1"] div span:first-child { width: 50% }
+.report-unit[data-life="2"] div span:first-child { width: 100% }
 
-.report-unit[data-life="0"] .report-unit-live span:last-child { width: 100% }
-.report-unit[data-life="1"] .report-unit-live span:last-child { width: 50% }
-.report-unit[data-life="0"] .report-unit-live span:last-child { width: 0% }
-
-#game-4 .report-unit-damage {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-  color: var(--color-neutral-100);
-  font-size: var(--text-2xl);
-}
-
-#game-4 .report-unit-damage div {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
+.report-unit[data-life="0"] div span:last-child { width: 100% }
+.report-unit[data-life="1"] div span:last-child { width: 50% }
+.report-unit[data-life="0"] div span:last-child { width: 0% }
 
 #game-4 .select-unit {
   display: flex;

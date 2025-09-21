@@ -318,47 +318,19 @@ function renderReportScreen() {
     unit_player__element.dataset.life = player.life
     unit_player__element.className = 'report-unit'
     unit_player__element.innerHTML = `
-      <div class="report-unit-live">
-        <i>${player.index}</i>
-        <strong>${units.get(player.value).name}</strong>
-        <img src=${units.get(player.value).img} />
-        <div><span></span><span></span></div>
-      </div>
-
-      <div class="report-unit-damage">
-        <div>
-          <strong>Dano</strong>
-          <strong>${player.damage}</strong>
-        </div>
-
-        <div>
-          <strong>Vida</strong>
-          <strong>${player.life}</strong>
-        </div>
-      </div>
+      <i>${player.index}</i>
+      <strong>${units.get(player.value).name}</strong>
+      <img src=${units.get(player.value).img} />
+      <div><span></span><span></span></div>
     `
 
     unit_computer__element.dataset.life = computer.life
     unit_computer__element.className = 'report-unit'
     unit_computer__element.innerHTML = `
-      <div class="report-unit-damage">
-        <div>
-          <strong>Dano</strong>
-          <strong>${computer.damage}</strong>
-        </div>
-
-        <div>
-          <strong>Vida</strong>
-          <strong>${computer.life}</strong>
-        </div>
-      </div>
-
-      <div class="report-unit-live">
-        <i>${computer.index}</i>
-        <strong>${units.get(computer.value).name}</strong>
-        <img src=${units.get(computer.value).img} />
-        <div><span></span><span></span></div>
-      </div>
+      <i>${computer.index}</i>
+      <strong>${units.get(computer.value).name}</strong>
+      <img src=${units.get(computer.value).img} />
+      <div><span></span><span></span></div>
     `
         
     div__element.append(unit_player__element, unit_computer__element)
