@@ -96,14 +96,6 @@
   gap: var(--spacing-8);
 }
 
-#game-4 .select-unit.strong {
-  border-color: var(--color-green-500);
-}
-
-#game-4 .select-unit.weak {
-  border-color: var(--color-red-500);
-}
-
 #game-4 #selected-units div {
   width: 100px;
   height: 100px;
@@ -250,71 +242,23 @@
 .report-unit[data-life="1"] div span:last-child { width: 50% }
 .report-unit[data-life="0"] div span:last-child { width: 0% }
 
-#game-4 .select-unit {
+#game-4 .unit {
   display: flex;
-  cursor: pointer;
-  width: fit-content;
-  align-items: center;
-  gap: var(--spacing-1);
   flex-direction: column;
-  border: 5px solid transparent;
+  padding: var(--spacing-2);
   
   background-color: var(--color-blue-500);
-  
-  transition: all .5s;
-}
-
-#game-4 .select-unit img {
-  width: 150px;
-  height: 150px;
-}
-
-#game-4 .select-unit:hover {
-  border-color: var(--color-yellow-500);
-}
-
-#game-4 .select-unit span {
   color: var(--color-neutral-100);
-  font-size: var(--text-base);
-  font-weight: bold;
+
+  transition: background-color .5s;
 }
 
-#game-4 .selected-unit {
-  display: flex;
-  width: fit-content;
-  align-items: center;
-  flex-direction: column;
-  border: 5px solid transparent;
-  
-  background-color: var(--color-green-500);
-  cursor: pointer;
-
-  width: 100px;
-  height: 100px;
-
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  bottom: -5px;
-  right: -5px;
+#game-4 .unit .unit-name {
+  margin-top: var(--spacing-2);
 }
 
-#game-4 .selected-unit i {
-  color: var(--color-neutral-100);
-  font-size: var(--text-2xl);
-  font-weight: bold;
-}
-
-#game-4 .selected-unit:hover {
-  background-color: var(--color-red-500);
-}
-
-#game-4 .selected-unit img {
-  height: 80px;
-}
-
-#game-4 .selected-unit span {
+#game-4 .unit.hover:hover {
+  background-color: var(--color-yellow-500);
   color: var(--color-neutral-900);
-  font-size: var(--text-sm);
-  font-weight: bold;
+  cursor: pointer;
 }

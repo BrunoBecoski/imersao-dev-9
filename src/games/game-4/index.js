@@ -49,8 +49,8 @@ function renderSelectionScreen() {
   archer_title__element.innerText = 'Arqueiros'
   archers__element.append(
     archer_title__element,
-    createButtonUnit('arbalester'),
-    createButtonUnit('skirmisher'),
+    createUnit({ type: 'select', value: 'arbalester' }),
+    createUnit({ type: 'select', value: 'skirmisher' }),
   )
 
   const infantries__element = document.createElement('div')
@@ -59,8 +59,8 @@ function renderSelectionScreen() {
   infantries_title__element.innerText = 'Infantarias'
   infantries__element.append(
     infantries_title__element,
-    createButtonUnit('halberdier'),
-    createButtonUnit('champion'),
+    createUnit({ type: 'select', value: 'halberdier' }),
+    createUnit({ type: 'select', value: 'champion' }),
   )
 
   const cavalries__element = document.createElement('div')
@@ -69,8 +69,8 @@ function renderSelectionScreen() {
   cavalries_title__element.innerText = 'Cavalarias'
   cavalries__element.append(
     cavalries_title__element,
-    createButtonUnit('paladin'),
-    createButtonUnit('camel'),
+    createUnit({ type: 'select', value: 'paladin' }),
+    createUnit({ type: 'select', value: 'camel' }),
   )
 
   const units__element = document.createElement('div')
@@ -97,30 +97,6 @@ function renderSelectionScreen() {
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(selected_units__element, units__element)
-}
-
-function handleAddUnit(unit) {
-  const selected_units__element = document.getElementById('selected-units')
-
-  const slot_1__element = selected_units__element.querySelectorAll('div')[0]
-  const slot_2__element = selected_units__element.querySelectorAll('div')[1]
-  const slot_3__element = selected_units__element.querySelectorAll('div')[2]
-
-  if (slot_1__element.hasChildNodes() === false) {
-    slot_1__element.dataset.unit = unit
-    slot_1__element.appendChild(createSelectedUnit(unit, 1))
-  } else if (slot_2__element.hasChildNodes() === false) {
-    slot_2__element.dataset.unit = unit
-    slot_2__element.appendChild(createSelectedUnit(unit, 2))
-  } else if (slot_3__element.hasChildNodes() === false) {
-    slot_3__element.dataset.unit = unit
-    slot_3__element.appendChild(createSelectedUnit(unit, 3))
-  }
-
-  if (slot_1__element.hasChildNodes() && slot_2__element.hasChildNodes() && slot_3__element.hasChildNodes()) {
-    const start_battle__element = document.getElementById('start-battle-button')
-    start_battle__element.disabled = false
-  }  
 }
 
 async function renderBattleScreen() {
@@ -472,6 +448,30 @@ function renderBattleUnits() {
   return battle_units__element
 }
 
+function handleAddUnit(unit) {
+  const selected_units__element = document.getElementById('selected-units')
+
+  const slot_1__element = selected_units__element.querySelectorAll('div')[0]
+  const slot_2__element = selected_units__element.querySelectorAll('div')[1]
+  const slot_3__element = selected_units__element.querySelectorAll('div')[2]
+
+  if (slot_1__element.hasChildNodes() === false) {
+    slot_1__element.dataset.unit = unit
+    slot_1__element.appendChild(createUnit({ type: 'selected', value: unit, index: 1 }))
+  } else if (slot_2__element.hasChildNodes() === false) {
+    slot_2__element.dataset.unit = unit
+    slot_2__element.appendChild(createUnit({ type: 'selected', value: unit, index: 2 }))
+  } else if (slot_3__element.hasChildNodes() === false) {
+    slot_3__element.dataset.unit = unit
+    slot_3__element.appendChild(createUnit({ type: 'selected', value: unit, index: 3 }))
+  }
+
+  if (slot_1__element.hasChildNodes() && slot_2__element.hasChildNodes() && slot_3__element.hasChildNodes()) {
+    const start_battle__element = document.getElementById('start-battle-button')
+    start_battle__element.disabled = false
+  }  
+}
+
 function handleRemoveUnit(id) {
   document.getElementById(id).remove()
 
@@ -594,63 +594,6 @@ async function unitAnimation(
   ])
 }
 
-function handleMouseOver(value) {
-  const { strong, weak } = units.get(value)
-
-  strong.forEach(unit => document.getElementById(unit).classList.add('strong'))
-  weak.forEach(unit => document.getElementById(unit).classList.add('weak'))
-}
-
-function handleMouseOut(value) {
-  const { strong, weak } = units.get(value)
-
-  strong.forEach(unit => document.getElementById(unit).classList.remove('strong'))
-  weak.forEach(unit => document.getElementById(unit).classList.remove('weak'))
-}
-
-function createButtonUnit(unit) {
-  const { value, img, name } = units.get(unit)
-
-  const button__element = document.createElement('button')
-  const img__element = document.createElement('img')
-  const span__element = document.createElement('span')
-  
-  button__element.id = value
-  button__element.className = 'select-unit'
-  button__element.onclick = () => handleAddUnit(unit)
-  img__element.src = img
-  span__element.innerText = name
-
-  button__element.addEventListener('mouseover', () => handleMouseOver(value))
-  button__element.addEventListener('mouseout', () => handleMouseOut(value))
-
-  button__element.append(img__element, span__element)
-
-  return button__element
-}
-
-function createSelectedUnit(unit, index) {
-  const { name, img } = units.get(unit)
-
-  const button__element = document.createElement('button')
-  const img__element = document.createElement('img')
-  const span__element = document.createElement('span')
-  const i__element = document.createElement('i')
-
-  const id = new Date().getTime()
-  
-  button__element.id = new Date().getTime()
-  button__element.className = 'selected-unit'
-  button__element.onclick = () => handleRemoveUnit(id)
-  img__element.src = img
-  span__element.innerText = name
-  i__element.innerText = index
-
-  button__element.append(img__element, span__element, i__element)
-
-  return button__element
-}
-
 function createBattleUnit(battleUnit) {
   const { id, life, unit, index } = battleUnit
   const { value, img } = units.get(unit)
@@ -690,6 +633,49 @@ function createResultUnit(unit, result, index) {
 
   div__element.append(img__element, span__element, i__element)
 
+  return div__element
+}
+
+function createUnit(props) {
+  const { type, value, index } = props
+
+  const { name, img } = units.get(value)
+
+  const id = Math.round(Math.random() * new Date())
+
+  const div__element = document.createElement('div')
+  const img__element = document.createElement('img')
+  const strong__element = document.createElement('strong')
+  const i__element = document.createElement('i')
+  
+  div__element.id = id
+
+  div__element.className = 'unit'
+  img__element.className = 'unit-image'
+  i__element.className = 'unit-index'
+  strong__element.className = 'unit-name'
+  
+  img__element.src = img
+  strong__element.innerText = name
+
+  switch (type) {
+    case 'select':
+      div__element.classList.add('hover')
+      div__element.onclick = () => handleAddUnit(value)
+      break;
+      
+    case 'selected':
+      i__element.innerText = index
+      div__element.classList.add('hover')
+      div__element.onclick = () => handleRemoveUnit(id)
+
+      break;
+  
+    default:
+      break;
+  }
+  
+  div__element.append(img__element, strong__element, i__element)
   return div__element
 }
 
