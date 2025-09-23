@@ -451,9 +451,9 @@ function renderBattleUnits() {
 function handleAddUnit(unit) {
   const selected_units__element = document.getElementById('selected-units')
 
-  const slot_1__element = selected_units__element.querySelectorAll('div')[0]
-  const slot_2__element = selected_units__element.querySelectorAll('div')[1]
-  const slot_3__element = selected_units__element.querySelectorAll('div')[2]
+  const slot_1__element = selected_units__element.querySelectorAll(':scope > div')[0]
+  const slot_2__element = selected_units__element.querySelectorAll(':scope > div')[1]
+  const slot_3__element = selected_units__element.querySelectorAll(':scope > div')[2]
 
   if (slot_1__element.hasChildNodes() === false) {
     slot_1__element.dataset.unit = unit
@@ -668,13 +668,12 @@ function createUnit(props) {
       i__element.innerText = index
       div__element.classList.add('hover')
       div__element.onclick = () => handleRemoveUnit(id)
-
       break;
   
     default:
       break;
   }
-  
+
   div__element.append(img__element, strong__element, i__element)
   return div__element
 }
