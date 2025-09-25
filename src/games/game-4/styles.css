@@ -14,6 +14,21 @@
   gap: var(--spacing-10);
 }
 
+#game-4 #selected-units {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+#game-4 #selected-units > div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+#game-4 #selected-units > div:not(:has(div)) {
+  border: 5px solid var(--color-neutral-100);
+}
+
 #game-4 .units {
   display: flex;
   flex-wrap: wrap;
@@ -91,18 +106,6 @@
 .battle-unit[data-life="1"] .unit-life span:last-child { width: 50% }
 .battle-unit[data-life="2"] .unit-life span:last-child { width: 0% }
 
-#game-4 #selected-units {
-  display: flex;
-  gap: var(--spacing-8);
-}
-
-#game-4 #selected-units div {
-  width: 100px;
-  height: 100px;
-  position: relative;
-
-  border: 5px solid var(--color-neutral-100);
-}
 
 #game-4 .result-title {
   color: var(--color-neutral-100);
@@ -257,8 +260,14 @@
   margin-top: var(--spacing-2);
 }
 
-#game-4 .unit.hover:hover {
+#game-4 .unit.hover-select:hover {
   background-color: var(--color-yellow-500);
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+#game-4 .unit.hover-selected:hover {
+  background-color: var(--color-red-500);
   color: var(--color-neutral-900);
   cursor: pointer;
 }

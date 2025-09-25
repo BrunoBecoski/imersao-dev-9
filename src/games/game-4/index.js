@@ -660,13 +660,13 @@ function createUnit(props) {
 
   switch (type) {
     case 'select':
-      div__element.classList.add('hover')
+      div__element.classList.add('hover-select')
       div__element.onclick = () => handleAddUnit(value)
       break;
       
     case 'selected':
       i__element.innerText = index
-      div__element.classList.add('hover')
+      div__element.classList.add('hover-selected')
       div__element.onclick = () => handleRemoveUnit(id)
       break;
   
@@ -675,6 +675,7 @@ function createUnit(props) {
   }
 
   div__element.append(img__element, strong__element, i__element)
+
   return div__element
 }
 
