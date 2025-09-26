@@ -431,11 +431,11 @@ function renderBattleUnits() {
   computer_units__element.className = 'computer-units'
 
   player_units__element.append(
-    ...Array.from(playerUnits().map(({ unit, id, index }) => createUnit({ type: 'combat', id, value: unit, index })))
+    ...Array.from(playerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
   )
 
   computer_units__element.append(
-    ...Array.from(computerUnits().map(({ unit, id, index }) => createUnit({ type: 'combat', id, value: unit, index })))
+    ...Array.from(computerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
   )
 
   const battle_units__element = document.createElement('div')
@@ -594,30 +594,6 @@ async function unitAnimation(
   ])
 }
 
-// function createBattleUnit(battleUnit) {
-//   const { id, life, unit, index } = battleUnit
-//   const { value, img } = units.get(unit)
-
-//   const battle_unit__element = document.createElement('div')
-//   const img__element = document.createElement('img')
-//   const life__element = document.createElement('div')
-//   const i__element = document.createElement('i')
-  
-//   life__element.id = 'life'
-//   life__element.className = 'unit-life'
-//   battle_unit__element.id = id
-//   battle_unit__element.className = 'battle-unit'
-//   img__element.src = img
-//   battle_unit__element.dataset.life = life
-//   battle_unit__element.dataset.unit = value
-//   i__element.innerText = index
-  
-//   life__element.append(document.createElement('span'), document.createElement('span'))
-//   battle_unit__element.append(life__element, img__element, i__element)
-
-//   return battle_unit__element
-// }
-
 function createResultUnit(unit, result, index) {
   const { name, img } = units.get(unit)
 
@@ -637,7 +613,7 @@ function createResultUnit(unit, result, index) {
 }
 
 function createUnit(props) {
-  const { type, value, index, id } = props
+  const { type, id, value, life, index } = props
 
   const { name, img } = units.get(value)
 
@@ -646,43 +622,49 @@ function createUnit(props) {
   if (id === undefined) {
     unitId = Math.round(Math.random() * new Date())
   }
- 
 
-  const div__element = document.createElement('div')
-  const img__element = document.createElement('img')
-  const strong__element = document.createElement('strong')
-  const i__element = document.createElement('i')
+  const container__element = document.createElement('div')
+  const name__element = document.createElement('strong')
+  const image__element = document.createElement('img')
+  const index__element = document.createElement('i')
+  const life__element = document.createElement('div')
   
-  div__element.id = unitId
-  div__element.dataset.unit = value
+  container__element.id = unitId
+  container__element.dataset.unit = value
 
-  div__element.className = 'unit'
-  img__element.className = 'unit-image'
-  i__element.className = 'unit-index'
-  strong__element.className = 'unit-name'
-  
-  img__element.src = img
-  strong__element.innerText = name
+  container__element.className = 'unit'
+  name__element.className = 'unit-name'
+  image__element.className = 'unit-image'
+  index__element.className = 'unit-index'
+  life__element.id = 'life'
+
+  name__element.innerText = name
+  image__element.src = img
 
   switch (type) {
     case 'select':
-      div__element.classList.add('hover-select')
-      div__element.onclick = () => handleAddUnit(value)
+      container__element.classList.add('hover-select')
+      container__element.onclick = () => handleAddUnit(value)
       break;
       
     case 'selected':
-      i__element.innerText = index
-      div__element.classList.add('hover-selected')
-      div__element.onclick = () => handleRemoveUnit(id)
+      index__element.innerText = index
+      container__element.classList.add('hover-selected')
+      container__element.onclick = () => handleRemoveUnit(id)
       break;
-  
+
+    case 'combat':
+      container__element.dataset.life = life
+      index__element.innerText = index
+      life__element.append(document.createElement('span'), document.createElement('span'))
+      
     default:
       break;
   }
 
-  div__element.append(img__element, strong__element, i__element)
+  container__element.append(name__element, image__element, index__element, life__element)
 
-  return div__element
+  return container__element
 }
 
 function calcPercent(value) {
