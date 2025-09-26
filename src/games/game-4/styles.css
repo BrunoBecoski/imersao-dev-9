@@ -271,3 +271,11 @@
   color: var(--color-neutral-900);
   cursor: pointer;
 }
+
+#game-4 .unit-index {
+  font-weight: bold;
+  position: absolute;
+  font-size: var(--text-xl);
+  top: var(--spacing-4);
+  left: var(--spacing-4);
+}

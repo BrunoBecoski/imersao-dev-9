@@ -100,7 +100,7 @@ function renderSelectionScreen() {
 }
 
 async function renderBattleScreen() {
-  const slots__elements = document.getElementById('selected-units').querySelectorAll('div')
+  const slots__elements = document.getElementById('selected-units').querySelectorAll(':scope > div')
 
   setPlayerUnits([
     { 
@@ -355,7 +355,7 @@ async function playCombat() {
     }
   } while (loop)
 }
- 
+
 async function combat(playerInfo, computerInfo) {
   const player_unit__element = document.getElementById(playerInfo.id)
   const computer_unit__element = document.getElementById(computerInfo.id)
@@ -431,11 +431,11 @@ function renderBattleUnits() {
   computer_units__element.className = 'computer-units'
 
   player_units__element.append(
-    ...Array.from(playerUnits().map((unit) => createBattleUnit(unit)))
+    ...Array.from(playerUnits().map(({ unit, id, index }) => createUnit({ type: 'combat', id, value: unit, index })))
   )
 
   computer_units__element.append(
-    ...Array.from(computerUnits().map((unit) => createBattleUnit(unit)))
+    ...Array.from(computerUnits().map(({ unit, id, index }) => createUnit({ type: 'combat', id, value: unit, index })))
   )
 
   const battle_units__element = document.createElement('div')
@@ -475,7 +475,7 @@ function handleAddUnit(unit) {
 function handleRemoveUnit(id) {
   document.getElementById(id).remove()
 
-  const slots__element = document.getElementById('selected-units').querySelectorAll('div')
+  const slots__element = document.getElementById('selected-units').querySelectorAll(':scope > div')
 
   if (slots__element[0].hasChildNodes() || slots__element[1].hasChildNodes() || slots__element[2].hasChildNodes()) {
     document.getElementById('start-battle-button').disabled = true
@@ -594,29 +594,29 @@ async function unitAnimation(
   ])
 }
 
-function createBattleUnit(battleUnit) {
-  const { id, life, unit, index } = battleUnit
-  const { value, img } = units.get(unit)
+// function createBattleUnit(battleUnit) {
+//   const { id, life, unit, index } = battleUnit
+//   const { value, img } = units.get(unit)
 
-  const battle_unit__element = document.createElement('div')
-  const img__element = document.createElement('img')
-  const life__element = document.createElement('div')
-  const i__element = document.createElement('i')
+//   const battle_unit__element = document.createElement('div')
+//   const img__element = document.createElement('img')
+//   const life__element = document.createElement('div')
+//   const i__element = document.createElement('i')
   
-  life__element.id = 'life'
-  life__element.className = 'unit-life'
-  battle_unit__element.id = id
-  battle_unit__element.className = 'battle-unit'
-  img__element.src = img
-  battle_unit__element.dataset.life = life
-  battle_unit__element.dataset.unit = value
-  i__element.innerText = index
+//   life__element.id = 'life'
+//   life__element.className = 'unit-life'
+//   battle_unit__element.id = id
+//   battle_unit__element.className = 'battle-unit'
+//   img__element.src = img
+//   battle_unit__element.dataset.life = life
+//   battle_unit__element.dataset.unit = value
+//   i__element.innerText = index
   
-  life__element.append(document.createElement('span'), document.createElement('span'))
-  battle_unit__element.append(life__element, img__element, i__element)
+//   life__element.append(document.createElement('span'), document.createElement('span'))
+//   battle_unit__element.append(life__element, img__element, i__element)
 
-  return battle_unit__element
-}
+//   return battle_unit__element
+// }
 
 function createResultUnit(unit, result, index) {
   const { name, img } = units.get(unit)
@@ -637,18 +637,24 @@ function createResultUnit(unit, result, index) {
 }
 
 function createUnit(props) {
-  const { type, value, index } = props
+  const { type, value, index, id } = props
 
   const { name, img } = units.get(value)
 
-  const id = Math.round(Math.random() * new Date())
+  let unitId = id
+
+  if (id === undefined) {
+    unitId = Math.round(Math.random() * new Date())
+  }
+ 
 
   const div__element = document.createElement('div')
   const img__element = document.createElement('img')
   const strong__element = document.createElement('strong')
   const i__element = document.createElement('i')
   
-  div__element.id = id
+  div__element.id = unitId
+  div__element.dataset.unit = value
 
   div__element.className = 'unit'
   img__element.className = 'unit-image'
