@@ -88,47 +88,6 @@
   text-align: center;
 }
 
-#game-4 .result-unit {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  flex-direction: column;
-  padding: var(--spacing-2);
-  
-  background-color: var(--color-blue-900);
-}
-
-#game-4 .result-unit i {
-  color: var(--color-neutral-100);
-  font-size: var(--text-xl);
-  font-weight: bold;
-}
-
-#game-4 .result-unit span {
-  color: var(--color-neutral-100);
-  font-size: var(--text-lg);
-}
-
-#game-4 .result-unit img {
-  width: 100px;
-}
-
-#game-4 .result-unit.won {
-  background-color: var(--color-green-900);
-}
-
-#game-4 .result-unit.lose {
-  background-color: var(--color-red-900);
-}
-
-#game-4 .result-unit.draw img {
-  filter: grayscale(.5);
-}
-
-#game-4 .result-unit.lose img {
-  filter: grayscale(1);
-}
-
 #game-4 .report-round {
   display: flex;
   gap: var(--spacing-10);
@@ -234,7 +193,7 @@
   font-weight: bold;
   position: absolute;
   top: var(--spacing-12);
-  left: var(--spacing-4);
+  left: var(--spacing-8);
 
   font-size: var(--text-5xl);
 }
@@ -259,3 +218,11 @@
 #game-4 .unit[data-life="0"] div span:last-child { width: 100% }
 #game-4 .unit[data-life="1"] div span:last-child { width: 50% }
 #game-4 .unit[data-life="2"] div span:last-child { width: 0% }
+
+#game-4 .unit[data-result="won"] { background: var(--color-green-700) }
+#game-4 .unit[data-result="draw"] { background: var(--color-blue-700) }
+#game-4 .unit[data-result="lose"] { background: var(--color-red-700) }
+
+#game-4 .unit[data-result="won"] img { filter: grayscale(0) }
+#game-4 .unit[data-result="draw"] img { filter: grayscale(.5) }
+#game-4 .unit[data-result="lose"] img { filter: grayscale(1) }

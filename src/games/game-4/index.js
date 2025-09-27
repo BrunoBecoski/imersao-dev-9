@@ -219,12 +219,12 @@ function renderResultScreen() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'draw' }))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'draw', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'draw' }))),
       )
 
       break;
@@ -234,12 +234,12 @@ function renderResultScreen() {
 
       top_title__element.innerText = 'Jogador'
       top_units__element.append(
-        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'won', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'won' }))),
       )
 
       bottom_title__element.innerText = 'Computador'
       bottom_units__element.append(
-        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'lose' }))),
       )
 
       break;
@@ -249,12 +249,12 @@ function renderResultScreen() {
 
       top_title__element.innerText = 'Computador'
       top_units__element.append(
-        ...Array.from(computerUnits().map(({ unit, index }) => createResultUnit(unit, 'won', index))),
+        ...Array.from(computerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'won' }))),
       )
 
       bottom_title__element.innerText = 'Jogador'
       bottom_units__element.append(
-        ...Array.from(playerUnits().map(({ unit, index }) => createResultUnit(unit, 'lose', index))),
+        ...Array.from(playerUnits().map(({ unit, index }) => createUnit({ type: 'result', value: unit, index, result: 'lose' }))),
       )
 
     default:
@@ -594,26 +594,8 @@ async function unitAnimation(
   ])
 }
 
-function createResultUnit(unit, result, index) {
-  const { name, img } = units.get(unit)
-
-  const div__element = document.createElement('div')
-  const span__element = document.createElement('span')
-  const img__element = document.createElement('img')
-  const i__element = document.createElement('i')
-  
-  div__element.className = `result-unit ${result}`
-  span__element.innerText = name
-  img__element.src = img
-  i__element.innerText = index
-
-  div__element.append(img__element, span__element, i__element)
-
-  return div__element
-}
-
 function createUnit(props) {
-  const { type, id, value, life, index } = props
+  const { type, id, value, life, index, result } = props
 
   const { name, img } = units.get(value)
 
@@ -657,7 +639,11 @@ function createUnit(props) {
       container__element.dataset.life = life
       index__element.innerText = index
       life__element.append(document.createElement('span'), document.createElement('span'))
-      
+    
+    case 'result':
+      container__element.dataset.result = result
+      index__element.innerText = index
+
     default:
       break;
   }
