@@ -282,44 +282,24 @@ function renderResultScreen() {
 }
 
 function renderReportScreen() {
-  const rounds__element = document.createElement('div')
   
-  battlesRounds().map(({ player, computer }) => {
-    const div__element = document.createElement('div')
-    const unit_player__element = document.createElement('div')
-    const unit_computer__element = document.createElement('div')
-
-    div__element.className = 'report-round'
-
-    unit_player__element.dataset.life = player.life
-    unit_player__element.className = 'report-unit'
-    unit_player__element.innerHTML = `
-      <i>${player.index}</i>
-      <strong>${units.get(player.value).name}</strong>
-      <img src=${units.get(player.value).img} />
-      <div><span></span><span></span></div>
-    `
-
-    unit_computer__element.dataset.life = computer.life
-    unit_computer__element.className = 'report-unit'
-    unit_computer__element.innerHTML = `
-      <i>${computer.index}</i>
-      <strong>${units.get(computer.value).name}</strong>
-      <img src=${units.get(computer.value).img} />
-      <div><span></span><span></span></div>
-    `
-        
-    div__element.append(unit_player__element, unit_computer__element)
-    
-    rounds__element.appendChild(div__element)
-  })
-
   const title__element = document.getElementById('title')
   title__element.innerText = 'Relatório'
 
   const units_report__element = document.createElement('div')
   units_report__element.className = 'report-units'
-  units_report__element.appendChild(rounds__element)
+
+  battlesRounds().map(({ player, computer }) => {
+    const rounds__element = document.createElement('div')
+    rounds__element.className = 'report-round'
+
+    rounds__element.append(
+      createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
+      createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+    )
+
+    units_report__element.appendChild(rounds__element)
+  })
 
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
@@ -371,7 +351,7 @@ async function combat(playerInfo, computerInfo) {
 
   let battleRoundUnits = {
     player: {
-      id: playerUnit.id,
+      id: playerInfo.id,
       value: playerUnit.value,
       life: currentPlayerLife,
       damage: 0,
@@ -632,7 +612,7 @@ function createUnit(props) {
     case 'selected':
       index__element.innerText = index
       container__element.classList.add('hover-selected')
-      container__element.onclick = () => handleRemoveUnit(id)
+      container__element.onclick = () => handleRemoveUnit(unitId)
       break;
 
     case 'combat':
