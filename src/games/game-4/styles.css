@@ -103,6 +103,20 @@
   font-size: var(--text-4xl);
 }
 
+#game-4 .report-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-10);
+  justify-content: space-between;
+}
+
+#game-4 .report-header span {
+  color: var(--color-neutral-100);
+  font-weight: bold;
+  font-size: var(--text-5xl);
+}
+
 #game-4 .report-units {
   display: flex;
   gap: var(--spacing-5);

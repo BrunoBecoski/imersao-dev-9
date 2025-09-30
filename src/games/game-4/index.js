@@ -315,8 +315,8 @@ function renderReportScreen() {
   rounds__element.id = 'round'
 
   rounds__element.append(
-    createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
-    createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+    createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
+    createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
   )
 
   const back__element = createButton({ text: 'Voltar', handleClick: () => {
@@ -331,8 +331,8 @@ function renderReportScreen() {
       progress__element.innerText = `Rodada ${index + 1}`
       rounds__element.innerHTML = ''
       rounds__element.append(
-        createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
-        createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+        createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
+        createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
       )
     }
   }})
@@ -349,8 +349,8 @@ function renderReportScreen() {
       progress__element.innerText = `Rodada ${index + 1}`
       rounds__element.innerHTML = ''
       rounds__element.append(
-        createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
-        createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+        createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
+        createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
       )
     }
   }})
@@ -364,20 +364,26 @@ function renderReportScreen() {
 
   const units_report__element = document.createElement('div')
   units_report__element.className = 'report-units'
+  units_report__element.appendChild(rounds__element)
 
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
   titles__element.innerHTML = `<strong>Jogador</strong> <strong>Computador</strong>`
 
-  units_report__element.appendChild(rounds__element)
+
+  const header__element = document.createElement('div')
+  header__element.className = 'report-header'
+  header__element.append(
+    back__element,
+    progress__element,
+    next__element,
+  )
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(
     createButton({ text: 'Ver resultado', handleClick: renderResultScreen }), 
-    back__element,
-    progress__element,
-    next__element,
+    header__element,
     titles__element, 
     units_report__element
   )
@@ -429,6 +435,7 @@ async function combat(playerInfo, computerInfo) {
       life: currentPlayerLife,
       damage: 0,
       index: playerInfo.index,
+      result: '',
     },
     computer: {
       id: computerInfo.id,
@@ -436,6 +443,7 @@ async function combat(playerInfo, computerInfo) {
       life: currentComputerLife,
       damage: 0,
       index: computerInfo.index,
+      result: '',
     }
   }
 
@@ -449,18 +457,24 @@ async function combat(playerInfo, computerInfo) {
 
     battleRoundUnits.player.damage = weakDamage
     battleRoundUnits.computer.damage = strongDamage
+    battleRoundUnits.player.result = 'won'
+    battleRoundUnits.computer.result = 'lose'
   } else if (playerUnit.weak.includes(computerUnit.value) && computerUnit.strong.includes(playerUnit.value)) {
     newPlayerLife = Math.max(0, currentPlayerLife - strongDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
 
     battleRoundUnits.player.damage = strongDamage
     battleRoundUnits.computer.damage = weakDamage
+    battleRoundUnits.player.result = 'lose'
+    battleRoundUnits.computer.result = 'won'
   } else {
     newPlayerLife = Math.max(0, currentPlayerLife - weakDamage)
     newComputerLife = Math.max(0, currentComputerLife - weakDamage)
 
     battleRoundUnits.player.damage = weakDamage
     battleRoundUnits.computer.damage = weakDamage
+    battleRoundUnits.player.result = 'draw'
+    battleRoundUnits.computer.result = 'draw'
   }
 
   await unitAnimation(
