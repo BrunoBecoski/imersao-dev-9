@@ -191,6 +191,30 @@ async function renderBattleScreen() {
   renderResultScreen()
 }
 
+function renderBattleUnits() {
+  const player_units__element = document.createElement('div')
+  const computer_units__element = document.createElement('div')
+  player_units__element.className = 'player-units'
+  computer_units__element.className = 'computer-units'
+
+  player_units__element.append(
+    ...Array.from(playerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
+  )
+
+  computer_units__element.append(
+    ...Array.from(computerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
+  )
+
+  const battle_units__element = document.createElement('div')
+  battle_units__element.className = 'battle'
+  battle_units__element.append(
+    player_units__element,
+    computer_units__element,
+  )
+
+  return battle_units__element
+}
+
 function renderResultScreen() {
   const result_title__element = document.createElement('h1')
   result_title__element.className = 'result-title'
@@ -282,32 +306,81 @@ function renderResultScreen() {
 }
 
 function renderReportScreen() {
-  
+  let index = 0
+
+  const player = battlesRounds()[index].player
+  const computer = battlesRounds()[index].computer
+  const rounds__element = document.createElement('div')
+  rounds__element.className = 'report-round'
+  rounds__element.id = 'round'
+
+  rounds__element.append(
+    createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
+    createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+  )
+
+  const back__element = createButton({ text: 'Voltar', handleClick: () => {
+    if (index > 0) {
+      index--
+      
+      const player = battlesRounds()[index].player
+      const computer = battlesRounds()[index].computer
+      const rounds__element = document.getElementById('round')
+      const progress__element = document.getElementById('progress')
+
+      progress__element.innerText = `Rodada ${index + 1}`
+      rounds__element.innerHTML = ''
+      rounds__element.append(
+        createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
+        createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+      )
+    }
+  }})
+
+  const next__element = createButton({ text: 'Próximo', handleClick: () => {
+    if (index < (battlesRounds().length - 1)) {
+
+      index++
+      const player = battlesRounds()[index].player
+      const computer = battlesRounds()[index].computer
+      const rounds__element = document.getElementById('round')
+      const progress__element = document.getElementById('progress')
+
+      progress__element.innerText = `Rodada ${index + 1}`
+      rounds__element.innerHTML = ''
+      rounds__element.append(
+        createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
+        createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
+      )
+    }
+  }})
+
+  const progress__element = document.createElement('span')
+  progress__element.id = 'progress'
+  progress__element.innerText = `Rodada ${index + 1}`
+
   const title__element = document.getElementById('title')
   title__element.innerText = 'Relatório'
 
   const units_report__element = document.createElement('div')
   units_report__element.className = 'report-units'
 
-  battlesRounds().map(({ player, computer }) => {
-    const rounds__element = document.createElement('div')
-    rounds__element.className = 'report-round'
-
-    rounds__element.append(
-      createUnit({ type: 'combat', id: player.id, value: player.value, life: player.life, index: player.index }),
-      createUnit({ type: 'combat', id: computer.id, value: computer.value, life: computer.life, index: computer.index }),
-    )
-
-    units_report__element.appendChild(rounds__element)
-  })
-
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
   titles__element.innerHTML = `<strong>Jogador</strong> <strong>Computador</strong>`
 
+  units_report__element.appendChild(rounds__element)
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(createButton({ text: 'Ver resultado', handleClick: renderResultScreen }), titles__element, units_report__element)
+  main__element.append(
+    createButton({ text: 'Ver resultado', handleClick: renderResultScreen }), 
+    back__element,
+    progress__element,
+    next__element,
+    titles__element, 
+    units_report__element
+  )
 }
 
 async function playCombat() {
@@ -402,30 +475,6 @@ async function combat(playerInfo, computerInfo) {
 
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
-}
-
-function renderBattleUnits() {
-  const player_units__element = document.createElement('div')
-  const computer_units__element = document.createElement('div')
-  player_units__element.className = 'player-units'
-  computer_units__element.className = 'computer-units'
-
-  player_units__element.append(
-    ...Array.from(playerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
-  )
-
-  computer_units__element.append(
-    ...Array.from(computerUnits().map(({ id, unit, life, index }) => createUnit({ type: 'combat', id, value: unit, life, index })))
-  )
-
-  const battle_units__element = document.createElement('div')
-  battle_units__element.className = 'battle'
-  battle_units__element.append(
-    player_units__element,
-    computer_units__element,
-  )
-
-  return battle_units__element
 }
 
 function handleAddUnit(unit) {
