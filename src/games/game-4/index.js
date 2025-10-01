@@ -476,7 +476,7 @@ async function combat(playerInfo, computerInfo) {
     battleRoundUnits.player.result = 'draw'
     battleRoundUnits.computer.result = 'draw'
   }
-
+  
   await unitAnimation(
     player_unit__element, currentPlayerLife, newPlayerLife,
     computer_unit__element, currentComputerLife, newComputerLife,
@@ -485,8 +485,10 @@ async function combat(playerInfo, computerInfo) {
   playerUnits().find((unit) => unit.id === playerInfo.id).life = newPlayerLife
   computerUnits().find((unit) => unit.id === computerInfo.id).life = newComputerLife
 
-  setBattlesRounds([...battlesRounds(), battleRoundUnits])
-
+  if (!(playerInfo.id === battlesRounds().at(-1)?.player.id && computerInfo.id === battlesRounds().at(-1)?.computer.id)) {
+    setBattlesRounds([...battlesRounds(), battleRoundUnits])
+  }
+  
   player_unit__element.dataset.life = newPlayerLife
   computer_unit__element.dataset.life = newComputerLife
 }
