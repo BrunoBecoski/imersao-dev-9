@@ -310,27 +310,64 @@ function renderReportScreen() {
 
   const player = battlesRounds()[index].player
   const computer = battlesRounds()[index].computer
-  const rounds__element = document.createElement('div')
-  rounds__element.className = 'report-round'
-  rounds__element.id = 'round'
+  const result__element = document.createElement('strong')
+  const units__element = document.createElement('div')
 
-  rounds__element.append(
+  result__element.id = 'result'
+  units__element.id = 'units'
+
+  switch (player.result) {
+    case 'draw':
+      result__element.innerText = 'EMPATE'
+      break;
+
+    case 'won':
+      result__element.innerText = 'VENCEU'
+      break;
+
+    case 'lose':
+      result__element.innerText = 'PERDEU'
+      break;
+
+    default:
+      break;
+  }
+
+  units__element.append(
     createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
     createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
   )
 
   const back__element = createButton({ text: 'Voltar', handleClick: () => {
     if (index > 0) {
-      index--
+      index--     
       
       const player = battlesRounds()[index].player
       const computer = battlesRounds()[index].computer
-      const rounds__element = document.getElementById('round')
       const progress__element = document.getElementById('progress')
+      const result__element = document.getElementById('result')
+      const units__element = document.getElementById('units')
+
+      switch (player.result) {
+        case 'draw':
+          result__element.innerText = 'EMPATE'
+          break;
+
+        case 'won':
+          result__element.innerText = 'VENCEU'
+          break;
+
+        case 'lose':
+          result__element.innerText = 'PERDEU'
+          break;
+
+        default:
+          break;
+      }
 
       progress__element.innerText = `Rodada ${index + 1}`
-      rounds__element.innerHTML = ''
-      rounds__element.append(
+      units__element.innerHTML = ''
+      units__element.append(
         createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
         createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
       )
@@ -339,19 +376,38 @@ function renderReportScreen() {
 
   const next__element = createButton({ text: 'Próximo', handleClick: () => {
     if (index < (battlesRounds().length - 1)) {
-
       index++
+
       const player = battlesRounds()[index].player
       const computer = battlesRounds()[index].computer
-      const rounds__element = document.getElementById('round')
+      const result__element = document.getElementById('result')
       const progress__element = document.getElementById('progress')
+      const units__element = document.getElementById('units')
+
+      switch (player.result) {
+        case 'draw':
+          result__element.innerText = 'EMPATE'
+          break;
+
+        case 'won':
+          result__element.innerText = 'VENCEU'
+          break;
+
+        case 'lose':
+          result__element.innerText = 'PERDEU'
+          break;
+
+        default:
+          break;
+      }
 
       progress__element.innerText = `Rodada ${index + 1}`
-      rounds__element.innerHTML = ''
-      rounds__element.append(
+      units__element.innerHTML = ''
+
+      units__element.append(
         createUnit({ type: 'result', id: player.id, value: player.value, result: player.result, index: player.index }),
         createUnit({ type: 'result', id: computer.id, value: computer.value, result: computer.result, index: computer.index }),
-      )
+      )     
     }
   }})
 
@@ -364,7 +420,10 @@ function renderReportScreen() {
 
   const units_report__element = document.createElement('div')
   units_report__element.className = 'report-units'
-  units_report__element.appendChild(rounds__element)
+  units_report__element.append(
+    result__element,
+    units__element,
+  )
 
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
@@ -476,7 +535,7 @@ async function combat(playerInfo, computerInfo) {
     battleRoundUnits.player.result = 'draw'
     battleRoundUnits.computer.result = 'draw'
   }
-  
+
   await unitAnimation(
     player_unit__element, currentPlayerLife, newPlayerLife,
     computer_unit__element, currentComputerLife, newComputerLife,

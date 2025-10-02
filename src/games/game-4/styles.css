@@ -87,12 +87,6 @@
   text-align: center;
 }
 
-#game-4 .report-round {
-  display: flex;
-  gap: var(--spacing-10);
-  align-items: space-around;
-}
-
 #game-4 .report-titles {
   width: 100%;
   display: flex;
@@ -119,8 +113,22 @@
 
 #game-4 .report-units {
   display: flex;
+  flex-direction: column;
   gap: var(--spacing-5);
   flex-direction: column;
+}
+
+#game-4 .report-units > div {
+  width: 100%;
+  display: flex;
+  gap: var(--spacing-10);
+  justify-content: space-evenly;
+}
+
+#game-4 .report-units strong {
+  color: var(--color-neutral-100);
+  font-size: var(--text-4xl);
+  text-align: center;
 }
 
 #game-4 .unit {
