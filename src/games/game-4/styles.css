@@ -20,7 +20,8 @@
 }
 
 #game-4 #selected-units > div {
-  width: 150px;
+  width: 100px;
+  height: 100px;
   position: relative;
 }
 
@@ -30,7 +31,6 @@
 
 #game-4 .units {
   display: flex;
-  flex-wrap: wrap;
   text-align: center;
 }
 
@@ -46,6 +46,10 @@
   color: var(--color-neutral-100);
   font-size: var(--text-4xl);
   font-weight: bold;
+}
+
+#game-4 .units > div > div {
+  width: 50%;
 }
 
 #game-4 .battle {
@@ -84,6 +88,7 @@
   margin-bottom: var(--spacing-4);
   
   color: var(--color-neutral-100);
+  font-size: var(--text-3xl);
   text-align: center;
 }
 
