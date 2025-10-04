@@ -8,6 +8,7 @@
 
 #game-4 #main {
   display: flex;  
+  max-height: 100vh;
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -49,7 +50,7 @@
 }
 
 #game-4 .units > div > div {
-  width: 50%;
+  width: 20vh;
 }
 
 #game-4 .battle {
@@ -62,6 +63,10 @@
   display: flex;
   gap: var(--spacing-4);
   flex-direction: column;
+}
+
+#game-4 .battle > div img {
+  width: 20vh;
 }
 
 #game-4 .result-title {
@@ -81,6 +86,11 @@
   display: flex;
   gap: var(--spacing-10);
   align-items: space-around;
+}
+
+#game-4 .top-units > div img,
+#game-4 .bottom-units > div img {
+  width: 10vh;
 }
 
 #game-4 .top-units h2,
@@ -128,6 +138,10 @@
   display: flex;
   gap: var(--spacing-10);
   justify-content: space-evenly;
+}
+
+#game-4 .report-units > div img {
+  width: 20vh;
 }
 
 #game-4 .report-units strong {
