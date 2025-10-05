@@ -93,17 +93,17 @@ function handlePlay(unit) {
     <h3 id="title-result"></h3>
 
     <div class="units">
-      <div id="player-unit" class="unit right-animation" data-result=${playerResult}> 
-        <span>Você</span>
-        <div id="player-unit">
+      <div id="player-unit" class="unit right-animation"> 
+        <i>Você</i>
+        <div>
           <img src="${playerChoice.img}" />
           <span>${playerChoice.name}</span>
         </div>
       </div>
       
-      <div class="unit left-animation" data-result=${computerResult}>
-      <span>Computador</span>
-        <div id="computer-unit">
+      <div id="computer-unit" class="unit left-animation">
+        <i>Computador</i>
+        <div>
           <img src="${computerChoice.img}" title="${computerChoice.name}"/>
           <span>${computerChoice.name}</span>
         </div>
@@ -121,17 +121,19 @@ function handlePlay(unit) {
 
  
   setTimeout(() => {
-    const lose__element = document.querySelector("[data-result='lose']")
-    const won__element = document.querySelector("[data-result='won']")
-    const draw__elements = document.querySelectorAll("[data-result='draw']")
-
-    if(lose__element && won__element) {
-      lose__element.style.filter = 'grayscale(100%)'
+    if(playerResult === 'draw') {
+      player_unit__element.dataset.result = 'draw'
+      computer_unit__element.dataset.result = 'draw'
     }
 
-    if (draw__elements.length === 2) {
-      draw__elements[0].style.filter = 'grayscale(50%)'
-      draw__elements[1].style.filter = 'grayscale(50%)'
+    if (playerResult === 'won') {
+      player_unit__element.dataset.result = 'won'
+      computer_unit__element.dataset.result = 'lose'
+    }
+
+    if (playerResult === 'lose') {
+      player_unit__element.dataset.result = 'lose'
+      computer_unit__element.dataset.result = 'won'
     }
 
     const title__element = document.getElementById('title')
@@ -139,11 +141,11 @@ function handlePlay(unit) {
 
     const title_result__element = document.getElementById('title-result')
     if (playerResult === 'draw') {
-      title_result__element.innerHTML = 'EMPATE'
+      title_result__element.innerText = 'EMPATE'
     } else if (playerResult === 'won') {
-      title_result__element.innerHTML = 'VENCEU'
+      title_result__element.innerText = 'VENCEU'
     } else if (playerResult === 'lose') {
-      title_result__element.innerHTML = 'PERDEU'
+      title_result__element.innerText = 'PERDEU'
     }
 
     const replay__element = createButton({ text: 'Jogar novamente', handleClick: handleStart })

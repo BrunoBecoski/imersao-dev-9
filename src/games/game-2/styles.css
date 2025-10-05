@@ -13,7 +13,7 @@
 }
 
 #game_2 .header #title {
-  font-size: var(--text-4xl);
+  font-size: var(--text-5xl);
   margin-bottom: var(--spacing-8);
 }
 
@@ -45,11 +45,11 @@
 }
 
 #game_2 .button-unit:hover {
-  border-color: var(--color-yellow-500);
+  background-color: var(--color-yellow-500);
 }
 
 #game_2 .button-unit .name {
-  color: var(--color-neutral-100);
+  color: var(--color-neutral-900);
   font-size: var(--text-3xl);
   font-weight: bold;
 }
@@ -59,23 +59,22 @@
 }
 
 #game_2 .button-unit.win {
-  border-color: var(--color-green-500);
+  background-color: var(--color-green-500);
 }
 
 #game_2 .button-unit.lose {
-  border-color: var(--color-red-500);
+  background-color: var(--color-red-500);
 }
 
 #game_2 .button-unit .info {
   top: -1rem;
   position: absolute;
-
   transform: translateY(-100%); 
 }
 
 #game_2 .button-unit .info.win,
 #game_2 .button-unit .info.lose {
-  font-size: var(--text-4xl);
+  font-size: var(--text-5xl);
   font-weight: bold;
 }
 
@@ -90,15 +89,13 @@
 #game_2 .result {
   display: flex;
   align-items: center;
-  gap: var(--spacing-4);
+  gap: var(--spacing-16);
   flex-direction: column;
 }
 
 #game_2 #title-result {
   font-size: var(--text-6xl);
-  margin-top: var(--spacing-4);
   
-  color: var(--color-yellow-500);
   font-weight: bold;
 }
 
@@ -108,27 +105,26 @@
   justify-content: space-evenly;
 }
 
-#game_2 .result .units .unit > span {
+#game_2 .result .units .unit i {
   padding-bottom: var(--spacing-4);
-
-  font-style: italic;
 }
 
 #game_2 .result .units .unit {
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  
   font-size: var(--text-4xl);
 }
 
-#game_2 .result .units .unit > div {
+#game_2 .result .units .unit div {
   display: flex;
   align-items: center;
   flex-direction: column;
   
-  border: 5px solid var(--color-blue-500);
+  border: 5px solid transparent;
   background-color: var(--color-blue-500);
+  color: var(--color-neutral-900);
 }
 
 #game_2 .result .units .unit div span {
@@ -138,3 +134,11 @@
 #game_2 .result .units .unit div img {
   width: 100%;
 }
+
+#game_2 .result .units .unit[data-result='draw'] > div { background-color: var(--color-blue-500) }
+#game_2 .result .units .unit[data-result='won'] > div { background-color: var(--color-green-500) }
+#game_2 .result .units .unit[data-result='lose'] > div { background-color: var(--color-red-500) }
+
+#game_2 .result .units .unit[data-result='draw'] > div  img { filter: grayscale(50%) }
+#game_2 .result .units .unit[data-result='won'] > div  img { filter: grayscale(0%) }
+#game_2 .result .units .unit[data-result='lose'] > div  img { filter: grayscale(100%) }
