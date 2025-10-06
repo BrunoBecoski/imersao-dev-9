@@ -15,7 +15,7 @@ export function createGame3() {
   section__element.innerHTML = `
     <div id="game_3">
       <div id="header">
-        <h2>Pra ganhar, é preciso coragem!<h2>
+        <h2>Pra ganhar é preciso coragem!<h2>
       </div>
             
       <div id="main"></div>
@@ -139,11 +139,11 @@ function createButtonGate(id) {
     <img id="back" src="${backImg}" />
     <img id="gate" src="${gateImg}" />
     <img id="front" src="${frontImg}" />
-  `
-
-  return button__element
-}
-
+    `
+    
+    return button__element
+  }
+  
 
 
 

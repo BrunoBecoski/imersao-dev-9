@@ -36,7 +36,7 @@ export function createGame2() {
   section__element.innerHTML = `
     <div id="game_2">
       <div class="header">
-        <h2 id="title">Pra ganhar é preciso arriscar!!</h2>
+        <h2 id="title">Pra ganhar é preciso arriscar!</h2>
       </div>
 
       <div id="main"></div>
