@@ -72,3 +72,28 @@
 #game_3 .button-gate:hover {
   border-color: var(--color-yellow-500);
 }
+
+#game_3 .relic {
+  position: relative;
+}
+
+#game_3 .relic .image {
+  position: absolute;
+}
+
+#game_3 .relic .reflection {
+  filter: brightness(500%);
+  animation-duration: 1.5s;
+  animation-name: reflection;
+  animation-iteration-count: infinite;
+}
+
+@keyframes reflection {
+  0% {
+    clip-path: polygon(0% 110%, 100% 100%, 100% 110%, 0% 120%);
+  }  
+
+  100% {
+    clip-path: polygon(0% -10%, 100% -20%, 100% -10%, 0% 0%);
+  }
+}

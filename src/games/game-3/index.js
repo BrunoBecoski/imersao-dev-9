@@ -1,9 +1,9 @@
 import { createButton } from '../../components/button'
-import { createRelic } from '../../components/relic' 
 
 import backImg from '../../assets/game-3/back.png'
 import gateImg from '../../assets/game-3/gate.png'
 import frontImg from '../../assets/game-3/front.png'
+import relicImg from '../../assets/game-3/relic.png'
 
 import './styles.css'
 
@@ -139,11 +139,28 @@ function createButtonGate(id) {
     <img id="back" src="${backImg}" />
     <img id="gate" src="${gateImg}" />
     <img id="front" src="${frontImg}" />
-    `
-    
-    return button__element
-  }
-  
+  `
+
+  return button__element
+}
+
+function createRelic() {
+  const div__element = document.createElement('div')
+  const img__element = document.createElement('img')
+  const reflection__element = document.createElement('img')
+
+  div__element.className = 'relic' 
+  img__element.src = relicImg
+  reflection__element.src = relicImg
+
+  img__element.className = 'image'
+  reflection__element.className = 'reflection'
+
+  div__element.append(img__element, reflection__element)
+
+  return div__element
+}
+
 
 
 
