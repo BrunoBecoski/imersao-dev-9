@@ -26,7 +26,7 @@ export function createGame5() {
   section__element.innerHTML = `
     <div id="game-5">
       <div class="header">
-        <h2 id="title">Perguntas</h2>
+        <h2 id="title">Selecione a dificuldade</h2>
       </div>
 
       <div id="main"></div>
@@ -48,10 +48,6 @@ function createSelectDifficult() {
   const inputsAndLabels__element = document.createElement('div')
   inputsAndLabels__element.className = 'inputs-labels'
 
-  const title__element = document.createElement('p')
-  title__element.className = 'title'
-  title__element.innerText = 'Selecione a dificuldade'
-    
   const ranges__element = document.createElement('div')
   ranges__element.id = 'ranges'
 
@@ -63,7 +59,6 @@ function createSelectDifficult() {
   )
 
   container__element.append(
-    title__element,
     inputsAndLabels__element,
     ranges__element,
     createButton({ text: 'Começar', handleClick: () => handleStart(difficult) }),
@@ -94,6 +89,9 @@ function createSelectDifficult() {
 
 async function handleStart(difficult) {
   const { rounds } = difficulties[difficult]
+
+  const title__element = document.getElementById('title')
+  title__element.innerText = `Pergunta 1/${rounds}`
 
   const questionsSelected = selectQuestions(difficult)
 
@@ -137,7 +135,7 @@ function showResult(questionsSelected, difficult) {
   const span__element = document.createElement('span')
   const showResponseButton__element = createButton({ text: 'Ver respostas', handleClick: () => handleShowResponse(questionsSelected, difficult)})
   const startButton__element = createButton({ text: 'Jogar novamente', handleClick: () => {
-    title__element.innerText = 'Perguntas'
+    title__element.innerText = 'Selecione a dificuldade'
     main__element.innerHTML = ''
     main__element.appendChild(createSelectDifficult())
   } })
@@ -162,22 +160,13 @@ async function handleShowResponse(questionsSelected, difficult) {
 
   const title__element = document.getElementById('title')
 
-  title__element.innerText = 'Respostas'
-
-  const div__element = document.createElement('div')
-  div__element.className = 'response'
-
-  const progress__element = document.createElement('span')
-  progress__element.id = 'progress'
-  progress__element.innerText = `${index + 1}/${rounds}`
-
-  const questionAndOptions__element = createQuestionResponse(questionsSelected[index])
+  title__element.innerText = `Pergunta 1/${rounds}`
 
   const backButton__element = createButton({ text: 'Voltar', handleClick: () => {
     if (index > 0) {
       index--
       document.getElementById('question').innerText = questionsSelected[index].question
-      document.getElementById('progress').innerText = `${index + 1}/${rounds}`
+      document.getElementById('title').innerText = `Pergunta ${index + 1}/${rounds}`
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
         ...Array.from(createOptionsResponse(questionsSelected[index]))
@@ -189,26 +178,30 @@ async function handleShowResponse(questionsSelected, difficult) {
     if (index < (rounds - 1)) {
       index++
       document.getElementById('question').innerText = questionsSelected[index].question
-      document.getElementById('progress').innerText = `${index + 1}/${rounds}`
+      document.getElementById('title').innerText = `Pergunta ${index + 1}/${rounds}`
       document.getElementById('options').innerHTML = ``
       document.getElementById('options').append(
         ...Array.from(createOptionsResponse(questionsSelected[index]))
       )
     }
   }})
-  
-  div__element.append(backButton__element, progress__element, nextButton__element)
+
+  const questionAndOptions__element = createQuestionResponse(questionsSelected[index], backButton__element, nextButton__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(div__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected, difficult) }), questionAndOptions__element)
+  main__element.append(questionAndOptions__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected, difficult) }))
 }
 
-function createQuestionResponse(questionSelected) {
+function createQuestionResponse(questionSelected, backButton__element, nextButton__element) {
   const question__element = document.createElement('h3')
   question__element.id = 'question'
   question__element.innerText = questionSelected.question
-
+  
+  const questionButtons__element = document.createElement('div')
+  questionButtons__element.className = 'question-buttons'
+  questionButtons__element.append(backButton__element, question__element, nextButton__element)
+  
   const options__element = document.createElement('ol')
   options__element.id = 'options'
 
@@ -216,7 +209,7 @@ function createQuestionResponse(questionSelected) {
 
   const questionAndOptions__element = document.createElement('div')
   questionAndOptions__element.className = 'question-options'
-  questionAndOptions__element.append(question__element, options__element)
+  questionAndOptions__element.append(questionButtons__element, options__element)
 
   return questionAndOptions__element 
 }
@@ -226,10 +219,6 @@ async function createQuestion(questionsSelected, index, difficult) {
 
   const currentQuestion = questionsSelected[index]
 
-  const progress__element = document.createElement('span')
-  progress__element.id = 'progress'
-  progress__element.innerText = `${index + 1}/${rounds}`
-
   const question__element = document.createElement('h3')
   question__element.id = 'question'
   question__element.innerText = currentQuestion.question
@@ -238,9 +227,12 @@ async function createQuestion(questionsSelected, index, difficult) {
 
   currentQuestion.answers = answers
 
+  const title__element = document.getElementById('title')
+  title__element.innerText = `Pergunta ${index + 1}/${rounds}`
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(progress__element, question__element, options__element)
+  main__element.append(question__element, options__element)
 
   return new Promise(resolver => {
     [...options__element.querySelectorAll('button')].map(button =>
