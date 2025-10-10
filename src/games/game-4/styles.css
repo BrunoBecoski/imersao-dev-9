@@ -1,18 +1,26 @@
-#game-4 #title {
-  margin-bottom: var(--spacing-4);
+#game-4 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: var(--spacing-8);
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--spacing-8);
+}
 
+#game-4 #title {
   color: var(--color-neutral-100);
-  font-size: var(--text-4xl);
+  font-size: var(--text-5xl);
   text-align: center;
 }
 
 #game-4 #main {
-  display: flex;  
-  max-height: 100vh;
+  width: 100%;
+  display: flex;
   align-items: center;
+  gap: var(--spacing-14);
   flex-direction: column;
   justify-content: center;
-  gap: var(--spacing-10);
 }
 
 #game-4 #selected-units {
@@ -22,7 +30,7 @@
 
 #game-4 #selected-units > div {
   width: 100px;
-  height: 100px;
+  height: 150px;
   position: relative;
 }
 
@@ -31,26 +39,29 @@
 }
 
 #game-4 .units {
+  width: 100%;
+  height: 100%;
   display: flex;
   text-align: center;
+  gap: var(--spacing-8);
 }
 
 #game-4 .units > div {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
   flex-direction: column;
-  padding: var(--spacing-4);
 }
 
 #game-4 .units > div > span {
   color: var(--color-neutral-100);
   font-size: var(--text-4xl);
-  font-weight: bold;
+  font-style: italic;
 }
 
 #game-4 .units > div > div {
-  width: 20vh;
+  width: 10vh;
 }
 
 #game-4 .battle {
