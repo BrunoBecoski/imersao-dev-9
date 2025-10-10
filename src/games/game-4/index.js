@@ -43,40 +43,6 @@ function renderSelectionScreen() {
   setPlayerUnits([])
   setComputerUnits([])
 
-  const archers__element = document.createElement('div')
-  archers__element.className = 'archers'
-  const archer_title__element = document.createElement('span')
-  archer_title__element.innerText = 'Arqueiros'
-  archers__element.append(
-    archer_title__element,
-    createUnit({ type: 'select', value: 'arbalester' }),
-    createUnit({ type: 'select', value: 'skirmisher' }),
-  )
-
-  const infantries__element = document.createElement('div')
-  infantries__element.className = 'infantries'
-  const infantries_title__element = document.createElement('span')
-  infantries_title__element.innerText = 'Infantarias'
-  infantries__element.append(
-    infantries_title__element,
-    createUnit({ type: 'select', value: 'halberdier' }),
-    createUnit({ type: 'select', value: 'champion' }),
-  )
-
-  const cavalries__element = document.createElement('div')
-  cavalries__element.className = 'cavalries'
-  const cavalries_title__element = document.createElement('span')
-  cavalries_title__element.innerText = 'Cavalarias'
-  cavalries__element.append(
-    cavalries_title__element,
-    createUnit({ type: 'select', value: 'paladin' }),
-    createUnit({ type: 'select', value: 'camel' }),
-  )
-
-  const units__element = document.createElement('div')
-  units__element.className = 'units'
-  units__element.append(archers__element, infantries__element, cavalries__element)
-
   const title__element = document.getElementById('title')
   title__element.innerText = 'Escolha três unidades'
 
@@ -92,6 +58,17 @@ function renderSelectionScreen() {
     document.createElement('div'),
     document.createElement('div'),
     start_battle__element,
+  )
+
+  const units__element = document.createElement('div')
+  units__element.className = 'units'
+  units__element.append(
+    createUnit({ type: 'select', value: 'arbalester' }),
+    createUnit({ type: 'select', value: 'halberdier' }),
+    createUnit({ type: 'select', value: 'paladin' }),
+    createUnit({ type: 'select', value: 'skirmisher' }),
+    createUnit({ type: 'select', value: 'champion' }),
+    createUnit({ type: 'select', value: 'camel' }),
   )
 
   const main__element = document.getElementById('main')
