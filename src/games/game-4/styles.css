@@ -199,6 +199,16 @@
   background-color: var(--color-red-500);
 }
 
+#game-4 .unit.strong {
+  background-color: var(--color-green-500);
+  color: var(--color-neutral-900);
+}
+
+#game-4 .unit.weak {
+  background-color: var(--color-red-500);
+  color: var(--color-neutral-900);
+}
+
 #game-4 .unit[data-life="0"] div span:first-child { width: 0% }
 #game-4 .unit[data-life="1"] div span:first-child { width: 50% }
 #game-4 .unit[data-life="2"] div span:first-child { width: 100% }

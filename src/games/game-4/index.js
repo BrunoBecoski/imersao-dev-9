@@ -708,6 +708,15 @@ function createUnit(props) {
     case 'select':
       container__element.classList.add('hover-select')
       container__element.onclick = () => handleAddUnit(value)
+      const { strong, weak } = units.get(value)
+      container__element.addEventListener('mouseover', () => {
+        strong.forEach(unit => document.querySelector(`[data-unit=${unit}`).classList.add('strong'))
+        weak.forEach(unit => document.querySelector(`[data-unit=${unit}`).classList.add('weak'))
+      })
+      container__element.addEventListener('mouseout', () => {
+        strong.forEach(unit => document.querySelector(`[data-unit=${unit}`).classList.remove('strong'))
+        weak.forEach(unit => document.querySelector(`[data-unit=${unit}`).classList.remove('weak'))
+      })
       break;
       
     case 'selected':
