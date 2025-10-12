@@ -265,18 +265,18 @@ function renderResultScreen() {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Resultado'
   
-  const buttons__element = document.createElement('div')
-  buttons__element.className = 'result-buttons'
-  buttons__element.append(
+  const header__element = document.createElement('div')
+    header__element.className = 'result-header'
+    header__element.append(
     createButton({ text: 'Ver relatório', handleClick: renderReportScreen }),
-    createButton({ text: 'Jogar novamente', handleClick: renderSelectionScreen })
+    result_title__element,
+    createButton({ text: 'Jogar novamente', handleClick: renderSelectionScreen }),
   )
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(
-    result_title__element,
-    buttons__element,
+    header__element,
     top_div__element,
     bottom_div__element,
   )
@@ -291,7 +291,9 @@ function renderReportScreen() {
   const units__element = document.createElement('div')
 
   result__element.id = 'result'
+  result__element.className = 'report-result'
   units__element.id = 'units'
+  units__element.className = 'report-units'
 
   switch (player.result) {
     case 'draw':
@@ -395,17 +397,9 @@ function renderReportScreen() {
   const title__element = document.getElementById('title')
   title__element.innerText = 'Relatório'
 
-  const units_report__element = document.createElement('div')
-  units_report__element.className = 'report-units'
-  units_report__element.append(
-    result__element,
-    units__element,
-  )
-
   const titles__element = document.createElement('div')
   titles__element.className = 'report-titles'
   titles__element.innerHTML = `<strong>Jogador</strong> <strong>Computador</strong>`
-
 
   const header__element = document.createElement('div')
   header__element.className = 'report-header'
@@ -415,13 +409,20 @@ function renderReportScreen() {
     next__element,
   )
 
+  const titles_units__element = document.createElement('div')
+  titles_units__element.className = 'report-titles-units'
+  titles_units__element.append(
+    titles__element,
+    units__element,
+  )
+
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
   main__element.append(
     createButton({ text: 'Ver resultado', handleClick: renderResultScreen }), 
     header__element,
-    titles__element, 
-    units_report__element
+    result__element,
+    titles_units__element,
   )
 }
 
