@@ -186,30 +186,29 @@ async function handleShowResponse(questionsSelected, difficult) {
     }
   }})
 
-  const questionAndOptions__element = createQuestionResponse(questionsSelected[index], backButton__element, nextButton__element)
+  const questionAndOptions__element = createQuestionResponse(questionsSelected[index])
+
+  const header__element = document.createElement('div')
+  header__element.className = 'response-header'
+  header__element.append(backButton__element,createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected, difficult) }), nextButton__element)
 
   const main__element = document.getElementById('main')
   main__element.innerHTML = ''
-  main__element.append(questionAndOptions__element, createButton({ text: 'Ver resultado', handleClick: () => showResult(questionsSelected, difficult) }))
+  main__element.append(header__element, questionAndOptions__element)
 }
 
-function createQuestionResponse(questionSelected, backButton__element, nextButton__element) {
+function createQuestionResponse(questionSelected) {
   const question__element = document.createElement('h3')
   question__element.id = 'question'
   question__element.innerText = questionSelected.question
   
-  const questionButtons__element = document.createElement('div')
-  questionButtons__element.className = 'question-buttons'
-  questionButtons__element.append(backButton__element, question__element, nextButton__element)
-  
   const options__element = document.createElement('ol')
   options__element.id = 'options'
-
   options__element.append(...Array.from(createOptionsResponse(questionSelected)))
 
   const questionAndOptions__element = document.createElement('div')
   questionAndOptions__element.className = 'question-options'
-  questionAndOptions__element.append(questionButtons__element, options__element)
+  questionAndOptions__element.append(question__element, options__element)
 
   return questionAndOptions__element 
 }
