@@ -15,6 +15,7 @@
   loop
   muted
   playsinline
+  style="max-width: 100%; height: auto;"
 ></video>
 
 <h2>Jogo 2</h2>
@@ -24,6 +25,7 @@
   loop
   muted
   playsinline
+  style="max-width: 100%; height: auto;"
 ></video>
 
 <h2>Jogo 3</h2>
@@ -33,6 +35,7 @@
   loop
   muted
   playsinline
+  style="max-width: 100%; height: auto;"
 ></video>
 
 <h2>Jogo 4</h2>
@@ -42,6 +45,7 @@
   loop
   muted
   playsinline
+  style="max-width: 100%; height: auto;"
 ></video>
 
 <h2>Jogo 5</h2>
@@ -51,4 +55,5 @@
   loop
   muted
   playsinline
+  style="max-width: 100%; height: auto;"
 ></video>
