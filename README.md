@@ -9,16 +9,46 @@
 </ul>
 
 <h2>Jogo 1</h2>
-<img src=".github/game-1.gif" />
+<video
+  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-1.webm" 
+  autoplay
+  loop
+  muted
+  playsinline
+></video>
 
 <h2>Jogo 2</h2>
-<img src=".github/game-2.gif" />
+<video
+  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-2.webm" 
+  autoplay
+  loop
+  muted
+  playsinline
+></video>
 
 <h2>Jogo 3</h2>
-<img src=".github/game-3.gif" />
+<video
+  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-3.webm" 
+  autoplay
+  loop
+  muted
+  playsinline
+></video>
 
 <h2>Jogo 4</h2>
-<img src=".github/game-4.gif" />
+<video
+  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-4.webm" 
+  autoplay
+  loop
+  muted
+  playsinline
+></video>
 
 <h2>Jogo 5</h2>
-<img src=".github/game-5.gif" />
+<video
+  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-5.webm" 
+  autoplay
+  loop
+  muted
+  playsinline
+></video>
