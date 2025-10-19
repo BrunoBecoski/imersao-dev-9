@@ -10,7 +10,7 @@
 
 <h2>Jogo 1</h2>
 <video
-  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-1.webm" 
+  src="github/game-1.webm" 
   autoplay
   loop
   muted
@@ -20,7 +20,7 @@
 
 <h2>Jogo 2</h2>
 <video
-  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-2.webm" 
+  src="github/game-2.webm" 
   autoplay
   loop
   muted
@@ -30,7 +30,7 @@
 
 <h2>Jogo 3</h2>
 <video
-  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-3.webm" 
+  src="github/game-3.webm" 
   autoplay
   loop
   muted
@@ -40,7 +40,7 @@
 
 <h2>Jogo 4</h2>
 <video
-  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-4.webm" 
+  src="github/game-4.webm" 
   autoplay
   loop
   muted
@@ -50,7 +50,7 @@
 
 <h2>Jogo 5</h2>
 <video
-  src="https://raw.githubusercontent.com/brunobecoski/imersao-dev-9/main/.github/game-5.webm" 
+  src="github/game-5.webm" 
   autoplay
   loop
   muted
