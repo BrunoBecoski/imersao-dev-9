@@ -138,8 +138,9 @@ function createResource(resource) {
     quantity = quantity + price
 
     if (price < 220) {
-      price = price + supplyDemand
+      price = price - supplyDemand
     }
+
     renderResource({
       name,
       type: 'increase',
@@ -152,7 +153,7 @@ function createResource(resource) {
     quantity = quantity - price
 
     if (price > 20) {
-      price = price - supplyDemand
+      price = price + supplyDemand
     }
 
     renderResource({

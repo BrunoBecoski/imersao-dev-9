@@ -9,21 +9,26 @@
   </ul>
 
 <h2>Jogo 1</h2>
-  <i>Mercado onde pode comprar e vender recursos.</i>
+  <h3><i>Mercado onde pode comprar e vender recursos.</i></h3>
+  <ul>
+    <li>Todos os recursos são comprados e vendidos por 100 de ouro.</li>
+    <li>Comprar diminuir o valor do recurso.</li>
+    <li>Vender aumenta o valor do recurso.</li>
+  </ul>
   <img src=".github/game-1.gif" alt="Jogo 1" />
 
 <h2>Jogo 2</h2>
-  <i>Escolha uma dentre três unidades e batalhe contra o computador.</i>
+  <h3><i>Escolha uma dentre três unidades e batalhe contra o computador.</i></h3>
   <img src=".github/game-2.gif" alt="Jogo 2" />
 
 <h2>Jogo 3</h2>
-  <i>Escolha o portão correto para avançar até chegar a relíquia.</i>
+  <h3><i>Escolha o portão correto para avançar até chegar a relíquia.</i></h3>
   <img src=".github/game-3.gif" alt="Jogo 3" />
 
 <h2>Jogo 4</h2>
-  <i>Selecione três unidades e batalhe contra o computador.</i>
+  <h3><i>Selecione três unidades e batalhe contra o computador.</i></h3>
   <img src=".github/game-4.gif" alt="Jogo 4" />
 
 <h2>Jogo 5</h2>
-  <i>Quiz com perguntas relacionadas ao Age of Empires II.</i>
+  <h3><i>Quiz com perguntas relacionadas ao Age of Empires II.</i></h3>
   <img src=".github/game-5.gif" alt="Jogo 5"/>
